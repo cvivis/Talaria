@@ -1,0 +1,9 @@
+version: "3"
+services:
+  test-1:
+    image: ssafy09a107/test1
+    build:
+      context: ./TestAPI
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
