@@ -10,7 +10,9 @@ services:
   dmz:
     image: ssafy09a107/dmz
     build:
-      contxt: ./dmz/fast-server
+      context: ./dmz/fast-server
       dockerfile: Dockerfile
     ports:
       - "8001:8001"
+
+    
