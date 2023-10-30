@@ -24,7 +24,7 @@ class ElasticConfig:
         setting = dict()
         setting['host'] = self.HOST
         setting['port'] = self.PORT
-        setting['scheme'] = 'http'
+        setting['scheme'] = 'https'
         return setting
 
     def _describe_auth(self) -> tuple:
