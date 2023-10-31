@@ -17,10 +17,7 @@ public enum ErrorCode {
 	NOT_REFRESH_TOKEN_TYPE(HttpStatus.UNAUTHORIZED, "401008", "해당 토큰은 Refresh Token이 아닙니다."),
 
 	// 인가
-	FORBIDDEN_USER(HttpStatus.FORBIDDEN, "403001", "관리자 Role이 아닙니다."),
-	FORBIDDEN_DEVELOPER(HttpStatus.FORBIDDEN, "403002", "개발자 Role이 아닙니다."),
-	FORBIDDEN_ADMIN(HttpStatus.FORBIDDEN, "403003", "사용ㄴ자 Role이 아닙니다."),
-	NOT_EXIST_CALLBACK_TYPE(HttpStatus.FORBIDDEN, "403004", "잘못된 uri입니다."),
+	WRONG_AUTHORITY(HttpStatus.FORBIDDEN, "403001", "잘못된 Role 입니다."),
 
 	// 회원
 	ALREADY_REGISTERED_USER(HttpStatus.BAD_REQUEST, "404001", "이미 가입된 회원입니다."),
