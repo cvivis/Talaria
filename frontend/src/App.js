@@ -1,23 +1,29 @@
-import SwaggerUI from 'swagger-ui-react';
-import "swagger-ui-react/swagger-ui.css";
-import SwaggerTest from '../src/SwaggerTest.js';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Main from './Main';
+import NotFound from './layouts/NotFound.js';
+import SignIn from './layouts/SignIn.js';
+import PublicRoute from './components/route/PublicRoute.js';
+import PrivateRoute from './components/route/PrivateRoute.js';
+import User from './layouts/User.js';
+import Admin from './layouts/Admin.js';
+import Developer from './layouts/Developer.js';
 
 function App() {
 
   return (
-    <div className="App">
+    <>
       <BrowserRouter>
-      <Routes>
-					<Route path="/" element={<Main />} />
-          <Route path="/editor" element={<SwaggerTest />} />
-          <Route path="/ui" element={<SwaggerUI url='https://petstore3.swagger.io/api/v3/openapi.json' />} />
+        <Routes>
+          {/* Public */}
+          <Route exact path='/' element={<PublicRoute component={<SignIn />} />} />
+          {/* Private */}
+          <Route exact path='/user' element={<PrivateRoute selectRole="user" component={<User />} />} />
+          <Route exact path='/admin' element={<PrivateRoute selectRole="admin" component={<Admin />} />} />
+          <Route exact path='/developer' element={<PrivateRoute selectRole="developer" component={<Developer />} />} />
 					{/* 상단에 위치하는 라우트들의 규칙을 모두 확인, 일치하는 라우트가 없는경우 처리 */}
-					{/* <Route path="*" element={<NotFound />}></Route> */}
+					<Route path='/*' element={<NotFound />} />
 				</Routes>
       </BrowserRouter>
-    </div>
+    </>
   );
 }
 
