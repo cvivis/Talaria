@@ -4,10 +4,11 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { ChakraProvider } from '@chakra-ui/react';
+import theme from "./theme/theme.js";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <ChakraProvider resetCSS={false}>
+  <ChakraProvider theme={theme} resetCSS={false} position="relative">
     <App />
   </ChakraProvider>
 );
