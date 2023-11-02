@@ -5,20 +5,20 @@ import SwaggerEditor from 'swagger-editor';
 import 'swagger-editor/dist/swagger-editor.css' // 좌측 에디터 화면
 
 const SwaggerEditorComponent = () => {
-    const yaml = require('js-yaml');
-    useEffect(() => {
-        console.log("시작");
+  const yaml = require('js-yaml');
+  useEffect(() => {
+    console.log("시작");
 
-        const editor = SwaggerEditor({
-            dom_id: '#swagger-editor',
-            layout: 'EditorLayout',
-            swagger2GeneratorUrl: 'https://generator.swagger.io/api/swagger.json',
-            oas3GeneratorUrl: 'https://generator3.swagger.io/openapi.json',
-            swagger2ConverterUrl: 'https://converter.swagger.io/api/convert',
-        });
+    const editor = SwaggerEditor({
+      dom_id: '#swagger-editor',
+      layout: 'EditorLayout',
+      swagger2GeneratorUrl: 'https://generator.swagger.io/api/swagger.json',
+      oas3GeneratorUrl: 'https://generator3.swagger.io/openapi.json',
+      swagger2ConverterUrl: 'https://converter.swagger.io/api/convert',
+    });
 
-        localStorage.setItem('swagger-editor-content', 
-`openapi: 3.0.3
+    localStorage.setItem('swagger-editor-content',
+      `openapi: 3.0.3
 info:
   title: Swagger Petstore - OpenAPI 3.0
   description: asdf
@@ -84,32 +84,33 @@ components:
             write:pets: modify pets in your account
             read:pets: read your pets`)
 
-        const stringValue = localStorage.getItem('swagger-editor-content');
-        console.log('String Value:', stringValue);      
+    const stringValue = localStorage.getItem('swagger-editor-content');
+    console.log('String Value:', stringValue);
 
-    },[]);
+  }, []);
 
-    return (
-        <div>
-            <div>메인으로 이동하기 <Link to={"/d"} >이동</Link></div>
-            {/* <CSSReset /> */}
-                <Box>
-                <Flex justify="space-between" align="center">
-                  <Box marginLeft="5%">
-                <Select placeholder='Select option'>
-                  <option value='option1'>Option 1</option>
-                  <option value='option2'>Option 2</option>
-                  <option value='option3'>Option 3</option>
-                </Select>
-              </Box>
-      <Button marginLeft="auto" marginRight="5%" >가운데 버튼</Button>
-      <Button marginRight="5%">오른쪽 버튼</Button>
-    </Flex>
-                    <div id="swagger-editor"></div>
-                </Box>
-            
-        </div>
-    );
+  return (
+    <div>
+      <div>메인으로 이동하기 <Link to={"/d"} >이동</Link></div>
+      {/* <CSSReset /> */}
+      <Box>
+        <Flex justify="space-between" align="center" marginY={10}>
+          <Box marginLeft="5%">
+            <Select placeholder='Select option'>
+              <option value='option1'>Option 1</option>
+              <option value='option2'>Option 2</option>
+              <option value='option3'>Option 3</option>
+            </Select>
+          </Box>
+          <Button marginLeft="auto" marginRight="5%" colorScheme='blue'>Create</Button>
+          <Button marginRight="5%">Cancle</Button>
+        </Flex>
+
+        <div id="swagger-editor"></div>
+      </Box>
+
+    </div>
+  );
 }
 
 export default SwaggerEditorComponent;
