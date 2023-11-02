@@ -1,0 +1,33 @@
+version: "3.5"
+
+networks:
+  deafult:
+    name: data-plane
+    external: false
+
+volumes:
+  nginx-data:
+
+services:
+  gw-server:
+    container_name: gw-server
+    image: talaria/gw-server
+    build:
+      context: ./gw-server
+      dockerfile: Dockerfile
+      args:
+        PYTHON_VERSION: ${PYTHON_VERSION}
+    restart: unless-stopped
+    ports:
+      - "${GW_SERVER_PORT}:${GW_SERVER_PORT}"
+    depends_on:
+      - nginx
+
+  nginx:
+    container_name: nginx
+    image: nginx:${NGINX_VERSION}
+    restart: unless-stopped
+    volumes:
+      - nginx-data:/etc/nginx
+    ports:
+      - "80:80"

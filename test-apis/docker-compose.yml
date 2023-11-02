@@ -7,3 +7,12 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
+  dmz:
+    image: ssafy09a107/dmz
+    build:
+      context: ./dmz/fast-server
+      dockerfile: Dockerfile
+    ports:
+      - "8001:8001"
+
+    

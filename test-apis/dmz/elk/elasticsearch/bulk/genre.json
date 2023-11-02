@@ -1,0 +1,46 @@
+{"index": {"_index": "genre", "_id": 0}}
+{"name": "\uc561\uc158", "movie": true, "drama": true}
+{"index": {"_index": "genre", "_id": 1}}
+{"name": "\ub2e4\ud050\uba58\ud130\ub9ac", "movie": true, "drama": true}
+{"index": {"_index": "genre", "_id": 2}}
+{"name": "\uc5ed\uc0ac", "movie": true, "drama": true}
+{"index": {"_index": "genre", "_id": 3}}
+{"name": "\ubc94\uc8c4", "movie": true, "drama": true}
+{"index": {"_index": "genre", "_id": 4}}
+{"name": "\uc2a4\ub9b4\ub7ec", "movie": true, "drama": false}
+{"index": {"_index": "genre", "_id": 5}}
+{"name": "\uc11c\ubd80", "movie": true, "drama": false}
+{"index": {"_index": "genre", "_id": 6}}
+{"name": "\uacf5\uc0c1\uacfc\ud559", "movie": true, "drama": true}
+{"index": {"_index": "genre", "_id": 7}}
+{"name": "\uc815\uce58", "movie": false, "drama": true}
+{"index": {"_index": "genre", "_id": 8}}
+{"name": "\uc560\ub2c8\uba54\uc774\uc158", "movie": true, "drama": true}
+{"index": {"_index": "genre", "_id": 9}}
+{"name": "\ud1a0\ud06c", "movie": false, "drama": true}
+{"index": {"_index": "genre", "_id": 10}}
+{"name": "\ubaa8\ud5d8", "movie": true, "drama": false}
+{"index": {"_index": "genre", "_id": 11}}
+{"name": "\uc5f0\uc18d \ub4dc\ub77c\ub9c8", "movie": false, "drama": true}
+{"index": {"_index": "genre", "_id": 12}}
+{"name": "\uc74c\uc545", "movie": true, "drama": false}
+{"index": {"_index": "genre", "_id": 13}}
+{"name": "\ub4dc\ub77c\ub9c8", "movie": true, "drama": true}
+{"index": {"_index": "genre", "_id": 14}}
+{"name": "\ucf54\ubbf8\ub514", "movie": true, "drama": true}
+{"index": {"_index": "genre", "_id": 15}}
+{"name": "\uacf5\ud3ec", "movie": true, "drama": false}
+{"index": {"_index": "genre", "_id": 16}}
+{"name": "\ub85c\ub9e8\uc2a4", "movie": true, "drama": true}
+{"index": {"_index": "genre", "_id": 17}}
+{"name": "\ubbf8\uc2a4\ud130\ub9ac", "movie": true, "drama": true}
+{"index": {"_index": "genre", "_id": 18}}
+{"name": "\ud604\uc2e4\uc801", "movie": false, "drama": true}
+{"index": {"_index": "genre", "_id": 19}}
+{"name": "\uc804\uc7c1", "movie": true, "drama": false}
+{"index": {"_index": "genre", "_id": 20}}
+{"name": "\uac00\uc871", "movie": true, "drama": true}
+{"index": {"_index": "genre", "_id": 21}}
+{"name": "\ud310\ud0c0\uc9c0", "movie": true, "drama": false}
+{"index": {"_index": "genre", "_id": 22}}
+{"name": "\uc5b4\ub9b0\uc774", "movie": false, "drama": true}
