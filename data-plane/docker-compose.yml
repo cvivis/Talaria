@@ -1,12 +1,12 @@
 version: "3.5"
 
 networks:
-  deafult:
+  default:
     name: data-plane
     external: false
 
 volumes:
-  nginx-data:
+  nginx-config:
 
 services:
   gw-server:
@@ -18,6 +18,8 @@ services:
       args:
         PYTHON_VERSION: ${PYTHON_VERSION}
     restart: unless-stopped
+    volumes:
+      - nginx-config:/usr/share/nginx
     ports:
       - "${GW_SERVER_PORT}:${GW_SERVER_PORT}"
     depends_on:
@@ -28,6 +30,6 @@ services:
     image: nginx:${NGINX_VERSION}
     restart: unless-stopped
     volumes:
-      - nginx-data:/etc/nginx
+      - ./nginx/nginx-config:/etc/nginx
     ports:
       - "80:80"
