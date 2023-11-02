@@ -1,5 +1,7 @@
 .DEFAULT_GOAL:=help
 
+COMPOSE := -f docker-compose.yml
+
 compose_v2_not_supported = $(shell command docker compose 2> /dev/null)
 ifeq (,$(compose_v2_not_supported))
 	DOCKER_COMPOSE_COMMAND = docker-compose
@@ -8,10 +10,16 @@ else
 endif
 
 # --------------------------
-.PHONY: setup keystore certs all elk monitoring build down stop restart rm logs
+.PHONY: data-plane down stop help
 
 data-plane:	## Start data-plane.
 	$(DOCKER_COMPOSE_COMMAND) up -d --build
+
+down: ## Down ELK and all its extra components.
+	$(DOCKER_COMPOSE_COMMAND) ${COMPOSE} down
+
+stop: ## Stop ELK and all its extra components.
+	$(DOCKER_COMPOSE_COMMAND) ${COMPOSE} stop
 
 help: ## Show this help.
 	@echo "Make Talaria data plane with docker-compose files"
