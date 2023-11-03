@@ -1,4 +1,4 @@
-package com.hermes.monitoring.config;
+package com.hermes.monitoring.job;
 
 
 import com.hermes.monitoring.dto.LogDto;
@@ -13,6 +13,7 @@ import org.springframework.batch.core.configuration.annotation.JobBuilderFactory
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.repeat.RepeatStatus;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -31,6 +32,9 @@ public class HttpStatusConfig {
     private List<LogDto> logDataList;
     private MonitorDto monitorDto;
 
+    @Value("${log.url}")
+    String logUrl;
+
 
     @Bean
     public Job HttpStatusJob(){
@@ -48,7 +52,7 @@ public class HttpStatusConfig {
     public Step flatFileItemReaderStep() {
         return stepBuilderFactory.get("flatFileItemReader")
                 .tasklet((contribution, chunkContext) ->{
-                    logDataList = logParser.parseLog("C:/Users/SSAFY/Desktop/Project/S09P31A107/monitoring/log.txt");
+                    logDataList = logParser.parseLog(logUrl);
                     return RepeatStatus.FINISHED;
                 })
                 .build();

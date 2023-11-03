@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/monitoring
-    username: ----
-    password: ----
+    url: jdbc:postgresql://${properties.datasource.path}/monitoring
+    username: ${properties.datasource.username}
+    password: ${properties.datasource.password}
 
   jpa:
     show-sql: true
