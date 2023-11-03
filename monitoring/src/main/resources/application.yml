@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/monitoring
+    username: ----
+    password: ----
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+spring.batch.job.names: ${job.name:NONE}
