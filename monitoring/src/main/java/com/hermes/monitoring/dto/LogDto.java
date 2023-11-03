@@ -8,19 +8,26 @@ import java.util.Date;
 @Data
 @ToString
 public class LogDto {
-    String ip;
-    Date date;
-    String method;
-    String status;
-    String protocol;
-    String url;
-    // 시간 값
+    String ipAddress;
+    Date dateTime;
+    String httpMethod;
+    String path;
+    String statusCode;
+    String httpVersion;
+    // 요청 시간
+    Double requestTime;
+    // 서버 응답 시간
+    Double responseTime;
 
-    public LogDto(String ip, Date date, String method, String url, String status) {
-        this.ip = ip;
-        this.date = date;
-        this.method = method;
-        this.url = url;
-        this.status = status;
+
+    public LogDto(String ipAddress, Date dateTime, String httpMethod, String path, String httpVersion, String statusCode, double requestTime, double responseTime) {
+        this.ipAddress = ipAddress;
+        this.dateTime = dateTime;
+        this.httpMethod = httpMethod;
+        this.path = path;
+        this.statusCode = statusCode;
+        this.httpVersion = httpVersion;
+        this.requestTime = requestTime;
+        this.responseTime = responseTime;
     }
 }
