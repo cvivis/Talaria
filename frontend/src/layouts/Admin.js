@@ -1,4 +1,5 @@
 import { Box } from "@chakra-ui/react";
+import AppCharts from '../components/dashboard/StatusLiveChart';
 
 function Admin() {
 
@@ -6,6 +7,7 @@ function Admin() {
         <>
             <Box>
                 어드민 페이지
+                <AppCharts></AppCharts>
             </Box>
         </>
     );
