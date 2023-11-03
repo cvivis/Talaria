@@ -1,4 +1,4 @@
-package com.hermes.monitoring.config;
+package com.hermes.monitoring.job;
 
 import com.hermes.monitoring.service.LogService;
 import lombok.RequiredArgsConstructor;

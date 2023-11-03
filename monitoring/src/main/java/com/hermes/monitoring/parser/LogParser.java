@@ -1,6 +1,7 @@
 package com.hermes.monitoring.parser;
 
 import com.hermes.monitoring.dto.LogDto;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -12,6 +13,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
+@Slf4j
 public class LogParser {
 
     private static final long EXTRACTTIME = 5000; // 현재 시간 5초전
@@ -33,7 +35,7 @@ public class LogParser {
     private LogDto parseLogEntry(String logEntry) throws ParseException {
         // 이 메서드에서 로그 항목을 파싱하여 LogDTO 객체로 변환합니다.
         String regex = "^(\\S+) - - \\[([^\\]]+)\\] \"(\\S+) (\\S+)\\s+HTTP/\\d\\.\\d\" (\\d+) (\\d+) \"([^\"]+)\" \"([^\"]+)\"$";
-
+        log.info(logEntry);
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(logEntry);
         String ip = "초기 ip";
