@@ -24,14 +24,14 @@ public class SchedulerService {
 
     private final HttpStatusConfig httpStatusConfig;
 
-    @Scheduled(cron = "0/5 * * * * *") // cron 표기법
+//    @Scheduled(cron = "0/5 * * * * *") // cron 표기법
     public void runJob() {
 
         // job parameter 설정
         Map<String, JobParameter> confMap = new HashMap<>();
-        confMap.put("time", new JobParameter("2"+System.currentTimeMillis()));
+        confMap.put("time", new JobParameter("HttpStatusConfig_"+System.currentTimeMillis()));
         JobParameters jobParameters = new JobParameters(confMap);
-        log.info("스케줄링 중");
+        log.info("HttpStatusConfig_스케줄링 중");
         try {
             jobLauncher.run(httpStatusConfig.HttpStatusJob(), jobParameters);
         } catch (JobExecutionAlreadyRunningException | JobInstanceAlreadyCompleteException

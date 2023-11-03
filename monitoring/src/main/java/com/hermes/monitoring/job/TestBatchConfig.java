@@ -1,6 +1,6 @@
 package com.hermes.monitoring.job;
 
-import com.hermes.monitoring.service.LogService;
+import com.hermes.monitoring.service.WebSocketService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -27,8 +27,7 @@ public class TestBatchConfig {
 
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
-    private final LogService logService;
-
+    private final WebSocketService webSocketService;
     @Bean
     public Job ExampleJob(){
 
@@ -51,7 +50,7 @@ public class TestBatchConfig {
                         while ((line = br.readLine()) != null) {
                             // 파일에서 한 줄씩 읽음
                             // System.out.println(line);
-                            logService.sendMessageToClient("/sub/log",line);
+                            webSocketService.sendMessageToClient("/sub/log",line);
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
