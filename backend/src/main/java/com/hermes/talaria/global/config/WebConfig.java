@@ -7,10 +7,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hermes.talaria.global.memberinfo.MemberInfoArgumentResolver;
 
 import lombok.RequiredArgsConstructor;
 
@@ -18,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
 	private final ObjectMapper objectMapper;
+	private final MemberInfoArgumentResolver memberInfoArgumentResolver;
 
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
@@ -43,6 +46,11 @@ public class WebConfig implements WebMvcConfigurer {
 		ObjectMapper copy = objectMapper.copy();
 		copy.getFactory().setCharacterEscapes(new HtmlCharacterEscapes());
 		return new MappingJackson2HttpMessageConverter(copy);
+	}
+
+	@Override
+	public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+		resolvers.add(memberInfoArgumentResolver);
 	}
 }
 
