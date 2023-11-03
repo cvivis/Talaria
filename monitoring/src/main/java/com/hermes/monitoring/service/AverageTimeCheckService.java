@@ -1,6 +1,6 @@
 package com.hermes.monitoring.service;
 
-import com.hermes.monitoring.config.HttpStatusConfig;
+import com.hermes.monitoring.job.HttpStatusConfig;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.JobParameter;

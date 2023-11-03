@@ -1,5 +1,5 @@
 
-package com.hermes.monitoring.config;
+package com.hermes.monitoring.job;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
