@@ -80,7 +80,7 @@ public class AverageTimeCheckConfig {
                     }
                     if(!logDtoList.isEmpty()){
                         System.out.println("okay!");
-                        averageResponseTime = sumResponseTime/logDtoList.size();
+                        averageResponseTime = sumResponseTime/ (double) logDtoList.size();
                     }
                     return RepeatStatus.FINISHED;
                 })
