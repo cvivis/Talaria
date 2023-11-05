@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
 
 @Slf4j
 @Component
-public class UsageRangkingParser {
+public class   UsageRangkingParser {
 
     public GetTime getTime = new GetTime();
     public List<UsageRankingDto> parseLog(String path) throws IOException, ParseException {
@@ -43,15 +43,36 @@ public class UsageRangkingParser {
         log.info("keySetLIst : {}",keySet);
 
         List<UsageRankingDto> result = new ArrayList<>();
+        if(keySet.size() < 5){
+            while(keySet.size()<5){
+                keySet.add("UseAPI_Nothing");
+            }
+        }
+        int ranking = 1;
+        int beforeRanking = map.get(keySet.get(0));
         for(int i = 0; i < 5;i++){
             String[] urlMethodArr = keySet.get(i).split("_");
-            UsageRankingDto usageRankingDto = UsageRankingDto.builder()
-                    .url((urlMethodArr[0]))
-                    .method(urlMethodArr[1])
-                    .usage(map.get(keySet.get(i)))
-                    .ranking(i+1)
-                    .build();
-            result.add(usageRankingDto);
+            if(urlMethodArr[1].equals("Nothing")){
+                UsageRankingDto usageRankingDto = UsageRankingDto.builder()
+                        .url((urlMethodArr[0]))
+                        .method(urlMethodArr[1])
+                        .usage(0)
+                        .ranking(0)
+                        .build();
+                result.add(usageRankingDto);
+            }else{
+                int nowUsage = map.get(keySet.get(i));
+                if(nowUsage < beforeRanking){
+                    ranking++;
+                }
+                UsageRankingDto usageRankingDto = UsageRankingDto.builder()
+                        .url((urlMethodArr[0]))
+                        .method(urlMethodArr[1])
+                        .usage(nowUsage)
+                        .ranking(ranking)
+                        .build();
+                result.add(usageRankingDto);
+            }
         }
         return result;
     }
@@ -72,12 +93,12 @@ public class UsageRangkingParser {
         }
         Date currentTime = new Date();
         log.info("date {} , now : {}",date , currentTime.getTime());
-        if(date <=currentTime.getTime() && date >= currentTime.getTime() - 50000){
+        if(date <= currentTime.getTime() && date >= currentTime.getTime() - 50000){
             return url+ "_"+method;
         }
         else{
-            log.info("group: ",matcher);
-            log.info("틀림 : "+line);
+//            log.info("group: ",matcher);
+//            log.info("틀림 : "+line);
             return null;
         }
 //        return url+ "_"+method;

@@ -14,6 +14,7 @@ import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteExcep
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,14 +25,15 @@ public class UsageRankingService {
     private final JobLauncher jobLauncher;
 
     private final UsageRankingConfig usageRankingConfig;
-
-    @Scheduled(cron = "0/5 * * * * *") // cron 표기법
-    public void runJob() {
+    private final CreateLogFile createLogFile;
+    @Scheduled(cron = "0/10 * * * * *") // cron 표기법
+    public void runJob() throws IOException {
+        createLogFile.createLogFile();
         // job parameter 설정
         Map<String, JobParameter> confMap = new HashMap<>();
         confMap.put("time", new JobParameter("UsageRankingConfig_"+System.currentTimeMillis()));
         JobParameters jobParameters = new JobParameters(confMap);
-        log.info("HttpStatusConfig_스케줄링 중");
+        log.info("UsageRankingConfig_스케줄링 중");
         try {
             jobLauncher.run(usageRankingConfig.UsageRankingJob(), jobParameters);
         } catch (JobExecutionAlreadyRunningException | JobInstanceAlreadyCompleteException
