@@ -1,7 +1,6 @@
 package com.hermes.monitoring.service;
 
 
-import com.hermes.monitoring.job.HttpStatusConfig;
 import com.hermes.monitoring.job.UsageRankingConfig;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +25,7 @@ public class UsageRankingService {
 
     private final UsageRankingConfig usageRankingConfig;
     private final CreateLogFile createLogFile;
-    @Scheduled(cron = "0/10 * * * * *") // cron 표기법
+    @Scheduled(cron = "0/5 * * * * *") // cron 표기법
     public void runJob() throws IOException {
         createLogFile.createLogFile();
         // job parameter 설정
@@ -38,8 +37,8 @@ public class UsageRankingService {
             jobLauncher.run(usageRankingConfig.UsageRankingJob(), jobParameters);
         } catch (JobExecutionAlreadyRunningException | JobInstanceAlreadyCompleteException
                  | JobParametersInvalidException | org.springframework.batch.core.repository.JobRestartException e) {
-
-            log.error(e.getMessage());
+//            log.error();
+            e.printStackTrace();
         }
     }
 }

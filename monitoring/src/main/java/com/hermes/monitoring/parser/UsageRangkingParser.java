@@ -22,15 +22,21 @@ public class   UsageRangkingParser {
     public GetTime getTime = new GetTime();
     public List<UsageRankingDto> parseLog(String path) throws IOException, ParseException {
         Map<String, Integer> map = new HashMap<>();
-        BufferedReader reader = new BufferedReader(new FileReader(path));
+        BufferedReader br = new BufferedReader(new FileReader(path));
+        try{
             String line;
-            while ((line = reader.readLine()) != null) {
+            while ((line = br.readLine()) != null) {
 //                log.info("line: "+line);
                 String urlMethod = parseLogEntry(line);
                 if(urlMethod != null){
                     map.put(urlMethod,map.getOrDefault(urlMethod,0)+1);
                 }
             }
+        }catch (IOException e){
+            e.printStackTrace();
+            br.close();
+        }
+
         System.out.println("map: "+map);
 
         List<String> keySet = new ArrayList<>(map.keySet());
@@ -48,8 +54,9 @@ public class   UsageRangkingParser {
                 keySet.add("UseAPI_Nothing");
             }
         }
-        int ranking = 1;
-        int beforeRanking = map.get(keySet.get(0));
+        int rangking = 0;
+        int beforeUsage = -1;
+        int sameCount = 1;
         for(int i = 0; i < 5;i++){
             String[] urlMethodArr = keySet.get(i).split("_");
             if(urlMethodArr[1].equals("Nothing")){
@@ -60,20 +67,32 @@ public class   UsageRangkingParser {
                         .ranking(0)
                         .build();
                 result.add(usageRankingDto);
+                beforeUsage = 0;
             }else{
                 int nowUsage = map.get(keySet.get(i));
-                if(nowUsage < beforeRanking){
-                    ranking++;
+                if(nowUsage == beforeUsage){
+                    sameCount++;
+                }
+                else{
+                    if(sameCount != 0){
+                        rangking += sameCount;
+                        sameCount = 1;
+                    }
+                    else{
+                        rangking++;
+                    }
                 }
                 UsageRankingDto usageRankingDto = UsageRankingDto.builder()
                         .url((urlMethodArr[0]))
                         .method(urlMethodArr[1])
                         .usage(nowUsage)
-                        .ranking(ranking)
+                        .ranking(rangking)
                         .build();
                 result.add(usageRankingDto);
+                beforeUsage = nowUsage;
             }
         }
+        br.close();
         return result;
     }
 
@@ -93,7 +112,7 @@ public class   UsageRangkingParser {
         }
         Date currentTime = new Date();
         log.info("date {} , now : {}",date , currentTime.getTime());
-        if(date <= currentTime.getTime() && date >= currentTime.getTime() - 50000){
+        if(date <= currentTime.getTime() && date >= currentTime.getTime() - 5000){
             return url+ "_"+method;
         }
         else{

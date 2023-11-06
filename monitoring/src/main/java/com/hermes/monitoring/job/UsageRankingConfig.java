@@ -5,7 +5,6 @@ import com.hermes.monitoring.dto.LogDto;
 import com.hermes.monitoring.dto.MonitorDto;
 import com.hermes.monitoring.dto.UsageRankingDto;
 import com.hermes.monitoring.dto.UsageRankingListDto;
-import com.hermes.monitoring.parser.LogParser;
 import com.hermes.monitoring.parser.UsageRangkingParser;
 import com.hermes.monitoring.service.WebSocketService;
 import lombok.RequiredArgsConstructor;
