@@ -4,7 +4,7 @@ package com.hermes.monitoring.job;
 import com.hermes.monitoring.dto.LogDto;
 import com.hermes.monitoring.dto.MonitorDto;
 import com.hermes.monitoring.parser.LogParser;
-import com.hermes.monitoring.service.LogService;
+import com.hermes.monitoring.service.WebSocketService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -28,7 +28,7 @@ public class HttpStatusConfig {
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
     private LogParser logParser = new LogParser();
-    private final LogService logService;
+    private final WebSocketService webSocketService;
     private List<LogDto> logDataList;
     private MonitorDto monitorDto;
 
@@ -74,7 +74,7 @@ public class HttpStatusConfig {
     public Step sendLogFileToFrontStep() {
         return stepBuilderFactory.get("sendLogFileFront")
                 .tasklet((contribution, chunkContext) -> {
-                    logService.sendMonitorDtoToClient("/sub/log",monitorDto);
+                    webSocketService.sendMonitorDtoToClient("/sub/log",monitorDto);
                     return RepeatStatus.FINISHED;
                 })
                 .build();
