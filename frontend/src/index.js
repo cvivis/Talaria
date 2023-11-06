@@ -5,10 +5,15 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { ChakraProvider } from '@chakra-ui/react';
 import theme from "./theme/theme.js";
+import { Scrollbars } from 'react-custom-scrollbars-2';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <ChakraProvider theme={theme} resetCSS={false} position="relative">
+  <ChakraProvider 
+    theme={theme}
+    position="relative"
+    // resetCSS={false}
+  >
     <App />
   </ChakraProvider>
 );
