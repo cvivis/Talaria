@@ -2,7 +2,7 @@ package com.hermes.monitoring.job;
 
 import com.hermes.monitoring.dto.CpuMemoryUsageDto;
 import com.hermes.monitoring.service.CpuMemoryService;
-import com.hermes.monitoring.service.LogService;
+import com.hermes.monitoring.service.WebSocketService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -21,7 +21,7 @@ public class CpuMemoryCheckConfig {
 
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
-    private final LogService logService;
+    private final WebSocketService webSocketService;
     private final CpuMemoryService cpuMemoryService;
 
     private CpuMemoryUsageDto cpuMemoryUsageDto;
@@ -56,7 +56,7 @@ public class CpuMemoryCheckConfig {
     public Step sendCpuMemoryUsageStep() {
         return stepBuilderFactory.get("sendCpuMemoryUsage")
                 .tasklet((contribution, chunkContext) -> {
-                    logService.sendCpuMemoryUsageToClient("/sub/log",cpuMemoryUsageDto);
+                    webSocketService.sendCpuMemoryUsageToClient("/sub/log",cpuMemoryUsageDto);
                     return RepeatStatus.FINISHED;
                 })
                 .build();

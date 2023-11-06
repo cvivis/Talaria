@@ -23,6 +23,12 @@ public class WebSocketService {
         simpMessagingTemplate.convertAndSend(destination, monitorDto);
     }
 
+    // 평균 응답 시간을 클라이언트에게 보내는 메소드
+    public void sendAverageResponseTimeToClient(String destination, double time) {
+        log.info("averageResponseTime : {}" , time);
+        simpMessagingTemplate.convertAndSend(destination, time);
+    }
+
 
     public void sendCpuMemoryUsageToClient(String destination, CpuMemoryUsageDto cpuMemoryUsageDto) {
         simpMessagingTemplate.convertAndSend(destination,cpuMemoryUsageDto);
