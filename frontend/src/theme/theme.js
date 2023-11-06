@@ -20,6 +20,7 @@ import { globalStyles } from "./styles";
 import { breakpoints } from "./foundations/breakpoints";
 import { buttonStyles } from "./components/button";
 import { badgeStyles } from "./components/badge";
+import { accordionStyles } from "./components/accordion";
 import { linkStyles } from "./components/link";
 import { inputStyles } from "./components/input";
 import { CardComponent } from "./additions/card/Card";
@@ -34,6 +35,7 @@ export default extendTheme(
   badgeStyles, // Badge styles
   linkStyles, // Link styles
   inputStyles, // Input styles
+  accordionStyles,
   CardComponent, // Card component
   MainPanelComponent, // Main Panel component
   PanelContentComponent, // Panel Content component
