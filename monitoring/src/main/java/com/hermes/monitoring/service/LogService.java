@@ -1,6 +1,7 @@
 package com.hermes.monitoring.service;
 
 
+import com.hermes.monitoring.dto.CpuMemoryUsageDto;
 import com.hermes.monitoring.dto.MonitorDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,5 +23,10 @@ public class LogService {
 
     public void sendMonitorDtoToClient(String destination, MonitorDto monitorDto) {
         simpMessagingTemplate.convertAndSend(destination, monitorDto);
+    }
+
+
+    public void sendCpuMemoryUsageToClient(String destination, CpuMemoryUsageDto cpuMemoryUsageDto) {
+        simpMessagingTemplate.convertAndSend(destination,cpuMemoryUsageDto);
     }
 }
