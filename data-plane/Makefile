@@ -10,15 +10,18 @@ else
 endif
 
 # --------------------------
-.PHONY: data-plane down stop help
+.PHONY: setup data-plane down stop help
+
+setup: ## Generate Let's Encrypt SSL/TLS certificates Automatically
+	. ./setup/setup-certs.sh
 
 data-plane:	## Start data-plane.
 	$(DOCKER_COMPOSE_COMMAND) up -d --build
 
-down: ## Down ELK and all its extra components.
+down: ## Down data-plane and all its extra components.
 	$(DOCKER_COMPOSE_COMMAND) ${COMPOSE} down
 
-stop: ## Stop ELK and all its extra components.
+stop: ## Stop data-plane and all its extra components.
 	$(DOCKER_COMPOSE_COMMAND) ${COMPOSE} stop
 
 help: ## Show this help.
