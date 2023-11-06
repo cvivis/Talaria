@@ -2,7 +2,7 @@ import { Navigate } from "react-router-dom";
 
 const PrivateRoute = ({selectRole, component : Component}) => {
     const login = true;
-    const role = "user";
+    const role = "admin";
 
     if(!login) {
         alert("로그인을 해주세요.");
