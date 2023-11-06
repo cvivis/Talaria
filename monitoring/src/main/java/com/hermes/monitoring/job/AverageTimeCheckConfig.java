@@ -3,7 +3,7 @@ package com.hermes.monitoring.job;
 
 import com.hermes.monitoring.dto.LogDto;
 import com.hermes.monitoring.parser.LogParser;
-import com.hermes.monitoring.service.LogService;
+import com.hermes.monitoring.service.WebSocketService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -26,7 +26,7 @@ public class AverageTimeCheckConfig {
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
 
-    private final LogService logService;
+    private final WebSocketService webSocketService;
     private final LogParser logParser = new LogParser();
     private List<LogDto> logDtoList;
     private double averageResponseTime;
@@ -93,7 +93,7 @@ public class AverageTimeCheckConfig {
         System.out.println("평균 응답 시간을 전송하는 스탭");
         return stepBuilderFactory.get("sendAverageResponseTime")
                 .tasklet((contribution, chunkContext) -> {
-                    logService.sendAverageResponseTimeToClient("/sub/log",averageResponseTime);
+                    webSocketService.sendAverageResponseTimeToClient("/sub/log",averageResponseTime);
                     return RepeatStatus.FINISHED;
                 })
                 .build();
