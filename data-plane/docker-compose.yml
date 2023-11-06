@@ -30,6 +30,9 @@ services:
     image: nginx:${NGINX_VERSION}
     restart: unless-stopped
     volumes:
-      - ./nginx/nginx-config:/etc/nginx
+      - ./nginx-config:/etc/nginx
+      - ./setup/certbot/conf:/etc/nginx/ssl
+      - ./setup/certbot/data:/var/www/certbot
     ports:
-      - "80:80"
+      - 80:80
+      - 443:443

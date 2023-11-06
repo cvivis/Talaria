@@ -1,0 +1,22 @@
+version: "3.5"
+
+services:
+  nginx_cert:
+    container_name: nginx_cert
+    image: nginx:${NGINX_VERSION}
+    volumes:
+      - ./setup/conf.d:/etc/nginx/conf.d
+      - ./setup/certbot/conf:/etc/nginx/ssl
+      - ./setup/certbot/data:/var/www/certbot
+    ports:
+      - 80:80
+      - 443:443
+
+  certbot:
+    container_name: certbot
+    image: certbot/certbot:latest
+    command: certonly --webroot --webroot-path=/var/www/certbot --email ${EMAIL} --agree-tos --no-eff-email -d ${DOMAIN}
+    volumes:
+      - ./setup/certbot/conf:/etc/letsencrypt
+      - ./setup/certbot/logs:/var/log/letsencrypt
+      - ./setup/certbot/data:/var/www/certbot
