@@ -6,7 +6,13 @@ networks:
     external: false
 
 volumes:
-  nginx-config:
+  talaria_conf.d:
+
+secrets:
+  nginx.fullchain:
+    file: ./setup/certbot/conf/live/${DOMAIN}/fullchain.pem
+  nginx.privkey:
+    file: ./setup/certbot/conf/live/${DOMAIN}/privkey.pem
 
 services:
   gw-server:
@@ -19,7 +25,7 @@ services:
         PYTHON_VERSION: ${PYTHON_VERSION}
     restart: unless-stopped
     volumes:
-      - nginx-config:/usr/share/nginx
+      - talaria_conf.d:/usr/share/nginx
     ports:
       - "${GW_SERVER_PORT}:${GW_SERVER_PORT}"
     depends_on:
@@ -28,11 +34,19 @@ services:
   nginx:
     container_name: nginx
     image: nginx:${NGINX_VERSION}
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+      args:
+        NGINX_VERSION: ${NGINX_VERSION}
     restart: unless-stopped
     volumes:
-      - ./nginx-config:/etc/nginx
-      - ./setup/certbot/conf:/etc/nginx/ssl
-      - ./setup/certbot/data:/var/www/certbot
+      - ./nginx/talaria_conf.d:/etc/nginx/talaria_conf.d
+    secrets:
+      - source: nginx.fullchain
+        target: /usr/share/nginx/certs/fullchain.pem
+      - source: nginx.privkey
+        target: /usr/share/nginx/certs/privkey.pem
     ports:
       - 80:80
       - 443:443
