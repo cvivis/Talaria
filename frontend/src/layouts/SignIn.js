@@ -1,4 +1,4 @@
-import { Box, Button, Flex, FormControl, FormLabel, HStack, Icon, Image, Input, Link, Switch, Text, useColorModeValue } from "@chakra-ui/react";
+import { Box, Button, Flex, FormControl, FormLabel, Image, Input, Link, Text, useColorModeValue } from "@chakra-ui/react";
 import Footer from "../components/footer/Footer";
 import image from "../assets/img/BasicImage.png";
 import logo from "../assets/img/Talaria-logo-light.png";
@@ -11,7 +11,7 @@ function SignIn() {
 
     return (
         <>
-            <Box w='100%'>
+            <Box>
                 <Flex
                     direction='column'
                     alignSelf='center'
@@ -44,7 +44,6 @@ function SignIn() {
                         justifyContent='center'
                         align='center'
                         mt='125px'
-                        // mb='30px'
                     >
                         <Image boxSize='100px'
                             objectFit='cover'
@@ -54,16 +53,6 @@ function SignIn() {
                         <Text fontSize='4xl' color='white' fontWeight='bold'>
                             Talaria
                         </Text>
-                        {/* <Text
-                            fontSize='md'
-                            color='white'
-                            fontWeight='normal'
-                            mt='10px'
-                            mb='26px'
-                            w={{ base: '90%', sm: '60%', lg: '40%', xl: '333px' }}
-                        >
-                            탈라리아에 오신것을 환영합니다 !
-                        </Text> */}
                     </Flex>
                     <Flex
                         w="100%"
@@ -74,64 +63,66 @@ function SignIn() {
                         mt={{ base: "10px", md: "20px" }}
                     >
                         <Flex
-                        zIndex="2"
-                        direction="column"
-                        w="445px"
-                        background="transparent"
-                        borderRadius="15px"
-                        p="40px"
-                        mx={{ base: "100px" }}
-                        mb={{ base: "20px", md: "auto" }}
-                        bg={bgForm}
-                        boxShadow={useColorModeValue(
-                            "0px 5px 14px rgba(0, 0, 0, 0.05)",
-                            "unset"
-                        )}
+                            zIndex="2"
+                            direction="column"
+                            w="445px"
+                            background="transparent"
+                            borderRadius="15px"
+                            p="40px"
+                            mx={{ base: "100px" }}
+                            mb={{ base: "20px", md: "auto" }}
+                            bg={bgForm}
+                            boxShadow={useColorModeValue(
+                                "0px 5px 14px rgba(0, 0, 0, 0.05)",
+                                "unset"
+                            )}
                         >
+                        <Text
+                            fontSize="xl"
+                            color={textColor}
+                            fontWeight="bold"
+                            textAlign="center"
+                            mb="22px"
+                        >
+                            Welcome To Talaria !
+                        </Text>
                         <FormControl>
-                            {/* <Text
-                                fontSize='md'
-                                color='black'
-                                fontWeight='normal'
-                                mt='10px'
-                                mb='26px'
-                                w={{ base: '90%', sm: '60%', lg: '40%', xl: '333px' }}
-                            >
-                                탈라리아에 오신것을 환영합니다 !
-                            </Text> */}
                             <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
-                            Id
+                                E-Mail
                             </FormLabel>
                             <Input
-                            variant="auth"
-                            fontSize="sm"
-                            ms="4px"
-                            type="text"
-                            placeholder="Your Id"
-                            mb="24px"
-                            size="lg"
+                                variant="auth"
+                                fontSize="sm"
+                                ms="4px"
+                                type="text"
+                                placeholder="Your E-Mail"
+                                mb="24px"
+                                size="lg"
+                                w="91%"
                             />
                             <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
-                            Password
+                                Password
                             </FormLabel>
                             <Input
-                            variant="auth"
-                            fontSize="sm"
-                            ms="4px"
-                            type="password"
-                            placeholder="Your password"
-                            mb="24px"
-                            size="lg"
+                                variant="auth"
+                                fontSize="sm"
+                                ms="4px"
+                                type="password"
+                                placeholder="Your password"
+                                mb="24px"
+                                size="lg"
+                                w="91%"
                             />
                             <Button
-                            fontSize="10px"
-                            variant="dark"
-                            fontWeight="bold"
-                            w="100%"
-                            h="45"
-                            mb="24px"
+                                fontSize="10px"
+                                variant="dark"
+                                fontWeight="bold"
+                                w="100%"
+                                h="45"
+                                mb="24px"
+                                
                             >
-                            SIGN IN
+                                SIGN IN
                             </Button>
                         </FormControl>
                         <Flex
