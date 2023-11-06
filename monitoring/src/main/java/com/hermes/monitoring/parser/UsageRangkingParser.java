@@ -36,9 +36,6 @@ public class   UsageRangkingParser {
             e.printStackTrace();
             br.close();
         }
-
-        System.out.println("map: "+map);
-
         List<String> keySet = new ArrayList<>(map.keySet());
         keySet.sort(new Comparator<String>() {
             @Override
@@ -108,10 +105,10 @@ public class   UsageRangkingParser {
             method = matcher.group(3);
             url = matcher.group(4);
             log.info(matcher.group(2));
-            date = getTime.getTime(matcher.group(2));
+            date = getTime.getTimeZone(matcher.group(2));
         }
         Date currentTime = new Date();
-        log.info("date {} , now : {}",date , currentTime.getTime());
+//        log.info("date {} , now : {}",date , currentTime.getTimeZone());
         if(date <= currentTime.getTime() && date >= currentTime.getTime() - 5000){
             return url+ "_"+method;
         }
