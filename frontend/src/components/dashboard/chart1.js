@@ -7,6 +7,7 @@ import * as StompJs from "@stomp/stompjs";
 function Chart1() {
   /*stomp 관련 */
   const client = useRef({});
+  const [cpuData , setCpuData] = useState([]);
   const connect = () => {
     client.current = new StompJs.Client({
       brokerURL: "ws://localhost:8080/ws/monitoring",
@@ -28,16 +29,16 @@ function Chart1() {
       // server에게 메세지 받으면
       const json_body = JSON.parse(res.body);
       console.log(json_body);
-      data.push({
+      cpuData.push({
         x: new Date(json_body.date),
         y: json_body.cpuUsage,
       });
-      console.log(data);
+      console.log(cpuData);
     });
   };
 
   // var lastDate = 0;
-  var data = [];
+  // var data = [];
   // var TICKINTERVAL = 86400000
   const [XAXISRANGE, SetXAXISRANGE] = useState(60000);
   const [options, setOptions] = useState({
@@ -97,16 +98,17 @@ function Chart1() {
 
   const [series, setSeries] = useState([
     {
-      data: data.slice(), // 배열 복사
+      data: cpuData.slice(), // 배열 복사
     },
   ]);
 
   useEffect(() => {
     connect();
     const interval = setInterval(() => {
-      ApexCharts.exec("realtime", "updateSeries", [
+      setSeries();
+      ApexCharts.exec("realtime-cpu", "updateSeries", [
         {
-          data: data,
+          data: cpuData,
         },
       ]);
     }, 1000);

@@ -7,6 +7,7 @@ import * as StompJs from "@stomp/stompjs";
 function Chart2() {
     /*stomp 관련 */
   const client = useRef({});
+  const [memoryData, setMemoryData] = useState([]);
   const connect = () => {
     client.current = new StompJs.Client({
       brokerURL: "ws://localhost:8080/ws/monitoring",
@@ -27,17 +28,16 @@ function Chart2() {
     client.current.subscribe("/sub/memory-check", (res) => {
       // server에게 메세지 받으면
       const json_body = JSON.parse(res.body);
-      console.log(json_body);
-      data2.push({
+      console.log(res.body+"dfad");
+      memoryData.push({
         x: new Date(json_body.date),
         y: json_body.memoryUsage,
       });
-      console.log(data2);
+      console.log(memoryData);
     });
   };
 
   // var lastDate = 0;
-  var data2 = [];
   // var TICKINTERVAL = 86400000
   const [XAXISRANGE, SetXAXISRANGE] = useState(60000);
   const [options, setOptions] = useState({
@@ -97,16 +97,17 @@ function Chart2() {
 
   const [series, setSeries] = useState([
     {
-      data2: data2.slice(), // 배열 복사
+      data: memoryData.slice(), // 배열 복사
     },
   ]);
 
   useEffect(() => {
     connect();
     const interval = setInterval(() => {
-      ApexCharts.exec("realtime", "updateSeries", [
+      setSeries();
+      ApexCharts.exec("realtime-memory", "updateSeries", [
         {
-          data2: data2,
+          data: memoryData
         },
       ]);
     }, 1000);
