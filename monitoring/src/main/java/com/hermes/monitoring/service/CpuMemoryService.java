@@ -23,6 +23,8 @@ public class CpuMemoryService {
         ProcessBuilder builder = new ProcessBuilder();
         if(osName.toLowerCase().startsWith("window")){
             builder.command("cmd.exe","/c","docker","container","stats", "--no-stream", "--format", "{{json .}}", containerName);
+        } else if(osName.toLowerCase().startsWith("mac")){
+            builder.command("docker","container","stats", "--no-stream", "--format", "{{json .}}", containerName);
         } else {
             builder.command("bash","-c","docker","container","stats", "--no-stream", "--format", "{{json .}}", containerName);
         }
