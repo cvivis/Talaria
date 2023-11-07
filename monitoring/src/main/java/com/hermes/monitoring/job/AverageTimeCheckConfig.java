@@ -1,6 +1,7 @@
 package com.hermes.monitoring.job;
 
 
+import com.hermes.monitoring.dto.AverageResponseTimeDto;
 import com.hermes.monitoring.dto.LogDto;
 import com.hermes.monitoring.parser.LogParser;
 import com.hermes.monitoring.service.WebSocketService;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -93,7 +95,7 @@ public class AverageTimeCheckConfig {
         System.out.println("평균 응답 시간을 전송하는 스탭");
         return stepBuilderFactory.get("sendAverageResponseTime")
                 .tasklet((contribution, chunkContext) -> {
-                    webSocketService.sendAverageResponseTimeToClient("/sub/log",averageResponseTime);
+                    webSocketService.sendMessageToClient("/sub/average-time-check",new AverageResponseTimeDto(new Date(),averageResponseTime));
                     return RepeatStatus.FINISHED;
                 })
                 .build();
