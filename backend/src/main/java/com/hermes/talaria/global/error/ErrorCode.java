@@ -20,7 +20,10 @@ public enum ErrorCode {
 	// 회원
 	ALREADY_REGISTERED_MEMBER(HttpStatus.BAD_REQUEST, "404001", "이미 가입된 회원입니다."),
 	NOT_EXIST_MEMBER(HttpStatus.BAD_REQUEST, "404002", "존재하지 않는 회원입니다."),
-	DELETED_MEMBER(HttpStatus.BAD_REQUEST, "404003", "삭제된 회원입니다.")
+	DELETED_MEMBER(HttpStatus.BAD_REQUEST, "404003", "삭제된 회원입니다."),
+
+	// APIS
+	NOT_EXIST_APIS(HttpStatus.BAD_REQUEST, "404004", "존재하지 않는 API 그룹입니다."),
 	;
 
 	ErrorCode(HttpStatus httpStatus, String errorCode, String message) {
