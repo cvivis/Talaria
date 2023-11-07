@@ -60,7 +60,7 @@ public class Apis implements Serializable {
 	private RawType rawType;
 
 	@Type(type = "string-array")
-	// @Column(columnDefinition = "text[]")
+	@Column(columnDefinition = "text[]")
 	private String[] ips;
 
 	@Builder
