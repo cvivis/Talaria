@@ -29,6 +29,8 @@ function Chart1() {
       // server에게 메세지 받으면
       const json_body = JSON.parse(res.body);
       console.log(json_body);
+      // setCpuData((prevItems) => [...prevItems, {x: new Date(json_body.date),
+      // y: json_body.cpuUsage}])
       cpuData.push({
         x: new Date(json_body.date),
         y: json_body.cpuUsage,
@@ -105,7 +107,7 @@ function Chart1() {
   useEffect(() => {
     connect();
     const interval = setInterval(() => {
-      setSeries();
+      // setSeries();
       ApexCharts.exec("realtime-cpu", "updateSeries", [
         {
           data: cpuData,

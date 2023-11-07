@@ -28,7 +28,9 @@ function Chart2() {
     client.current.subscribe("/sub/memory-check", (res) => {
       // server에게 메세지 받으면
       const json_body = JSON.parse(res.body);
-      console.log(res.body+"dfad");
+      console.log(res.body);
+      // setMemoryData((prevItems) => [...prevItems, {x: new Date(json_body.date),
+      // y: json_body.memoryUsage,}])
       memoryData.push({
         x: new Date(json_body.date),
         y: json_body.memoryUsage,
@@ -67,10 +69,6 @@ function Chart2() {
     stroke: {
       curve: "smooth", // 데이터 꺾는 정도
     },
-    // title: {
-    //   text: "CPU 사용량 모니터링", // title
-    //   align: "left", // 위치
-    // },
     markers: {
       size: 0, // 수정 X
     },
