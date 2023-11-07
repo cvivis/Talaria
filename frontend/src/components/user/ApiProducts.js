@@ -1,9 +1,8 @@
-import { Box, Card, CardBody, CardFooter, CardHeader, Grid, Heading, LinkBox, LinkOverlay, SimpleGrid, Stack, Text, VStack, useColorModeValue } from '@chakra-ui/react';
+import { Box, Card, CardBody, CardFooter, CardHeader, Grid, Heading, SimpleGrid, Stack, Text, VStack, useColorModeValue } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { HSeparator } from '../separator/Separator';
 import { ReactComponent as RocketIcon } from '../../assets/svg/IoRocket-light.svg';
-import { Link as ReactRouterLink, useNavigate } from 'react-router-dom';
-import { Link as ChakraLink } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 
 const ApiProducts = () => {
 

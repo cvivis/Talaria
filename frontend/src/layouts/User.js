@@ -1,4 +1,4 @@
-import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Badge, Box, Breadcrumb, BreadcrumbItem, BreadcrumbLink, Flex, LinkBox, LinkOverlay, List, ListIcon, ListItem, Spacer, Text, useColorModeValue } from "@chakra-ui/react";
+import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Badge, Box, Breadcrumb, BreadcrumbItem, BreadcrumbLink, Flex, LinkBox, LinkOverlay, List, ListIcon, ListItem, Spacer, Text, UnorderedList, useColorModeValue } from "@chakra-ui/react";
 import Sidebar from "../components/sidebar/Sidebar";
 import MainPanel from "../components/layouts/mainPanel/MainPanel";
 import Footer from "../components/footer/Footer";
@@ -23,12 +23,15 @@ function User() {
     };
 
     const movePage = (route,e) => {
-        console.log(decodeURI(route));
         e.preventDefault();
         return navigate(decodeURI(route));
     }
 
     useEffect(() => {
+        setMainCategory("API Products");
+        setSecondCategory("");
+        setThirdCategory("");
+
         console.log(location.pathname);
         const locationArray = decodeURI(location.pathname).split('/');
         console.log(locationArray);
@@ -69,7 +72,6 @@ function User() {
             },
         ]);
 
-
     },[location,mainCategory]);
 
     return (
@@ -79,34 +81,46 @@ function User() {
                 <Sidebar setWidth='15vw' setHeigth='95vh'>
                     <Accordion 
                         mt={5}
-                        allowMultiple 
+                        allowMultiple
                         borderColor={"white"}
                     >
-                        <AccordionItem maxW='15vw'>
-                            <AccordionButton _hover={{backgroundColor: "white"}} _expanded={{bg:"blue", color:"white"}} borderRadius={10}>
+                        <AccordionItem maxW='13vw'>
+                            <AccordionButton 
+                                _hover={{backgroundColor: "white"}}
+                                _expanded={{bg:"white"}} borderRadius={10}
+                                boxShadow={mainCategory === "API Products" ? "0px 5px 14px rgba(0, 0, 0, 0.05)" : ""}
+                                color={mainCategory === "API Products" ? "black" : "gray.400"}
+                            >
                                 <Box as="span" flex='1' textAlign='left' onClick={(e) => movePage("/user",e)} w='15vw'>
-                                <Text fontSize={"xl"} fontWeight={"bold"}>API Products</Text>
+                                <Text fontSize={"lg"} fontWeight={"bold"} >API Products</Text>
                                 </Box>
                                 <AccordionIcon/>
                             </AccordionButton>
                             <AccordionPanel pb={4} ml={4}>
-                                <List spacing={3}>
+                                <UnorderedList spacing={3}>
                                     {
                                         products.map((product,index) => (
                                             <ListItem key={index} onClick={() => moveProductPage(product.name)} cursor={"pointer"}
                                                 style={{WebkitUserSelect:"none",MozUserSelect:"none",msUserSelect:"none",userSelect:"none"}}
+                                                color={secondCategory === product.name ? "black" : "gray.400"}
                                             >
                                                     {product.name}
                                             </ListItem>
                                         ))
                                     }
-                                </List>
+                                </UnorderedList>
                             </AccordionPanel>
                         </AccordionItem>
-                        <AccordionItem maxW='15vw' _disabled={true}>
-                            <AccordionButton _hover={{backgroundColor: "white"}} bgColor={"red"} onClick={(e) => movePage(encodeURI("/user/My Subscription"),e)}>
-                                <Box as="span" flex='1' textAlign='left' w='15vw'>
-                                <Text fontSize={"xl"} fontWeight={"bold"}>My Subscription</Text>
+
+                        <AccordionItem maxW='13vw'>
+                            <AccordionButton 
+                                _hover={{backgroundColor: "white"}}
+                                _expanded={{bg:"white"}} borderRadius={10} 
+                                boxShadow={mainCategory === "My Subscription" ? "0px 5px 14px rgba(0, 0, 0, 0.05)" : ""}
+                                color={mainCategory === "My Subscription" ? "black" : "gray.400"}
+                            >
+                                <Box as="span" flex='1' textAlign='left' w='15vw' onClick={(e) => movePage(encodeURI("/user/My Subscription"),e)}>
+                                <Text fontSize={"lg"} fontWeight={"bold"}>My Subscription</Text>
                                 </Box>
                             </AccordionButton>
                         </AccordionItem>
