@@ -1,6 +1,7 @@
 package com.hermes.monitoring.job;
 
 import com.hermes.monitoring.dto.LogDto;
+import com.hermes.monitoring.dto.ServerFailTimeDto;
 import com.hermes.monitoring.parser.LogParser;
 import com.hermes.monitoring.service.WebSocketService;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -78,7 +80,7 @@ public class ServerFailTimeCheckConfig {
     public Step sendServerFailTimeStep(){
         return stepBuilderFactory.get("sendServerFailTime")
                 .tasklet((contribution, chunkContext) -> {
-                    webSocketService.sendMessageToClient("/sub/log", serverFailTime);
+                    webSocketService.sendMessageToClient("/sub/log", new ServerFailTimeDto(new Date(),serverFailTime));
                     return RepeatStatus.FINISHED;
                 })
                 .build();

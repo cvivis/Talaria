@@ -1,8 +1,11 @@
 package com.hermes.monitoring.job;
 
 import com.hermes.monitoring.dto.LogDto;
+import com.hermes.monitoring.dto.SuccessTimeDto;
 import com.hermes.monitoring.parser.LogParser;
 import com.hermes.monitoring.service.WebSocketService;
+
+import java.util.Date;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -76,7 +79,7 @@ public class SuccessTimeCheckConfig {
     public Step sendSuccessTimeStep(){
         return stepBuilderFactory.get("sendSuccessTime")
                 .tasklet((contribution, chunkContext) -> {
-                    webSocketService.sendMessageToClient("/sub/log", successTime);
+                    webSocketService.sendMessageToClient("/sub/log", new SuccessTimeDto(new Date(),successTime));
                     return RepeatStatus.FINISHED;
                 })
                 .build();
