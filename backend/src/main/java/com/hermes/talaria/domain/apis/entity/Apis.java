@@ -48,9 +48,6 @@ public class Apis implements Serializable {
 	private String webServerUrl;
 
 	@Column
-	private String urlSuffix;
-
-	@Column
 	private String swaggerContent;
 
 	@Column
@@ -67,13 +64,12 @@ public class Apis implements Serializable {
 	private String[] ips;
 
 	@Builder
-	public Apis(Long apisId, Long memberId, String name, String webServerUrl, String urlSuffix,
+	public Apis(Long apisId, Long memberId, String name, String webServerUrl,
 		String swaggerContent, ApisStatus status, Long quota, RawType rawType, String[] ips) {
 		this.apisId = apisId;
 		this.memberId = memberId;
 		this.name = name;
 		this.webServerUrl = webServerUrl;
-		this.urlSuffix = urlSuffix;
 		this.swaggerContent = swaggerContent;
 		this.status = status;
 		this.quota = quota;
@@ -84,7 +80,6 @@ public class Apis implements Serializable {
 	public void update(ApisDto apisDto) {
 		this.name = apisDto.getName();
 		this.webServerUrl = apisDto.getWebServerUrl();
-		this.urlSuffix = apisDto.getUrlSuffix();
 	}
 
 	public void registerOas(ApisDto apisDto) {

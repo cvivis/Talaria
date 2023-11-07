@@ -18,7 +18,6 @@ public class ApisDto {
 	private Long memberId;
 	private String name;
 	private String webServerUrl;
-	private String urlSuffix;
 	private String swaggerContent;
 	private ApisStatus status;
 	private Long quota;
@@ -26,13 +25,12 @@ public class ApisDto {
 	private String[] ips;
 
 	@Builder
-	public ApisDto(Long apisId, Long memberId, String name, String webServerUrl, String urlSuf1fix,
+	public ApisDto(Long apisId, Long memberId, String name, String webServerUrl,
 		String swaggerContent, ApisStatus status, Long quota, RawType rawType, String[] ips) {
 		this.apisId = apisId;
 		this.memberId = memberId;
 		this.name = name;
 		this.webServerUrl = webServerUrl;
-		this.urlSuffix = urlSuffix;
 		this.swaggerContent = swaggerContent;
 		this.status = status;
 		this.quota = quota;
