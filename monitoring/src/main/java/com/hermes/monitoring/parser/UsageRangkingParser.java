@@ -40,10 +40,10 @@ public class   UsageRangkingParser {
         keySet.sort(new Comparator<String>() {
             @Override
             public int compare(String o1, String o2) {
-                return map.get(o1).compareTo(map.get(o2));
+                return map.get(o1).compareTo(map.get(o2)) * (-1);
             }
         });
-//        log.info("keySetLIst : {}",keySet);
+        log.info("keySetLIst : {}",keySet);
 
         List<UsageRankingDto> result = new ArrayList<>();
         if(keySet.size() < 5){
@@ -104,7 +104,7 @@ public class   UsageRangkingParser {
         if (matcher.find()) {
             method = matcher.group(3);
             url = matcher.group(4);
-//            log.info(matcher.group(2));
+//            log.info("url: {}",url);
             date = getTime.getTimeZone(matcher.group(2));
         }
         Date currentTime = new Date();

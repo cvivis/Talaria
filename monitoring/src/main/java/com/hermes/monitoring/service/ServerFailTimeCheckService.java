@@ -9,9 +9,11 @@ import org.springframework.batch.core.JobParametersInvalidException;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,8 +24,14 @@ public class ServerFailTimeCheckService {
     private final JobLauncher jobLauncher;
     private final ServerFailTimeCheckConfig serverFailTimeCheckConfig;
 
+    private final CreateLogFile createLogFile;
+
+    @Value("${serverFail.baseLog.url}")
+    String baseUrl;
+
     @Scheduled(cron = "0/5 * * * * *")
-    public void checkServerFailTime(){
+    public void checkServerFailTime() throws IOException {
+        createLogFile.createLogFile(baseUrl+".txt", baseUrl);
         // job parameter 설정
         Map<String, JobParameter> confMap = new HashMap<>();
         confMap.put("time", new JobParameter("ServerFailTimeCheckConfig_"+System.currentTimeMillis())); // 시스템의 현재 시간을 넣음으로써 실행 시점에 충돌을 피함

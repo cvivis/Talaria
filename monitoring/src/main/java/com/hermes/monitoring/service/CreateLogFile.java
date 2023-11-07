@@ -19,19 +19,12 @@ import java.util.regex.Pattern;
 @Service
 @Slf4j
 public class CreateLogFile {
-
-    @Value("${log.url}")
-    String url;
-
-    @Value("${log.baseUrl}")
-    String baseUrl;
-    public void createLogFile() throws IOException {
+    public void createLogFile(String url, String baseUrl) throws IOException {
         String result = "";
         BufferedReader br = new BufferedReader(new FileReader(url));
         BufferedWriter bw = null;
         try {
             log.info("----- log 날짜 수정 중 -----");
-//            BufferedReader br = new BufferedReader(new FileReader(url));
             File temp = new File(baseUrl+"_temp.txt"); // File객체 생성
             log.info("new Log file : " + baseUrl+"_temp.txt");
             if(!temp.exists()){ // 파일이 존재하지 않으면
@@ -46,8 +39,8 @@ public class CreateLogFile {
                 Matcher matcher = pattern.matcher(result);
                 if (matcher.find()) {
                     String date = matcher.group(2);
-                    String url = matcher.group(4);
-                    String replaceUrl = url;
+                    String oldUrl = matcher.group(4);
+                    String replaceUrl = oldUrl;
                     Calendar calendar = Calendar.getInstance();
                     Date currentDate = calendar.getTime();
                     if(url.equals("/bu")){
@@ -69,7 +62,7 @@ public class CreateLogFile {
 //                    log.info("date : "+date);
 //                    log.info("resultbefore: " + result);
                     result = result.replaceAll(Pattern.quote(date),formattedDate);
-                    result = result.replaceAll(url , replaceUrl);
+                    result = result.replaceAll(oldUrl , replaceUrl);
 //                    log.info("resultafter: " + result);
                 }
 
