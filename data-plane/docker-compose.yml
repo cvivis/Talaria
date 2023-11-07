@@ -1,12 +1,18 @@
 version: "3.5"
 
 networks:
-  deafult:
+  default:
     name: data-plane
     external: false
 
 volumes:
-  nginx-data:
+  talaria_conf.d:
+
+secrets:
+  nginx.fullchain:
+    file: ./setup/certbot/conf/live/${DOMAIN}/fullchain.pem
+  nginx.privkey:
+    file: ./setup/certbot/conf/live/${DOMAIN}/privkey.pem
 
 services:
   gw-server:
@@ -17,7 +23,11 @@ services:
       dockerfile: Dockerfile
       args:
         PYTHON_VERSION: ${PYTHON_VERSION}
+    env_file:
+      - .env
     restart: unless-stopped
+    volumes:
+      - talaria_conf.d:/code/nginx
     ports:
       - "${GW_SERVER_PORT}:${GW_SERVER_PORT}"
     depends_on:
@@ -26,8 +36,19 @@ services:
   nginx:
     container_name: nginx
     image: nginx:${NGINX_VERSION}
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+      args:
+        NGINX_VERSION: ${NGINX_VERSION}
     restart: unless-stopped
     volumes:
-      - nginx-data:/etc/nginx
+      - ./nginx/talaria_conf.d:/etc/nginx/talaria_conf.d
+    secrets:
+      - source: nginx.fullchain
+        target: /usr/share/nginx/certs/fullchain.pem
+      - source: nginx.privkey
+        target: /usr/share/nginx/certs/privkey.pem
     ports:
-      - "80:80"
+      - 80:80
+      - 443:443
