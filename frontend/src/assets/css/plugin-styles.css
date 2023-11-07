@@ -1,0 +1,244 @@
+/*!
+
+=========================================================
+* Argon Dashboard Chakra PRO - v1.0.0
+=========================================================
+
+* Product Page: https://www.creative-tim.com/product/argon-dashboard-chakra-pro
+* Copyright 2022 Creative Tim (https://www.creative-tim.com/)
+
+* Designed and Coded by Simmmple & Creative Tim
+
+=========================================================
+
+* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+*/
+
+/* General Styles */
+
+#sidebarScrollRemove::-webkit-scrollbar {
+  display: none;
+}
+
+#sidebarScrollRemove {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+/* Full Calendar */
+a.fc-daygrid-day-number {
+  width: 100%;
+  text-align: center;
+}
+a.fc-daygrid-day-number {
+  width: 100%;
+  text-align: center;
+}
+a.fc-daygrid-day-number {
+  width: 100%;
+  text-align: center;
+}
+div.fc-daygrid-event-harness {
+  top: unset;
+}
+.fc-daygrid-event-harness .fc-daygrid-event-harness-abs {
+  top: 0px;
+  bottom: unset;
+}
+
+body.chakra-ui-dark .fc-theme-standard td {
+  border-color: #0b1437 !important;
+}
+
+.fc .fc-scrollgrid-section-header > *,
+.fc .fc-scrollgrid-section-footer > * {
+  border-right: 0px !important;
+}
+.fc-theme-standard .fc-scrollgrid {
+  border: 0px solid transparent !important;
+}
+
+body.chakra-ui-light .fc-col-header-cell.fc-day.fc-day-mon {
+  border-right: 0px;
+  border-left: 0px;
+}
+body.chakra-ui-dark .fc-col-header-cell.fc-day.fc-day-mon {
+  border-right: 0px;
+  border-left: 0px;
+  border-color: #0b1437;
+}
+
+body.chakra-ui-light .fc-col-header-cell.fc-day.fc-day-tue {
+  border-left: 0px;
+  border-right: 0px;
+}
+body.chakra-ui-dark .fc-col-header-cell.fc-day.fc-day-tue {
+  border-left: 0px;
+  border-right: 0px;
+  border-color: #0b1437;
+}
+
+body.chakra-ui-light .fc-col-header-cell.fc-day.fc-day-wed {
+  border-right: 0px;
+  border-left: 0px;
+}
+body.chakra-ui-dark .fc-col-header-cell.fc-day.fc-day-wed {
+  border-right: 0px;
+  border-left: 0px;
+  border-color: #0b1437;
+}
+
+body.chakra-ui-light .fc-col-header-cell.fc-day.fc-day-thu {
+  border-left: 0px;
+  border-right: 0px;
+}
+body.chakra-ui-dark .fc-col-header-cell.fc-day.fc-day-thu {
+  border-left: 0px;
+  border-right: 0px;
+  border-color: #0b1437;
+}
+
+body.chakra-ui-light .fc-col-header-cell.fc-day.fc-day-fri {
+  border-right: 0px;
+  border-left: 0px;
+}
+body.chakra-ui-dark .fc-col-header-cell.fc-day.fc-day-fri {
+  border-right: 0px;
+  border-left: 0px;
+  border-color: #0b1437;
+}
+
+body.chakra-ui-light .fc-col-header-cell.fc-day.fc-day-sat {
+  border-left: 0px;
+  border-right: 0px;
+}
+body.chakra-ui-dark .fc-col-header-cell.fc-day.fc-day-sat {
+  border-left: 0px;
+  border-right: 0px;
+  border-color: #0b1437;
+}
+
+body.chakra-ui-light .fc-col-header-cell.fc-day.fc-day-sun {
+  border-left: 0px;
+  border-right: 0px;
+}
+body.chakra-ui-dark .fc-col-header-cell.fc-day.fc-day-sun {
+  border-left: 0px;
+  border-right: 0px;
+  border-color: #0b1437;
+}
+
+body.chakra-ui-light .fc-scrollgrid.fc-scrollgrid-liquid > td {
+  border: 0px;
+}
+body.chakra-ui-dark .fc-scrollgrid.fc-scrollgrid-liquid > td {
+  border: 0px;
+  border-color: #0b1437;
+}
+
+.fc .fc-scrollgrid-section > td {
+  border: 0;
+}
+
+/* React Kanban */
+body.chakra-ui-light .react-kanban-column {
+  background-color: #edf2f7;
+  border-radius: 15px;
+}
+body.chakra-ui-dark .react-kanban-column {
+  background-color: #0b1437;
+  border-radius: 15px;
+}
+.react-kanban-column {
+  width: 500px;
+}
+.react-kanban-card-adder-form {
+  width: 100%;
+  background-color: red;
+  border-radius: 15px;
+}
+.react-kanban-card-adder-button {
+  display: none;
+  background-color: red !important;
+  border-radius: 15px;
+}
+
+/* Text Editor */
+
+body.chakra-ui-light .ql-toolbar.ql-snow {
+  border-color: rgb(226, 232, 240);
+}
+
+body.chakra-ui-dark .ql-toolbar.ql-snow {
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+body.chakra-ui-light .ql-container.ql-snow {
+  border-color: rgb(226, 232, 240);
+}
+
+body.chakra-ui-dark .ql-container.ql-snow {
+  background: #0b1437;
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+body.chakra-ui-light .ql-snow .ql-picker-label {
+  color: rgb(26, 32, 44) !important;
+}
+body.chakra-ui-dark .ql-snow .ql-picker-label {
+  color: rgba(255, 255, 255, 0.92) !important;
+}
+
+body.chakra-ui-light .ql-snow .ql-stroke {
+  stroke: rgb(26, 32, 44) !important;
+}
+body.chakra-ui-dark .ql-snow .ql-stroke {
+  stroke: rgba(255, 255, 255, 0.92) !important;
+}
+
+body.chakra-ui-light .ql-snow .ql-fill {
+  fill: rgb(26, 32, 44) !important;
+}
+body.chakra-ui-dark .ql-snow .ql-fill {
+  fill: rgba(255, 255, 255, 0.92) !important;
+}
+
+.ql-snow .ql-picker-label:hover {
+  color: rgb(79, 209, 197) !important;
+}
+
+.ql-snow .ql-stroke:hover {
+  stroke: rgb(79, 209, 197) !important;
+}
+
+.ql-snow .ql-fill:hover {
+  fill: rgb(79, 209, 197) !important;
+}
+
+.ql-container.ql-snow {
+  min-height: 88px !important;
+  border-bottom-left-radius: 8px !important;
+  border-bottom-right-radius: 8px !important;
+}
+
+/* PIN Input */
+.pincode-input-container .pincode-input-text {
+  border-radius: 8px;
+  border-color: #e2e8f0 !important;
+  color: #2d3748 !important;
+  /* background-color: transparent !important; */
+}
+body.chakra-ui-dark .pincode-input-container .pincode-input-text {
+  color: #fff !important;
+  /* background-color: red !important; */
+  border-color: transparent !important;
+  width: 80px;
+  height: 50px;
+}
+
+@media only screen and(max-width:500px) {
+  .pincode-input-container .pincode-input-text {
+    width: 52px !important;
+    height: 45px !important;
+  }
+}
