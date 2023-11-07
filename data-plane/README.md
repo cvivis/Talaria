@@ -22,3 +22,26 @@
    ```
 
 # Configuration
+
+will be updated
+
+# Nginx Directory Structure
+
+```
+etc/
+└── nginx/
+	├── talaria_conf.d/
+	│	├── api_conf.d/
+	│	│	└── warehouse_api.conf
+	│	├── api_bakends.conf
+	│	├── api_gateway.conf
+	│	├── api_json_errors.conf
+	│	├── custom_format.d/
+	│	│	└── date_format.conf
+	│	│	└── log_format.conf
+	├── conf.d/
+	│	├── ...
+	│	├── existing_apps.conf
+	├── nginx.conf
+```
+
