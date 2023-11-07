@@ -1,7 +1,6 @@
 package com.hermes.monitoring.job;
 
 
-import com.hermes.monitoring.dto.ErrorCountDto;
 import com.hermes.monitoring.dto.ErrorCountTypeDto;
 import com.hermes.monitoring.parser.ErrorCountParser;
 import com.hermes.monitoring.service.WebSocketService;
@@ -47,12 +46,9 @@ public class ErrorCountConfig {
         log.info("-----ErrorCount Parsing 시작-----");
         return stepBuilderFactory.get("errorCountParser")
                 .tasklet((contribution, chunkContext) ->{
-                    List<ErrorCountTypeDto> list = new ArrayList<>();
-                    list = errorCountParser.parseLog(errorUrl);
-                    ErrorCountDto result = ErrorCountDto.builder()
-                            .data(list)
-                            .build();
-                    webSocketService.sendMessageToClient("/sub/log",result);
+                    List<ErrorCountTypeDto> result = new ArrayList<>();
+                    result = errorCountParser.parseLog(errorUrl);
+                    webSocketService.sendMessageToClient("/sub/error-count",result);
                     return RepeatStatus.FINISHED;
                 })
                 .build();

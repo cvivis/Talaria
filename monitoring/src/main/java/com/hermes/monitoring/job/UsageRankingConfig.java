@@ -54,7 +54,7 @@ public class UsageRankingConfig {
                     UsageRankingListDto result = UsageRankingListDto.builder()
                             .data(ranking)
                             .build();
-                    webSocketService.sendMessageToClient("/sub/log",result);
+                    webSocketService.sendMessageToClient("/sub/usage-ranking",result);
                     return RepeatStatus.FINISHED;
                 })
                 .build();
