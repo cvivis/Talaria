@@ -43,7 +43,7 @@ public class   UsageRangkingParser {
                 return map.get(o1).compareTo(map.get(o2));
             }
         });
-        log.info("keySetLIst : {}",keySet);
+//        log.info("keySetLIst : {}",keySet);
 
         List<UsageRankingDto> result = new ArrayList<>();
         if(keySet.size() < 5){
@@ -104,7 +104,7 @@ public class   UsageRangkingParser {
         if (matcher.find()) {
             method = matcher.group(3);
             url = matcher.group(4);
-            log.info(matcher.group(2));
+//            log.info(matcher.group(2));
             date = getTime.getTimeZone(matcher.group(2));
         }
         Date currentTime = new Date();

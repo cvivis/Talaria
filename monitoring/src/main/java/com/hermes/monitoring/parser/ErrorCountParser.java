@@ -35,7 +35,7 @@ public class ErrorCountParser {
                    map.get(errorCountDetail.getErrorLevel()).add(errorCountDetail);
                 }
             }
-            log.info("map 확인 : {}",map);
+//            log.info("map 확인 : {}",map);
         }catch (IOException e){
             e.printStackTrace();
             br.close();
@@ -64,20 +64,20 @@ public class ErrorCountParser {
         String serverName = "serverName";
         Long date = new Date().getTime();
 
-        log.info("line: {}",line);
+//        log.info("line: {}",line);
         if (matcher.find()) {
-            for(int i = 0; i <= matcher.groupCount();i++){
-                log.info("group {} : {}",i , matcher.group(i));
-            }
+//            for(int i = 0; i <= matcher.groupCount();i++){
+//                log.info("group {} : {}",i , matcher.group(i));
+//            }
 
             date = getTime.getTime(matcher.group(1));
             errorLevel = matcher.group(2);
             errorLevel = errorLevel.toUpperCase(Locale.ROOT);
-            log.info("errorLevel : {}",errorLevel);
+//            log.info("errorLevel : {}",errorLevel);
             for(Error e : Error.values()){
                 if(errorLevel.equals(e.toString())){
                     errorLevel = e.toString();
-                    log.info("들어옴");
+//                    log.info("들어옴");
                 }
             }
             errorCode = matcher.group(3);
@@ -87,7 +87,7 @@ public class ErrorCountParser {
         }
 
         Date currentTime = new Date();
-        log.info("date {} , now : {}",date , currentTime.getTime());
+//        log.info("date {} , now : {}",date , currentTime.getTime());
 //        if(date <= currentTime.getTime() && date >= currentTime.getTime() - 5000){
             ErrorCountDetailDto errorCountDetailDto = ErrorCountDetailDto.builder()
                     .errorLevel(errorLevel)
@@ -96,7 +96,7 @@ public class ErrorCountParser {
                     .clientIp(clientIp)
                     .serverName(serverName)
                     .build();
-            log.info("확인 : "+errorCountDetailDto.getErrorLevel());
+//            log.info("확인 : "+errorCountDetailDto.getErrorLevel());
             return errorCountDetailDto;
 //        }
 //        else{
