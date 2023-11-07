@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { Box } from "@chakra-ui/react";
+import { Box,Text } from "@chakra-ui/react";
 function Chart3() {
 
     return (
         <>
-        <Box bg='navy'>
-            sasdfadf
+        <Box bg='white' w='36vw' h='40vh' borderRadius="20px"  boxShadow="lg">
+            <Text p={3}>CPU</Text>
         </Box>
         </>
     );

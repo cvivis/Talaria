@@ -13,7 +13,7 @@ function Admin() {
     const location = useLocation();
     
 
-    const [mainCategory, setMainCategory] = useState("API Products");
+    const [mainCategory, setMainCategory] = useState("대시 보드");
     const [secondCategory, setSecondCategory] = useState("");
     const [thirdCategory, setThirdCategory] = useState("");
 
