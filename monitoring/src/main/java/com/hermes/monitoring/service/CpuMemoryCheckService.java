@@ -23,7 +23,7 @@ public class CpuMemoryCheckService {
     private final JobLauncher jobLauncher;
     private final CpuMemoryCheckConfig cpuMemoryCheckConfig;
 
-    @Scheduled(cron = "0/5 * * * * *")
+    @Scheduled(cron = "0/1 * * * * *")
     public void checkCpuMemory() {
         // job parameter 설정
         Map<String, JobParameter> confMap = new HashMap<>();

@@ -34,7 +34,7 @@ public class CpuMemoryCheckConfig {
         return jobBuilderFactory.get("cpuMemoryCheck")
                 .incrementer(new RunIdIncrementer())
                 .start(getCpuMemoryUsageStep())
-                //.next(sendCpuMemoryUsageStep())
+                .next(sendCpuMemoryUsageStep())
                 .build();
     }
 
@@ -56,7 +56,8 @@ public class CpuMemoryCheckConfig {
     public Step sendCpuMemoryUsageStep() {
         return stepBuilderFactory.get("sendCpuMemoryUsage")
                 .tasklet((contribution, chunkContext) -> {
-                    webSocketService.sendCpuMemoryUsageToClient("/sub/log",cpuMemoryUsageDto);
+                    webSocketService.sendCpuMemoryUsageToClient("/sub/cpu-check",cpuMemoryUsageDto);
+                    webSocketService.sendCpuMemoryUsageToClient("/sub/memory-check",cpuMemoryUsageDto);
                     return RepeatStatus.FINISHED;
                 })
                 .build();

@@ -31,6 +31,7 @@ public class WebSocketService {
 
 
     public void sendCpuMemoryUsageToClient(String destination, CpuMemoryUsageDto cpuMemoryUsageDto) {
+        log.info("CpuMemoryUsage : {}", cpuMemoryUsageDto);
         simpMessagingTemplate.convertAndSend(destination,cpuMemoryUsageDto);
     }
 }
