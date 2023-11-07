@@ -23,9 +23,11 @@ services:
       dockerfile: Dockerfile
       args:
         PYTHON_VERSION: ${PYTHON_VERSION}
+    env_file:
+      - .env
     restart: unless-stopped
     volumes:
-      - talaria_conf.d:/usr/share/nginx
+      - talaria_conf.d:/code/nginx
     ports:
       - "${GW_SERVER_PORT}:${GW_SERVER_PORT}"
     depends_on:
