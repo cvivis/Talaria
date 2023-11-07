@@ -79,7 +79,7 @@ public class FailTimeCheckConfig {
     public Step sendFailTimeStep(){
         return stepBuilderFactory.get("sendFailTime")
                 .tasklet((contribution, chunkContext) -> {
-                    webSocketService.sendMessageToClient("/sub/log", new FailTimeDto(new Date(),failTime));
+                    webSocketService.sendMessageToClient("/sub/fail-time-check", new FailTimeDto(new Date(),failTime));
                     return RepeatStatus.FINISHED;
                 })
                 .build();

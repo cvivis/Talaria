@@ -79,7 +79,7 @@ public class SuccessTimeCheckConfig {
     public Step sendSuccessTimeStep(){
         return stepBuilderFactory.get("sendSuccessTime")
                 .tasklet((contribution, chunkContext) -> {
-                    webSocketService.sendMessageToClient("/sub/log", new SuccessTimeDto(new Date(),successTime));
+                    webSocketService.sendMessageToClient("/sub/success-time-check", new SuccessTimeDto(new Date(),successTime));
                     return RepeatStatus.FINISHED;
                 })
                 .build();
