@@ -17,9 +17,8 @@ const CustomAxios = () => {
         },
     });
 };
-const instance = CustomAxios();
 
-instance.interceptors.request.use(
+CustomAxios.interceptors.request.use(
     (config) => {
         const access_token = store.getState().userInfo.access_token;
 
@@ -31,7 +30,7 @@ instance.interceptors.request.use(
     (error) => Promise.reject(error),
 );
 
-instance.interceptors.response.use(
+CustomAxios.interceptors.response.use(
     (response) => response,
     async (error) => {
         const originalRequest = error.config;
@@ -73,4 +72,4 @@ instance.interceptors.response.use(
     },
 );
 
-export default instance;
+export default CustomAxios;
