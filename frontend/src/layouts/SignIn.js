@@ -22,16 +22,18 @@ function SignIn() {
         console.log(password);
 
         try {
-            CustomAxios.post(`/auth/login`,
+            CustomAxios.post(`auth/login`,
                 {
                     email: email,
                     password: password
                 })
                 .then((res) => {
                     console.log(res);
+
+                    dispatch(setUser(res.data))
                 })
         } catch(error) {
-            console.log(error);
+            console.log('error');
         }
     }
 
@@ -140,6 +142,11 @@ function SignIn() {
                                 size="lg"
                                 w="91%"
                                 onChange={(e) => setPassword(e.target.value)}
+                                onKeyDown={(e) => {
+                                    if (e.key === "Enter") {
+                                        HandleLogin();
+                                    }
+                                }}
                             />
                             <Button
                                 fontSize="10px"
