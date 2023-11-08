@@ -1,5 +1,6 @@
 package com.hermes.monitoring.dto;
 
+
 import lombok.*;
 
 import java.util.Date;
@@ -9,7 +10,8 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ApiFailCountDto {
-    private String date;
-    private Integer count;
+public class ApiRequestDetailDto {
+    private Date dateTime;
+    private String httpMethod;
+    private String path ;
 }
