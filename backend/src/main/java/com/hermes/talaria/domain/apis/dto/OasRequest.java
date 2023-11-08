@@ -1,0 +1,18 @@
+package com.hermes.talaria.domain.apis.dto;
+
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+
+import lombok.Builder;
+import lombok.Getter;
+
+@Getter
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+public class OasRequest {
+	String content;
+
+	@Builder
+	public OasRequest(String content) {
+		this.content = content;
+	}
+}
