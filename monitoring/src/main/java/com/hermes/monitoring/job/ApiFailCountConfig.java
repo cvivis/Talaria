@@ -67,6 +67,7 @@ public class ApiFailCountConfig {
 
     // String key = item.getPath() + "_" + year + "_" + hour + "_" + item.getHttpMethod() + "_" + item.getStatusCode();
     @Bean
+    @Transactional
     public Step apiFailCountInsertStep(){
         return stepBuilderFactory.get("apiFailCountParser")
                 .tasklet((contribution, chunkContext) ->{
