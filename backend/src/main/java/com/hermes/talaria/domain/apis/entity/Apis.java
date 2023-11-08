@@ -39,16 +39,13 @@ public class Apis implements Serializable {
 	private Long apisId;
 
 	@Column
-	private Long memberId;
+	private Long developerId;
 
 	@Column
 	private String name;
 
 	@Column
 	private String webServerUrl;
-
-	@Column
-	private String urlSuffix;
 
 	@Column
 	private String swaggerContent;
@@ -63,28 +60,26 @@ public class Apis implements Serializable {
 	private RawType rawType;
 
 	@Type(type = "string-array")
-	// @Column(columnDefinition = "text[]")
-	private String[] ips;
+	@Column(columnDefinition = "text[]")
+	private String[] whiteList;
 
 	@Builder
-	public Apis(Long apisId, Long memberId, String name, String webServerUrl, String urlSuffix,
-		String swaggerContent, ApisStatus status, Long quota, RawType rawType, String[] ips) {
+	public Apis(Long apisId, Long developerId, String name, String webServerUrl,
+		String swaggerContent, ApisStatus status, Long quota, RawType rawType, String[] whiteList) {
 		this.apisId = apisId;
-		this.memberId = memberId;
+		this.developerId = developerId;
 		this.name = name;
 		this.webServerUrl = webServerUrl;
-		this.urlSuffix = urlSuffix;
 		this.swaggerContent = swaggerContent;
 		this.status = status;
 		this.quota = quota;
 		this.rawType = rawType;
-		this.ips = ips;
+		this.whiteList = whiteList;
 	}
 
 	public void update(ApisDto apisDto) {
 		this.name = apisDto.getName();
 		this.webServerUrl = apisDto.getWebServerUrl();
-		this.urlSuffix = apisDto.getUrlSuffix();
 	}
 
 	public void registerOas(ApisDto apisDto) {

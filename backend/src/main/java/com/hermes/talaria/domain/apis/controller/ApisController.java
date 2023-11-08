@@ -33,7 +33,7 @@ public class ApisController {
 	@PostMapping("/developer")
 	public ResponseEntity<ApisResponse> create(@MemberInfo Long memberId, @RequestBody ApisRequest request) {
 		ApisDto apisDto = ModelMapperUtil.getModelMapper().map(request, ApisDto.class);
-		apisDto.setMemberId(memberId);
+		apisDto.setDeveloperId(memberId);
 		ApisResponse response = ApisResponse.ofApisId(apisService.create(apisDto));
 
 		return ResponseEntity.ok().body(response);
@@ -41,7 +41,7 @@ public class ApisController {
 
 	@GetMapping("/developer")
 	public ResponseEntity<List<ApisResponse>> findApis(@MemberInfo Long memberId) {
-		List<ApisResponse> response = apisService.findApisByMemberId(memberId).stream()
+		List<ApisResponse> response = apisService.findApisByDeveloperId(memberId).stream()
 			.map(apisDto -> ModelMapperUtil.getModelMapper().map(apisDto, ApisResponse.class))
 			.collect(Collectors.toList());
 
@@ -49,10 +49,11 @@ public class ApisController {
 	}
 
 	@PatchMapping("/developer/{apisId}")
-	public ResponseEntity<ApisResponse> update(@MemberInfo Long memberId, @RequestParam Long apisId, @RequestBody ApisRequest request) {
+	public ResponseEntity<ApisResponse> update(@MemberInfo Long memberId, @RequestParam Long apisId,
+		@RequestBody ApisRequest request) {
 		ApisDto apisDto = ModelMapperUtil.getModelMapper().map(request, ApisDto.class);
 		apisDto.setApisId(apisId);
-		apisDto.setMemberId(memberId);
+		apisDto.setDeveloperId(memberId);
 		ApisResponse response = ApisResponse.ofApisId(apisService.update(apisDto));
 
 		return ResponseEntity.ok().body(response);
@@ -66,10 +67,11 @@ public class ApisController {
 	}
 
 	@PostMapping("/developer/oas/{apisId}")
-	public ResponseEntity<ApisResponse> registerOas(@MemberInfo Long memberId, @RequestParam Long apisId, @RequestBody OasRequest request) {
+	public ResponseEntity<ApisResponse> registerOas(@MemberInfo Long memberId, @RequestParam Long apisId,
+		@RequestBody OasRequest request) {
 		ApisDto apisDto = ModelMapperUtil.getModelMapper().map(request, ApisDto.class);
 		apisDto.setApisId(apisId);
-		apisDto.setMemberId(memberId);
+		apisDto.setDeveloperId(memberId);
 		ApisResponse response = ApisResponse.ofApisId(apisService.registerOas(apisDto));
 
 		return ResponseEntity.ok().body(response);

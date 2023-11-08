@@ -11,13 +11,10 @@ import lombok.Getter;
 public class ApisRequest {
 	String name;
 	String url;
-	String suffix;
 
 	@Builder
-
-	public ApisRequest(String name, String url, String suffix) {
+	public ApisRequest(String name, String url) {
 		this.name = name;
 		this.url = url;
-		this.suffix = suffix;
 	}
 }
