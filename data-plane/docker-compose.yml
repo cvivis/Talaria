@@ -25,14 +25,14 @@ services:
       args:
         PYTHON_VERSION: ${PYTHON_VERSION}
     environment:
-      - MODE: test
-      - GREEN_CONFIG_PATH: /code/nginx/green_talaria_conf.d
-      - BLUE_CONFIG_PATH: /code/nginx/talaria_conf.d
-      - NGINX_LOG_PATH: /code/nginx/log
-      - LOGGING_PATH: /code/log
-      - CONTROL_PLANE_DOMAIN: ${CONTROL_PLANE_DOMAIN}
-      - DESCRIBING_SERVICE_URI: ${DESCRIBING_SERVICE_URI}
-      - DATA_PLANE_DOMAIN: ${DATA_PLANE_DOMAIN}
+      MODE: test
+      GREEN_CONFIG_PATH: /code/nginx/green_talaria_conf.d
+      BLUE_CONFIG_PATH: /code/nginx/talaria_conf.d
+      NGINX_LOG_PATH: /code/nginx/log
+      LOGGING_PATH: /code/log
+      CONTROL_PLANE_DOMAIN: ${CONTROL_PLANE_DOMAIN}
+      DESCRIBING_SERVICE_URI: ${DESCRIBING_SERVICE_URI}
+      DATA_PLANE_DOMAIN: ${DATA_PLANE_DOMAIN}
     restart: unless-stopped
     volumes:
       - talaria_conf.d:/code/nginx/talaria_conf.d
