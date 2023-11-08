@@ -42,6 +42,22 @@ public class ErrorCountParser {
         }
         br.close();
         List<String> keySet = new ArrayList<>(map.keySet());
+        keySet.sort(new Comparator<String>() {
+            @Override
+            public int compare(String s1, String s2) {
+                if (s1.equals(s2)) {
+                    return 0;
+                } else if (s1.equals("WARN")) {
+                    return 1;
+                } else if (s1.equals("CRIT")) {
+                    return s2.equals("WARN") ? -1 : 1;
+                } else if (s1.equals("EMERG")) {
+                    return s2.equals("ERROR") ? 1 : -1;
+                } else {
+                    return -1;
+                }
+            }
+        });
         for(String key : keySet){
             ErrorCountTypeDto errorCountTypeDto = ErrorCountTypeDto.builder()
                     .errorType(key)
@@ -50,6 +66,9 @@ public class ErrorCountParser {
                     .build();
             result.add(errorCountTypeDto);
         }
+        log.info("errorKeySet : {}",keySet);
+
+
         return result;
     }
 
@@ -66,10 +85,6 @@ public class ErrorCountParser {
 
 //        log.info("line: {}",line);
         if (matcher.find()) {
-//            for(int i = 0; i <= matcher.groupCount();i++){
-//                log.info("group {} : {}",i , matcher.group(i));
-//            }
-
             date = getTime.getTime(matcher.group(1));
             errorLevel = matcher.group(2);
             errorLevel = errorLevel.toUpperCase(Locale.ROOT);
@@ -88,7 +103,7 @@ public class ErrorCountParser {
 
         Date currentTime = new Date();
 //        log.info("date {} , now : {}",date , currentTime.getTime());
-//        if(date <= currentTime.getTime() && date >= currentTime.getTime() - 5000){
+        if(date <= currentTime.getTime() && date >= currentTime.getTime() - 5000){
             ErrorCountDetailDto errorCountDetailDto = ErrorCountDetailDto.builder()
                     .errorLevel(errorLevel)
                     .errorCode(errorCode)
@@ -98,12 +113,12 @@ public class ErrorCountParser {
                     .build();
 //            log.info("확인 : "+errorCountDetailDto.getErrorLevel());
             return errorCountDetailDto;
-//        }
-//        else{
+        }
+        else{
 //            log.info("group: ",matcher);
 //            log.info("틀림 : "+line);
-//            return null;
-//        }
+            return null;
+        }
 //        return url+ "_"+method;
     }
 }

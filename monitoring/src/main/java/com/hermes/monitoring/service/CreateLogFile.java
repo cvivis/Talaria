@@ -43,11 +43,11 @@ public class CreateLogFile {
                     String replaceUrl = oldUrl;
                     Calendar calendar = Calendar.getInstance();
                     Date currentDate = calendar.getTime();
-                    if(url.equals("/bu")){
-                        replaceUrl = "/hello";
+                    if(url.equals("/test")){
+                        replaceUrl = "/api/test/name";
                     }
-                    else if(url.equals("/hello")){
-                        replaceUrl = "/bu";
+                    else if(url.equals("/test")){
+                        replaceUrl = "/api/test/name";
                     }
                     // 3초 전 시간 계산
                     calendar.setTime(currentDate);
