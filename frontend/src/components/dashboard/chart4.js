@@ -41,6 +41,22 @@ function Chart4() {
     });
   };
 
+  const getTextColor = (type) => {
+    if (type === "GET") {
+      return "#38A169";
+    } else if (type === "POST") {
+      return "#DD6B20";
+    } else if (type === "DELETE") {
+      return "#E53E3E";
+    } else if(type === "PATCH"){
+      return "#805AD5";
+    } else{
+      return "#3182CE"
+    }
+  };
+
+
+
   useEffect(() => {
     connect();
     // const interval = setInterval(() => {
@@ -56,7 +72,7 @@ function Chart4() {
   return (
     <>
       <Box bg="white" w="40vw" h="55vh" borderRadius="20px" boxShadow="lg">
-        <Text fontWeight="Bold" p={5}>
+        <Text fontWeight="Bold" p={4}>
           API TOP5
         </Text>
         <TableContainer>
@@ -72,10 +88,22 @@ function Chart4() {
             <Tbody>
               {data.map((info, rank) => (
                 <Tr key={rank}>
-                  <Td>{info.ranking}</Td>
+                  <Td>
+                  <div style={{ margin: "0 auto" , textAlign:"center"}}>{info.ranking}</div>
+                  </Td>
                   <Td>{info.url}</Td>
-                  <Td>{info.method}</Td>
-                  <Td isNumeric>{info.usage}</Td>
+                  <Td color={"white"} fontWeight="Bold" border="none">
+                  <div style={{backgroundColor:getTextColor(info.method), 
+                            width:"100%",
+                            height:"100%",
+                            display: "flex",
+                            justifyContent: "center",
+                            borderRadius:"7px",
+                            alignItems: "center",}} > {info.method}</div>
+                    </Td>
+                  <Td isNumeric>
+                  <div style={{ margin: "0 auto" , textAlign:"center"}}>{info.usage}</div>
+                    </Td>
                 </Tr>
               ))}
             </Tbody>

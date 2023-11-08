@@ -42,13 +42,13 @@ function Chart5() {
 
   const getTextColor = (type) => {
     if (type === "EMERG") {
-      return "Blue";
+      return "#805AD5";
     } else if (type === "CRIT") {
-      return "Green";
+      return "#3182CE";
     } else if (type === "ERROR") {
-      return "Red";
+      return "#E53E3E";
     } else {
-      return "Orange";
+      return "#F6AD55";
     }
   };
 
@@ -81,11 +81,17 @@ function Chart5() {
             <Tbody>
               {data.map((info, index) => (
                 <Tr key={index}>
-                  <Td color={getTextColor(info.errorType)} fontWeight="Bold" border="none">
-                    {info.errorType}
+                  <Td color={"white"} fontWeight="Bold" border="none">
+                    <div style={{backgroundColor:getTextColor(info.errorType), 
+                            width:"60%",
+                            height:"70%",
+                            display: "flex",
+                            justifyContent: "center",
+                            borderRadius:"7px",
+                            alignItems: "center",}} >{info.errorType}</div>
                   </Td>
                   <Td isNumeric style={{ paddingRight: "13%" }} border="none">
-                    <div style={{ margin: "15% auto" }}>{info.count}</div>
+                    <div style={{ margin: "13% auto" }}>{info.count}</div>
                   </Td>
                 </Tr>
               ))}
