@@ -7,11 +7,13 @@ import lombok.ToString;
 @ToString
 public class ApiServerFailCountDto {
     private String api;
+    private String method;
     private String httpStatusCode;
     private int count;
 
-    public ApiServerFailCountDto(String api, String httpStatusCode, int count) {
+    public ApiServerFailCountDto(String api, String method, String httpStatusCode, int count) {
         this.api = api;
+        this.method = method;
         this.httpStatusCode = httpStatusCode;
         this.count = count;
     }

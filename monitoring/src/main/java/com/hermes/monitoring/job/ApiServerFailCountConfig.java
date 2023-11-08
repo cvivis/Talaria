@@ -72,7 +72,8 @@ public class ApiServerFailCountConfig {
                     for(LogDto logDto : logDtoList){
                         String statusCode = logDto.getStatusCode(); // LogDto에서 StatusCode를 가져옵니다.
                         String url = logDto.getPath();
-                        String key = statusCode + " " + url;
+                        String method = logDto.getHttpMethod();
+                        String key = statusCode + " " + url + " " + method;
                         ApiServerFailCountDto dto = statusUrlCount.get(key);
 
                         // statusCode가 statusCount Map의 키로 존재하는지 확인하고, 존재하면 값을 1 증가시킵니다.
@@ -80,7 +81,7 @@ public class ApiServerFailCountConfig {
                             dto.up();
                         } else {
                             // 객체가 없는 경우, 새로운 객체를 생성하고 count를 1로 초기화합니다.
-                            dto = new ApiServerFailCountDto(url, statusCode, 1);
+                            dto = new ApiServerFailCountDto(url, method, statusCode, 1);
                             statusUrlCount.put(key, dto);
                         }
                     }

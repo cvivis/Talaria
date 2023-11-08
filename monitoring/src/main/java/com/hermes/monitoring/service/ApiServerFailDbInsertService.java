@@ -34,6 +34,7 @@ public class ApiServerFailDbInsertService {
                 .hourlyCount(apiServerFailCountDto.getCount())
                 .url(apiServerFailCountDto.getApi())
                 .statusCode(Integer.parseInt(apiServerFailCountDto.getHttpStatusCode()))
+                .method(apiServerFailCountDto.getMethod())
                 .build();
         apiServerFailRepository.save(serverFail);
     }
