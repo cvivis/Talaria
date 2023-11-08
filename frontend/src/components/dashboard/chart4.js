@@ -76,7 +76,7 @@ function Chart4() {
           API TOP5
         </Text>
         <TableContainer>
-          <Table variant="simple" w="100%" h="100%" minH="50px">
+          <Table variant="simple" w="100%" h="100%" minH="50px" maxW="100%">
             <Thead>
               <Tr>
                 <Th>Ranking</Th>

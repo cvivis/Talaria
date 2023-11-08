@@ -66,7 +66,7 @@ function Chart5() {
 
   return (
     <>
-      <Box bg="white" w="36vw" h="55vh" borderRadius="20px" boxShadow="lg">
+      <Box bg="white" w="20vw" h="55vh" borderRadius="20px" boxShadow="lg">
         <Text fontWeight="Bold" p={5}>
           Error Count
         </Text>
@@ -83,15 +83,15 @@ function Chart5() {
                 <Tr key={index}>
                   <Td color={"white"} fontWeight="Bold" border="none">
                     <div style={{backgroundColor:getTextColor(info.errorType), 
-                            width:"60%",
-                            height:"70%",
+                            width:"100%",
+                            height:"80%",
                             display: "flex",
                             justifyContent: "center",
                             borderRadius:"7px",
                             alignItems: "center",}} >{info.errorType}</div>
                   </Td>
-                  <Td isNumeric style={{ paddingRight: "13%" }} border="none">
-                    <div style={{ margin: "13% auto" }}>{info.count}</div>
+                  <Td isNumeric  border="none">
+                    <div style={{ margin: "20% auto",  textAlign:"center" }}>{info.count}</div>
                   </Td>
                 </Tr>
               ))}
