@@ -33,12 +33,14 @@ etc/
 	├── talaria_conf.d/
 	│	├── api_conf.d/
 	│	│	└── warehouse_api.conf
-	│	├── api_bakends.conf
-	│	├── api_gateway.conf
-	│	├── api_json_errors.conf
-	│	├── custom_format.d/
-	│	│	└── date_format.conf
-	│	│	└── log_format.conf
+	│	├── api_bakends.conf - 완료
+	│	├── api_gateway.conf - 완료
+   │	├── api_keys.conf - 완료
+	│	├── api_json_errors.conf - 변경 없음, 완료
+   │	├── json_validation.js - 변경 없음, 완료
+	│	├── custom_format.d/ - 변경 없음, 완료
+	│	│	└── date_format.conf - 변경 없음, 완료
+	│	│	└── log_format.conf - 변경 없음, 완료
 	├── conf.d/
 	│	├── ...
 	│	├── existing_apps.conf

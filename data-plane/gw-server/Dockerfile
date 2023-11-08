@@ -5,7 +5,7 @@ FROM python:${PYTHON_VERSION}
 WORKDIR /code
 
 COPY ./app /code/app
-
-copy ./commands /code/commands
+COPY ./commands /code/commands
+COPY ./confs /code/confs
 
 CMD ["python3", "app/main.py"]

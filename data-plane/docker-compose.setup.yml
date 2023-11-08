@@ -15,7 +15,7 @@ services:
   certbot:
     container_name: certbot
     image: certbot/certbot:latest
-    command: certonly --webroot --webroot-path=/var/www/certbot --email ${EMAIL} --agree-tos --no-eff-email -d ${DOMAIN}
+    command: certonly --webroot --webroot-path=/var/www/certbot --email ${EMAIL} --agree-tos --no-eff-email -d ${DATA_PLANE_DOMAIN}
     volumes:
       - ./setup/certbot/conf:/etc/letsencrypt
       - ./setup/certbot/logs:/var/log/letsencrypt

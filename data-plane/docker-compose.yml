@@ -7,12 +7,13 @@ networks:
 
 volumes:
   talaria_conf.d:
+  nginx_log:
 
 secrets:
   nginx.fullchain:
-    file: ./setup/certbot/conf/live/${DOMAIN}/fullchain.pem
+    file: ./setup/certbot/conf/live/${DATA_PLANE_DOMAIN}/fullchain.pem
   nginx.privkey:
-    file: ./setup/certbot/conf/live/${DOMAIN}/privkey.pem
+    file: ./setup/certbot/conf/live/${DATA_PLANE_DOMAIN}/privkey.pem
 
 services:
   gw-server:
@@ -23,11 +24,20 @@ services:
       dockerfile: Dockerfile
       args:
         PYTHON_VERSION: ${PYTHON_VERSION}
-    env_file:
-      - .env
+    environment:
+      - MODE: test
+      - GREEN_CONFIG_PATH: /code/nginx/green_talaria_conf.d
+      - BLUE_CONFIG_PATH: /code/nginx/talaria_conf.d
+      - NGINX_LOG_PATH: /code/nginx/log
+      - LOGGING_PATH: /code/log
+      - CONTROL_PLANE_DOMAIN: ${CONTROL_PLANE_DOMAIN}
+      - DESCRIBING_SERVICE_URI: ${DESCRIBING_SERVICE_URI}
+      - DATA_PLANE_DOMAIN: ${DATA_PLANE_DOMAIN}
     restart: unless-stopped
     volumes:
-      - talaria_conf.d:/code/nginx
+      - talaria_conf.d:/code/nginx/talaria_conf.d
+      - nginx_log:/code/nginx/log
+      - ./gw-server/log:/code/log
     ports:
       - "${GW_SERVER_PORT}:${GW_SERVER_PORT}"
     depends_on:
@@ -44,6 +54,7 @@ services:
     restart: unless-stopped
     volumes:
       - ./nginx/talaria_conf.d:/etc/nginx/talaria_conf.d
+      - ./nginx/nginx_log:/var/log/nginx
     secrets:
       - source: nginx.fullchain
         target: /usr/share/nginx/certs/fullchain.pem

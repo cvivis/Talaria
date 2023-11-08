@@ -1,0 +1,22 @@
+server {
+    # Logs
+    include custom_format.d/date_format.conf;
+    include custom_format.d/log_format.conf;
+
+    open_log_file_cache max=1000 inactive=20s valid=1m;
+
+    access_log  /var/log/nginx/access_talaria.log           talaria_log_format;
+    access_log  /var/log/nginx/access_current.log           talaria_log_format;
+    access_log  /var/log/nginx/access_$talaria_time.log     talaria_log_format;
+    access_log  /var/log/nginx/access_200_current.log       talaria_log_format if=$api_success;
+    access_log  /var/log/nginx/access_200_$talaria_time.log talaria_log_format if=$api_success;
+    access_log  /var/log/nginx/access_400_current.log       talaria_log_format if=$api_fail;
+    access_log  /var/log/nginx/access_400_$talaria_time.log talaria_log_format if=$api_fail;
+    access_log  /var/log/nginx/access_500_current.log       talaria_log_format if=$api_serverfail;
+    access_log  /var/log/nginx/access_500_$talaria_time.log talaria_log_format if=$api_serverfail;
+
+    error_log   /var/log/nginx/error.log;
+    error_log   /var/log/nginx/error_current.log;
+    error_log   /var/log/nginx/error_$talaria_time.log
+
+    listen 443 ssl;
