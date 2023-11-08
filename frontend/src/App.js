@@ -9,7 +9,8 @@ import Developer from './layouts/Developer.js';
 import ApiProducts from './components/user/ApiProducts.js';
 import MySubscription from './components/user/MySubscription.js';
 import Product from './components/user/Product.js';
-import Chart from "./components/admin/MainChart.js";
+import ApiProductsDev from './components/developer/ApiProducts.js';
+import ProductDev from './components/developer/Product.js';
 
 function App() {
 
@@ -26,9 +27,12 @@ function App() {
             <Route exact path='/user/My Subscription' element={<MySubscription />} />
           </Route>
           <Route exact path='/admin' element={<PrivateRoute selectRole="admin" component={<Admin />} />} >
-            <Route exact index element={<Chart/>}></Route>
+            {/* <Route exact index element={<Chart/>}></Route> */}
           </Route>
-          <Route exact path='/developer' element={<PrivateRoute selectRole="developer" component={<Developer />} />} />
+          <Route exact path='/developer' element={<PrivateRoute selectRole="developer" component={<Developer />} />} >
+            <Route exact index element={<ApiProductsDev />} />
+            <Route exact path='/developer/API Products/:productName' element={<ProductDev />} />
+          </Route>
 					{/* 상단에 위치하는 라우트들의 규칙을 모두 확인, 일치하는 라우트가 없는경우 처리 */}
 					<Route path='/*' element={<NotFound />} />
 				</Routes>
