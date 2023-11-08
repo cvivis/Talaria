@@ -3,6 +3,7 @@ package com.hermes.monitoring.job;
 import com.hermes.monitoring.dto.ApiServerFailCountDto;
 import com.hermes.monitoring.dto.LogDto;
 import com.hermes.monitoring.parser.LogParser;
+import com.hermes.monitoring.service.ApiServerFailDbInsertService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -15,7 +16,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +26,7 @@ import java.util.Map;
 public class ApiServerFailCountConfig {
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
+    private final ApiServerFailDbInsertService apiServerFailDbInsertService;
     private final LogParser logParser = new LogParser();
 
     private List<LogDto> logDtoList;
@@ -95,6 +96,7 @@ public class ApiServerFailCountConfig {
                     for(String key : statusUrlCount.keySet()){
                         ApiServerFailCountDto apiServerFailCountDto = statusUrlCount.get(key);
                         System.out.println(apiServerFailCountDto.toString());
+                        apiServerFailDbInsertService.insert(apiServerFailCountDto);
                     }
                     return RepeatStatus.FINISHED;
                 })
