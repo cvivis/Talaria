@@ -4,6 +4,8 @@ import image from "../assets/img/BasicImage.png";
 import logo from "../assets/img/Talaria-logo-light.png";
 import { useDispatch } from "react-redux";
 import { logoutUser, setUser } from "../components/slices/UserInfoSlice";
+import React, { useState } from 'react';
+import CustomAxios from '../components/axios/CustomAxios'
 
 function SignIn() {
 
@@ -11,6 +13,27 @@ function SignIn() {
     const bgForm = useColorModeValue("white", "navy.800");
     const titleColor = useColorModeValue("gray.700", "blue.500");
     const dispatch = useDispatch();
+
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    const HandleLogin = () => {
+        console.log(email);
+        console.log(password);
+
+        try {
+            CustomAxios.post(`/auth/login`,
+                {
+                    email: email,
+                    password: password
+                })
+                .then((res) => {
+                    console.log(res);
+                })
+        } catch(error) {
+            console.log(error);
+        }
+    }
 
     return (
         <>
@@ -102,6 +125,7 @@ function SignIn() {
                                 mb="24px"
                                 size="lg"
                                 w="91%"
+                                onChange={(e) => setEmail(e.target.value)}
                             />
                             <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
                                 Password
@@ -115,6 +139,7 @@ function SignIn() {
                                 mb="24px"
                                 size="lg"
                                 w="91%"
+                                onChange={(e) => setPassword(e.target.value)}
                             />
                             <Button
                                 fontSize="10px"
@@ -123,16 +148,17 @@ function SignIn() {
                                 w="100%"
                                 h="45"
                                 mb="24px"
-                                onClick={() => {
-                                    dispatch(setUser({
-                                        member_id: "1",
-                                        email: "a@a.com",
-                                        role: "user",
-                                        key_id: "3",
-                                        access_token: "asdasdadasd1",
-                                        refresh_token: "asdasdadasd2",
-                                    }));
-                                }}
+                                // onClick={() => {
+                                //     dispatch(setUser({
+                                //         member_id: "1",
+                                //         email: "a@a.com",
+                                //         role: "user",
+                                //         key_id: "3",
+                                //         access_token: "asdasdadasd1",
+                                //         refresh_token: "asdasdadasd2",
+                                //     }));
+                                // }}
+                                onClick={() => HandleLogin()}
                             >
                                 SIGN IN
                             </Button>
@@ -152,9 +178,9 @@ function SignIn() {
                                 ms="5px"
                                 href="#"
                                 fontWeight="bold"
-                                onClick={() => {
-                                    dispatch(logoutUser());
-                                }}
+                                // onClick={() => {
+                                //     dispatch(logoutUser());
+                                // }}
                             >
                                 Account registration
                             </Link>
