@@ -6,9 +6,9 @@ const PublicRoute = ({component : Component}) => {
     const role = "user";
 
     if(login) {
-        if(role === "user") {
+        if(role === "USER") {
             return <Navigate to="/user" />
-        } else if(role === "admin") {
+        } else if(role === "ADMIN") {
             return <Navigate to="/admin" />
         } else {
             return <Navigate to="/developer" />
