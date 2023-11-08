@@ -2,12 +2,15 @@ import { Box, Button, Flex, FormControl, FormLabel, Image, Input, Link, Text, us
 import Footer from "../components/footer/Footer";
 import image from "../assets/img/BasicImage.png";
 import logo from "../assets/img/Talaria-logo-light.png";
+import { useDispatch } from "react-redux";
+import { logoutUser, setUser } from "../components/slices/UserInfoSlice";
 
 function SignIn() {
 
     const textColor = useColorModeValue("gray.400", "white");
     const bgForm = useColorModeValue("white", "navy.800");
     const titleColor = useColorModeValue("gray.700", "blue.500");
+    const dispatch = useDispatch();
 
     return (
         <>
@@ -120,7 +123,16 @@ function SignIn() {
                                 w="100%"
                                 h="45"
                                 mb="24px"
-                                
+                                onClick={() => {
+                                    dispatch(setUser({
+                                        member_id: "1",
+                                        email: "a@a.com",
+                                        role: "user",
+                                        key_id: "3",
+                                        access_token: "asdasdadasd1",
+                                        refresh_token: "asdasdadasd2",
+                                    }));
+                                }}
                             >
                                 SIGN IN
                             </Button>
@@ -140,6 +152,9 @@ function SignIn() {
                                 ms="5px"
                                 href="#"
                                 fontWeight="bold"
+                                onClick={() => {
+                                    dispatch(logoutUser());
+                                }}
                             >
                                 Account registration
                             </Link>
