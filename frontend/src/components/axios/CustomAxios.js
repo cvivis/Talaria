@@ -17,8 +17,9 @@ const CustomAxios = () => {
         },
     });
 };
+const instance = CustomAxios();
 
-CustomAxios.interceptors.request.use(
+instance.interceptors.request.use(
     (config) => {
         const access_token = store.getState().userInfo.access_token;
 
@@ -30,7 +31,7 @@ CustomAxios.interceptors.request.use(
     (error) => Promise.reject(error),
 );
 
-CustomAxios.interceptors.response.use(
+instance.interceptors.response.use(
     (response) => response,
     async (error) => {
         const originalRequest = error.config;
@@ -65,11 +66,11 @@ CustomAxios.interceptors.response.use(
             useNavigate("/");
         }
         } else if(error.response.status === 400) { // ERROR 400 => 존재하지 않는 계정
-            alert(error.response.data.errorMessage);
+                        alert(error.response.data.errorMessage);
         }
 
         return Promise.reject(error);
     },
 );
 
-export default CustomAxios;
+export default instance;
