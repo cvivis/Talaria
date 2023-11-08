@@ -30,4 +30,14 @@ public class LogDto {
         this.requestTime = requestTime;
         this.responseTime = responseTime;
     }
+
+    public LogDto(String ipAddress, Date dateTime, String httpMethod, String path, String httpVersion, String statusCode, double requestTime) {
+        this.ipAddress = ipAddress;
+        this.dateTime = dateTime;
+        this.httpMethod = httpMethod;
+        this.path = path;
+        this.statusCode = statusCode;
+        this.httpVersion = httpVersion;
+        this.requestTime = requestTime;
+    }
 }

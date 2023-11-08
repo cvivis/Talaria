@@ -16,6 +16,7 @@ import java.util.regex.Pattern;
 @Slf4j
 public class LogParser {
     private static final String LOGFILE_REGEX = "^(\\S+) - - \\[([^\\]]+)\\] \"(\\S+) (\\S+) (\\S+)\" (\\d+) (\\d+) \"([^\"]*)\" \"([^\"]*)\" (\\d+\\.\\d+) (\\d+\\.\\d+)$";
+    private static final String LOGFILE_REGEX_NO_RESPONSE_TIME = "^(\\S+) - - \\[([^\\]]+)\\] \"(\\S+) (\\S+) (\\S+)\" (\\d+) (\\d+) \"([^\"]*)\" \"([^\"]*)\" (\\d+\\.\\d+) -$";
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MMM/yyyy:HH:mm:ss Z", Locale.US);
     public List<LogDto> parseLog(String filePath) throws IOException, ParseException {
         List<LogDto> logList = new ArrayList<>();
@@ -74,7 +75,9 @@ public class LogParser {
     private LogDto parseLogEntry(String logEntry, long extractTime) throws ParseException {
         // 이 메서드에서 로그 항목을 파싱하여 LogDTO 객체로 변환합니다.
         Pattern pattern = Pattern.compile(LOGFILE_REGEX);
+        Pattern patternNoResponseTime = Pattern.compile(LOGFILE_REGEX_NO_RESPONSE_TIME);
         Matcher matcher = pattern.matcher(logEntry);
+        Matcher matcherNoResponseTime = patternNoResponseTime.matcher(logEntry);
         String ipAddress = "ip";
         Date dateTime = new Date();
         String httpMethod = "httpMethod";
@@ -92,13 +95,30 @@ public class LogParser {
             statusCode = matcher.group(6);
             requestTime = Double.parseDouble(matcher.group(10));
             responseTime = Double.parseDouble(matcher.group(11));
-        }
-        Date currentTime = new Date();
-        Date externalTime = new Date(currentTime.getTime() - extractTime);
-        if(dateTime.equals(currentTime) ||
-                dateTime.before(currentTime) &&
-                        dateTime.after(externalTime)){
-            return new LogDto(ipAddress, dateTime, httpMethod, path, httpVersion, statusCode, requestTime, responseTime);
+            Date currentTime = new Date();
+            Date externalTime = new Date(currentTime.getTime() - extractTime);
+            if(dateTime.equals(currentTime) ||
+                    dateTime.before(currentTime) &&
+                            dateTime.after(externalTime)){
+                return new LogDto(ipAddress, dateTime, httpMethod, path, httpVersion, statusCode, requestTime, responseTime);
+            }
+        } else if(matcherNoResponseTime.find()){
+            ipAddress = matcherNoResponseTime.group(1);
+            dateTime = sdf.parse(matcherNoResponseTime.group(2));
+            httpMethod = matcherNoResponseTime.group(3);
+            path = matcherNoResponseTime.group(4);
+            httpVersion = matcherNoResponseTime.group(5);
+            statusCode = matcherNoResponseTime.group(6);
+            requestTime = Double.parseDouble(matcherNoResponseTime.group(10));
+            Date currentTime = new Date();
+            Date externalTime = new Date(currentTime.getTime() - extractTime);
+            if(dateTime.equals(currentTime) ||
+                    dateTime.before(currentTime) &&
+                            dateTime.after(externalTime)){
+                return new LogDto(ipAddress, dateTime, httpMethod, path, httpVersion, statusCode, requestTime);
+            }
+        } else{
+            return null;
         }
         return null;
     }
