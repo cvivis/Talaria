@@ -26,8 +26,8 @@ public class ApisService {
 		return apis.getApisId();
 	}
 
-	public List<ApisDto> findApisByMemberId(Long memberId) {
-		List<Apis> apisList = apisRepository.findApisByMemberId(memberId);
+	public List<ApisDto> findApisByDeveloperId(Long memberId) {
+		List<Apis> apisList = apisRepository.findApisByDeveloperId(memberId);
 
 		return apisList.stream()
 			.map(apis -> ModelMapperUtil.getModelMapper().map(apis, ApisDto.class))
@@ -38,7 +38,7 @@ public class ApisService {
 		Apis apis = apisRepository.findApisByApisId(apisDto.getApisId()).orElseThrow(() -> new BusinessException(
 			ErrorCode.NOT_EXIST_APIS));
 
-		if (!apis.getMemberId().equals(apisDto.getMemberId())) {
+		if (!apis.getDeveloperId().equals(apisDto.getDeveloperId())) {
 			throw new BusinessException(ErrorCode.WRONG_AUTHORITY);
 		}
 
@@ -51,7 +51,7 @@ public class ApisService {
 		Apis apis = apisRepository.findApisByApisId(apisId).orElseThrow(() -> new BusinessException(
 			ErrorCode.NOT_EXIST_APIS));
 
-		if (!apis.getMemberId().equals(apisId)) {
+		if (!apis.getDeveloperId().equals(apisId)) {
 			throw new BusinessException(ErrorCode.WRONG_AUTHORITY);
 		}
 
@@ -64,7 +64,7 @@ public class ApisService {
 		Apis apis = apisRepository.findApisByApisId(apisDto.getApisId()).orElseThrow(() -> new BusinessException(
 			ErrorCode.NOT_EXIST_APIS));
 
-		if (!apis.getMemberId().equals(apisDto.getMemberId())) {
+		if (!apis.getDeveloperId().equals(apisDto.getDeveloperId())) {
 			throw new BusinessException(ErrorCode.WRONG_AUTHORITY);
 		}
 

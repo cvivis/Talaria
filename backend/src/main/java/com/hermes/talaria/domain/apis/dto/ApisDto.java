@@ -15,28 +15,26 @@ import lombok.ToString;
 @ToString
 public class ApisDto {
 	private Long apisId;
-	private Long memberId;
+	private Long developerId;
 	private String name;
 	private String webServerUrl;
-	private String urlSuffix;
 	private String swaggerContent;
 	private ApisStatus status;
 	private Long quota;
 	private RawType rawType;
-	private String[] ips;
+	private String[] whiteList;
 
 	@Builder
-	public ApisDto(Long apisId, Long memberId, String name, String webServerUrl, String urlSuf1fix,
-		String swaggerContent, ApisStatus status, Long quota, RawType rawType, String[] ips) {
+	public ApisDto(Long apisId, Long developerId, String name, String webServerUrl,
+		String swaggerContent, ApisStatus status, Long quota, RawType rawType, String[] whiteList) {
 		this.apisId = apisId;
-		this.memberId = memberId;
+		this.developerId = developerId;
 		this.name = name;
 		this.webServerUrl = webServerUrl;
-		this.urlSuffix = urlSuffix;
 		this.swaggerContent = swaggerContent;
 		this.status = status;
 		this.quota = quota;
 		this.rawType = rawType;
-		this.ips = ips;
+		this.whiteList = whiteList;
 	}
 }

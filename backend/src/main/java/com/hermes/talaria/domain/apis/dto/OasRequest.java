@@ -12,7 +12,6 @@ public class OasRequest {
 	String content;
 
 	@Builder
-
 	public OasRequest(String content) {
 		this.content = content;
 	}

@@ -11,7 +11,7 @@ import com.hermes.talaria.domain.apis.entity.Apis;
 @Repository
 public interface ApisRepository extends JpaRepository<Apis, Long> {
 
-	List<Apis> findApisByMemberId(Long memberId);
+	List<Apis> findApisByDeveloperId(Long memberId);
 
 	Optional<Apis> findApisByApisId(Long apisId);
 
