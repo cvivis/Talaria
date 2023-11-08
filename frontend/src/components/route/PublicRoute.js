@@ -1,9 +1,10 @@
 import { Navigate } from "react-router-dom";
+import { useSelector } from 'react-redux';
 
 const PublicRoute = ({component : Component}) => {
 
-    const login = false;
-    const role = "user";
+    const login = useSelector(state => state.userInfo.access_token);;
+    const role = useSelector(state => state.userInfo.role);
 
     if(login) {
         if(role === "USER") {
