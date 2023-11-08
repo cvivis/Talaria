@@ -39,7 +39,7 @@ public class Apis implements Serializable {
 	private Long apisId;
 
 	@Column
-	private Long memberId;
+	private Long developerId;
 
 	@Column
 	private String name;
@@ -61,20 +61,20 @@ public class Apis implements Serializable {
 
 	@Type(type = "string-array")
 	@Column(columnDefinition = "text[]")
-	private String[] ips;
+	private String[] whiteList;
 
 	@Builder
-	public Apis(Long apisId, Long memberId, String name, String webServerUrl,
-		String swaggerContent, ApisStatus status, Long quota, RawType rawType, String[] ips) {
+	public Apis(Long apisId, Long developerId, String name, String webServerUrl,
+		String swaggerContent, ApisStatus status, Long quota, RawType rawType, String[] whiteList) {
 		this.apisId = apisId;
-		this.memberId = memberId;
+		this.developerId = developerId;
 		this.name = name;
 		this.webServerUrl = webServerUrl;
 		this.swaggerContent = swaggerContent;
 		this.status = status;
 		this.quota = quota;
 		this.rawType = rawType;
-		this.ips = ips;
+		this.whiteList = whiteList;
 	}
 
 	public void update(ApisDto apisDto) {
