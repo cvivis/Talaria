@@ -69,7 +69,7 @@ instance.interceptors.response.use(
                         alert(error.response.data.errorMessage);
         }
 
-        return Promise.reject(error);
+        return Promise.resolve(error.response);
     },
 );
 
