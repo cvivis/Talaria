@@ -1,19 +1,26 @@
+from app.configurator.generator import Generator
+from app.configurator.executor import Executor
+from app.requests import Requests
+
 import time
-import os
+
+from datetime import datetime
 
 
 if __name__ == '__main__':
-    i = 1
+    generator = Generator()
+    requests = Requests()
 
-    envs = {
-        "EMAIL": os.environ.get("EMAIL")
-    }
-
-    with open('../.env', 'w') as env_file:
-        for key, value in envs.items():
-            env_file.write(f'{key}={value}\n')
-
+    prev = datetime.now()
     while True:
-        print(f'{i}: hello data plane')
-        i += 1
+        current = datetime.now()
+        if current.hour != prev.hour:
+            Executor.rotate_current_log(current)
+
+        generator.setup_green()
+        generator.generate_configs(requests.services())
+        Executor.switch_configs_blue_to_green()
+        Executor.reload_nginx()
+
+        prev = current
         time.sleep(3)
