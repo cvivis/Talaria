@@ -85,7 +85,7 @@ public class ErrorCountParser {
 
 //        log.info("line: {}",line);
         if (matcher.find()) {
-            date = getTime.getTime(matcher.group(1));
+            date = getTime.getErrorTime(matcher.group(1));
             errorLevel = matcher.group(2);
             errorLevel = errorLevel.toUpperCase(Locale.ROOT);
 //            log.info("errorLevel : {}",errorLevel);

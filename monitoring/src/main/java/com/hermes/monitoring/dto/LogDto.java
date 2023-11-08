@@ -1,12 +1,14 @@
 package com.hermes.monitoring.dto;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.Date;
 
 @Data
 @ToString
+@NoArgsConstructor
 public class LogDto {
     String ipAddress;
     Date dateTime;
