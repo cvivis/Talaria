@@ -25,6 +25,16 @@ def make_directory(directory_path: str) -> None:
         logger.error(f'{e.filename} - {e.strerror}')
 
 
+def copy_directory(from_path: str, to_path: str, directory_name: str) -> None:
+    new_from = join(from_path, directory_name)
+    new_to = join(to_path, directory_name)
+
+    try:
+        shutil.copytree(new_from, new_to)
+    except OSError as e:
+        logger.error(f'')
+
+
 def copy_file(from_path: str, to_path: str, file_name: str, file_name2: str = None) -> None:
     new_from = join(from_path, file_name)
     destination = file_name if file_name2 is None else file_name2

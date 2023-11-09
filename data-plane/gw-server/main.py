@@ -1,6 +1,8 @@
+from app.requests import Requests
+from app.constant import constant
+from app.file_utils import *
 from app.configurator.generator import Generator
 from app.configurator.executor import Executor
-from app.requests import Requests
 
 import time
 
@@ -8,6 +10,8 @@ from datetime import datetime
 
 
 if __name__ == '__main__':
+    write_file(constant.BLUE_CONFIG_PATH, 'api_gateway.conf', '')
+
     generator = Generator()
     requests = Requests()
 
@@ -20,7 +24,7 @@ if __name__ == '__main__':
         generator.setup_green()
         generator.generate_configs(requests.services())
         Executor.switch_configs_blue_to_green()
-        Executor.reload_nginx()
+        # Executor.reload_nginx()
 
         prev = current
         time.sleep(3)

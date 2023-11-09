@@ -14,10 +14,10 @@ class APIConf(BaseConf):
 
     def generate(self):
         block = f'location {self.location} {{\n'
-        block += self._get_ip_block()
+        # block += self._get_ip_block()
         block += f'\taccess_log /var/log/nginx/{self.service_name}_api.log talaria_log_format;\n\n'
-        block += self._get_limit_block()
-        block += self._get_auth_block()
+        # block += self._get_limit_block()
+        # block += self._get_auth_block()
         block += self._get_apis_block()
         block += '\treturn 404;\n'
         block += '}\n\n'
@@ -26,12 +26,11 @@ class APIConf(BaseConf):
         return {'name': self.name, 'content': block}
 
     def _get_ip_block(self) -> str:
-        block, ips = '', [ip['ip'] for ip in self.whitelist]
-
-        for ip in ips:
+        block = ''
+        for ip in self.whitelist:
             block += f'\tallow {ip};\n'
         block += '\tdeny all;\n'
-        block += '\terror_page 403 = $403;\n\n'
+        block += '\terror_page 403 = @403;\n\n'
 
         return block
 
@@ -41,7 +40,7 @@ class APIConf(BaseConf):
         return block
 
     def _get_auth_block(self) -> str:
-        block = f'\tauth_request /_vallidate_apikey;\n'
+        block = f'\tauth_request /_validate_apikey;\n'
         block += f'\tif ($is_{self.service_name} = 0) {{\n'
         block += '\t\treturn 403;\n'
         block += '\t}\n\n'
@@ -61,16 +60,16 @@ class APIConf(BaseConf):
         matches = re.findall(pattern, api_uri)
 
         if len(matches) == 0:
-            block = f'\tlocation = {api_uri} {{\n'
+            block = f'\tlocation = {self.location[:-1]}{api_uri} {{\n'
         else:
             new_uri = re.sub(pattern, r'[^/]+', api_uri)
-            block = f'\tlocation ~ ^{new_uri}$ {{\n'
+            block = f'\tlocation ~ ^{self.location[:-1]}{new_uri}$ {{\n'
 
         methods_str = ' '.join(methods)
         block += f'\t\tlimit_except ' + methods_str.upper() + ' {\n'
         block += '\t\t\tdeny all;\n'
         block += '\t\t}\n'
         block += '\t\terror_page 403 = @405;\n'
-        block += f'\t\tproxy_path http://{self.service_name};\n'
+        block += f'\t\tproxy_pass http://{self.service_name};\n'
         block += '\t}\n\n'
         return block

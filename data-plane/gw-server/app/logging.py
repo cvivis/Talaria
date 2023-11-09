@@ -23,4 +23,4 @@ class Logger:
         self.logger.addHandler(self.file_handler)
 
 
-logger = Logger()
+logger = Logger().logger

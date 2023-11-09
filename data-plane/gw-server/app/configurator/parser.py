@@ -1,3 +1,6 @@
+from urllib.parse import urlparse
+
+
 class Parser:
     def __init__(self, services: dict):
         self.services = services
@@ -5,16 +8,11 @@ class Parser:
     def servers(self) -> dict:
         server_dict = dict()
 
-        for service in self.services:
-            dept_name = service['info']['dept_name']
-            group_name = service['info']['group_name']
-            name = f'{dept_name}_{group_name}'
-
-            oas = service['oas']
-            servers = []
+        for index, service in enumerate(self.services):
+            oas, servers = service['oas'], set()
             for server in oas['servers']:
-                servers.append(server['url'])
-            server_dict[name] = servers
+                servers.add(urlparse(server['url']).netloc)
+            server_dict[self.service_name(index)] = list(servers)
 
         return server_dict
 
@@ -34,14 +32,14 @@ class Parser:
     def keys(self) -> dict:
         general_keys, service_keys = dict(), dict()
 
-        for service in self.services:
+        for index, service in enumerate(self.services):
             service_users = []
             for key_items in service['keys']:
                 key, user_id = key_items['key'], key_items['id']
                 general_keys[user_id] = key
                 service_users.append(user_id)
 
-            service_name = self.service_name(service)
+            service_name = self.service_name(index)
             service_keys[service_name] = service_users
 
         return {'general': general_keys, 'service': service_keys}
