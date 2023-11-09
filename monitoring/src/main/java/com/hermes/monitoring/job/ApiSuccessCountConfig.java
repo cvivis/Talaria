@@ -44,7 +44,7 @@ public class ApiSuccessCountConfig {
         return jobBuilderFactory.get("countSuccessCount")
                 .incrementer(new RunIdIncrementer())
                 .start(apiSuccessLogFileReaderStep())
-                .next(mappingStatusCodeStep())
+                .next(mappingSuccessStatusCodeStep())
                 .next(successDbInsertStep())
                 .build();
     }
@@ -64,8 +64,8 @@ public class ApiSuccessCountConfig {
 
     // STEP 2 : 500 파일의 http status code 별로 DTO를 분리한다.
     @Bean
-    public Step mappingStatusCodeStep(){
-        return stepBuilderFactory.get("mappingStatusCode")
+    public Step mappingSuccessStatusCodeStep(){
+        return stepBuilderFactory.get("mappingSuccessStatusCode")
                 .tasklet((contribution, chunkContext) -> {
                     // http status로 분류
                     statusUrlCount = new LinkedHashMap<>();
