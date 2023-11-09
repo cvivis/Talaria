@@ -14,7 +14,7 @@ const MainChart = () => {
             <Flex gap={10} pr={5} pt={5}>
                 <Chart1></Chart1>
                 <Chart2></Chart2>
-                {/* <Chart3></Chart3> */}
+                <Chart3></Chart3>
             </Flex>
             <Flex gap={10} pr={5} pt={5}>
                 {/* <Chart4></Chart4>
