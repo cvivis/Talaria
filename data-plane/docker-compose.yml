@@ -10,8 +10,8 @@ secrets:
     file: ./setup/certbot/conf/live/${DATA_PLANE_DOMAIN}/privkey.pem
 
 services:
-  gw-server:
-    container_name: gw-server
+  configurator:
+    container_name: configurator
     image: python:${PYTHON_VERSION}
     environment:
       MODE: test
@@ -25,12 +25,12 @@ services:
       DATA_PLANE_DOMAIN: ${DATA_PLANE_DOMAIN}
     restart: unless-stopped
     volumes:
-      - ./gw-server:/code:ro
+      - ./configurator:/code:ro
       - talaria_conf.d:/nginx/talaria_conf.d
     working_dir: /code
     entrypoint: /code/entrypoint.sh
     ports:
-      - "${GW_SERVER_PORT}:${GW_SERVER_PORT}"
+      - "${CONFIGURATOR_PORT}:${CONFIGURATOR_PORT}"
 
   nginx:
     container_name: nginx
