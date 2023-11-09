@@ -42,4 +42,4 @@ class Generator:
     def _copy_constant_configs(self):
         copy_file(self.static_config_path, self.green_path, 'api_json_errors.conf')
         copy_file(self.static_config_path, self.green_path, 'json_validation.js')
-        copy_file(self.static_config_path, self.green_path, 'custom_format.d')
+        copy_directory(self.static_config_path, self.green_path, 'custom_format.d')

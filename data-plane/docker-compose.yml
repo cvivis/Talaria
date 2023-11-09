@@ -1,13 +1,7 @@
-version: "3.5"
-
-networks:
-  default:
-    name: data-plane
-    external: false
+version: "3.8"
 
 volumes:
   talaria_conf.d:
-  nginx_log:
 
 secrets:
   nginx.fullchain:
@@ -30,18 +24,16 @@ services:
       BLUE_CONFIG_PATH: /code/nginx/talaria_conf.d
       NGINX_LOG_PATH: /code/nginx/log
       LOGGING_PATH: /code/log
+      RELOAD_PATH: /code/nginx/reload
       CONTROL_PLANE_DOMAIN: ${CONTROL_PLANE_DOMAIN}
       DESCRIBING_SERVICE_URI: ${DESCRIBING_SERVICE_URI}
       DATA_PLANE_DOMAIN: ${DATA_PLANE_DOMAIN}
     restart: unless-stopped
     volumes:
       - talaria_conf.d:/code/nginx/talaria_conf.d
-      - nginx_log:/code/nginx/log
       - ./gw-server/log:/code/log
     ports:
       - "${GW_SERVER_PORT}:${GW_SERVER_PORT}"
-    depends_on:
-      - nginx
 
   nginx:
     container_name: nginx
@@ -53,8 +45,7 @@ services:
         NGINX_VERSION: ${NGINX_VERSION}
     restart: unless-stopped
     volumes:
-      - ./nginx/talaria_conf.d:/etc/nginx/talaria_conf.d
-      - ./nginx/nginx_log:/var/log/nginx
+      -  talaria_conf.d:/etc/nginx/talaria_conf.d
     secrets:
       - source: nginx.fullchain
         target: /usr/share/nginx/certs/fullchain.pem

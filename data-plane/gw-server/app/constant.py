@@ -22,6 +22,10 @@ class Constant:
         return os.environ.get('NGINX_LOG_PATH')
 
     @property
+    def RELOAD_PATH(self):
+        return os.environ.get('RELOAD_PATH')
+
+    @property
     def CONTROL_PLANE_DOMAIN(self):
         return os.environ.get('CONTROL_PLANE_DOMAIN')
 

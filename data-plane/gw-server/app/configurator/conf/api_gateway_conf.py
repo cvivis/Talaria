@@ -14,8 +14,10 @@ class APIGatewayConf(BaseConf):
         part1_path = join(constant.STATIC_CONFIG_PATH, 'api_gateway_part1.txt')
         part2_path = join(constant.STATIC_CONFIG_PATH, 'api_gateway_part2.txt')
 
-        block = 'include api_backends.conf;\n'
-        block += 'include api_keys.conf;\n\n'
+        block = 'include /etc/nginx/talaria_conf.d/api_backends.conf;\n'
+        block += 'include /etc/nginx/talaria_conf.d/api_keys.conf;\n'
+        block += 'include /etc/nginx/talaria_conf.d/custom_format.d/date_format.conf;\n'
+        block += 'include /etc/nginx/talaria_conf.d/custom_format.d/log_format.conf;\n\n'
         block += self._get_limit_req_zones()
         block += read_file(part1_path)
         block += f'\tserver_name {constant.DATA_PLANE_DOMAIN};\n\n'

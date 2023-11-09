@@ -1,10 +1,10 @@
 from app.constant import constant
 from app.file_utils import *
 
-import subprocess
 import shutil
 
-from os.path import join
+from os import listdir, remove
+from os.path import join, isdir
 from datetime import datetime
 
 
@@ -12,32 +12,33 @@ class Executor:
     @staticmethod
     def switch_configs_blue_to_green():
         try:
-            shutil.rmtree(constant.BLUE_CONFIG_PATH)
-            logger.info(f'Removed {constant.BLUE_CONFIG_PATH}')
-        except FileNotFoundError as e:
-            logger.error(f'FileNotFoundError ({e})')
-        except PermissionError as e:
-            logger.error(f'PermissionError ({e})')
+            for item in listdir(constant.BLUE_CONFIG_PATH):
+                item_path = join(constant.BLUE_CONFIG_PATH, item)
+                if isdir(item_path):
+                    shutil.rmtree(item_path)
+                else:
+                    remove(item_path)
+            logger.info(f'Removed contents on {constant.BLUE_CONFIG_PATH}')
         except Exception as e:
-            logger.error(f'Exception ({e})')
+            logger.error(f'Failed to remove blue configs ({e})')
 
         try:
-            shutil.copytree(constant.GREEN_CONFIG_PATH, constant.BLUE_CONFIG_PATH)
+            for item in listdir(constant.GREEN_CONFIG_PATH):
+                source_path = join(constant.GREEN_CONFIG_PATH, item)
+                destination_path = join(constant.BLUE_CONFIG_PATH, item)
+                if isdir(source_path):
+                    shutil.copytree(source_path, destination_path)
+                else:
+                    shutil.copyfile(source_path, destination_path)
             logger.info(f'Copied {constant.GREEN_CONFIG_PATH} to {constant.BLUE_CONFIG_PATH}')
         except Exception as e:
-            logger.error(f'Exception ({e})')
+            logger.error(f'Failed to copy green configs ({e})')
 
     @staticmethod
     def reload_nginx():
-        reload_path = join(constant.COMMAND_PATH, 'reload_nginx.sh')
-        process = subprocess.Popen(['bash', reload_path], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        stdout, stderr = process.communicate()
-
-        if len(stdout) > 0:
-            logger.info({stdout})
-
-        if len(stderr) > 0:
-            logger.error(f'Error on Nginx reloading: {stderr}')
+        write_file(constant.RELOAD_PATH, 'nginx.reload', '')
+        result = read_file(join(constant.RELOAD_PATH, 'result.txt'))
+        logger.info(result)
 
     @staticmethod
     def rotate_current_log(current: datetime):
