@@ -38,13 +38,9 @@ services:
   nginx:
     container_name: nginx
     image: nginx:${NGINX_VERSION}
-    build:
-      context: ./nginx
-      dockerfile: Dockerfile
-      args:
-        NGINX_VERSION: ${NGINX_VERSION}
     restart: unless-stopped
     volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       -  talaria_conf.d:/etc/nginx/talaria_conf.d
     secrets:
       - source: nginx.fullchain
