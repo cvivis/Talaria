@@ -7,16 +7,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hermes.talaria.domain.apis.constant.ApisStatus;
 import com.hermes.talaria.domain.apis.dto.ApisDto;
+import com.hermes.talaria.domain.apis.dto.ApisIdResponse;
 import com.hermes.talaria.domain.apis.dto.ApisRequest;
 import com.hermes.talaria.domain.apis.dto.ApisResponse;
 import com.hermes.talaria.domain.apis.dto.OasRequest;
+import com.hermes.talaria.domain.apis.dto.OasResponse;
 import com.hermes.talaria.domain.apis.service.ApisService;
 import com.hermes.talaria.global.memberinfo.MemberInfo;
 import com.hermes.talaria.global.util.ModelMapperUtil;
@@ -40,7 +43,7 @@ public class ApisController {
 	}
 
 	@GetMapping("/developer")
-	public ResponseEntity<List<ApisResponse>> findApis(@MemberInfo Long memberId) {
+	public ResponseEntity<List<ApisResponse>> findAllApis(@MemberInfo Long memberId) {
 		List<ApisResponse> response = apisService.findApisByDeveloperId(memberId).stream()
 			.map(apisDto -> ModelMapperUtil.getModelMapper().map(apisDto, ApisResponse.class))
 			.collect(Collectors.toList());
