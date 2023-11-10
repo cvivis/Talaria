@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.hermes.talaria.domain.apis.constant.ApisStatus;
 import com.hermes.talaria.domain.apis.dto.ApisDto;
 import com.hermes.talaria.domain.apis.entity.Apis;
 import com.hermes.talaria.domain.apis.repository.ApisRepository;
@@ -73,5 +74,24 @@ public class ApisService {
 		apis.registerOas(apisDto);
 
 		return apis.getApisId();
+	}
+
+	public ApisDto findApisByApisId(Long memberId, Long apisId) {
+		Apis apis = apisRepository.findApisByApisId(apisId).orElseThrow(() -> new BusinessException(
+			ErrorCode.NOT_EXIST_APIS));
+
+		if (!apis.getDeveloperId().equals(memberId)) {
+			throw new BusinessException(ErrorCode.WRONG_AUTHORITY);
+		}
+
+		return ModelMapperUtil.getModelMapper().map(apis, ApisDto.class);
+	}
+
+	public List<ApisDto> findApisByStatus(ApisStatus status) {
+		List<Apis> apisList = apisRepository.findApisByStatus(status);
+
+		return apisList.stream()
+			.map(apis -> ModelMapperUtil.getModelMapper().map(apis, ApisDto.class))
+			.collect(Collectors.toList());
 	}
 }
