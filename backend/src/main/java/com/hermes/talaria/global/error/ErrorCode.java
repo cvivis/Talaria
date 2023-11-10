@@ -27,6 +27,7 @@ public enum ErrorCode {
 
 	// Subscription
 	NOT_EXIST_SUBSCRIPTION(HttpStatus.BAD_REQUEST, "404005", "존재하지 않는 구독 요청입니다."),
+	NOT_EXIST_SUBSCRIPTION_STATUS(HttpStatus.BAD_REQUEST, "404006", "존재하지 않는 상태입니다.")
 	;
 
 	ErrorCode(HttpStatus httpStatus, String errorCode, String message) {
