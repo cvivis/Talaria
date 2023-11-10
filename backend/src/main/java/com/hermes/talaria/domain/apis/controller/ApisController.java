@@ -31,10 +31,10 @@ public class ApisController {
 	private final ApisService apisService;
 
 	@PostMapping("/developer")
-	public ResponseEntity<ApisResponse> create(@MemberInfo Long memberId, @RequestBody ApisRequest request) {
+	public ResponseEntity<ApisIdResponse> create(@MemberInfo Long memberId, @RequestBody ApisRequest request) {
 		ApisDto apisDto = ModelMapperUtil.getModelMapper().map(request, ApisDto.class);
 		apisDto.setDeveloperId(memberId);
-		ApisResponse response = ApisResponse.ofApisId(apisService.create(apisDto));
+		ApisIdResponse response = ApisIdResponse.ofApisId(apisService.create(apisDto));
 
 		return ResponseEntity.ok().body(response);
 	}
@@ -49,12 +49,12 @@ public class ApisController {
 	}
 
 	@PatchMapping("/developer/{apisId}")
-	public ResponseEntity<ApisResponse> update(@MemberInfo Long memberId, @RequestParam Long apisId,
+	public ResponseEntity<ApisIdResponse> update(@MemberInfo Long memberId, @PathVariable Long apisId,
 		@RequestBody ApisRequest request) {
 		ApisDto apisDto = ModelMapperUtil.getModelMapper().map(request, ApisDto.class);
 		apisDto.setApisId(apisId);
 		apisDto.setDeveloperId(memberId);
-		ApisResponse response = ApisResponse.ofApisId(apisService.update(apisDto));
+		ApisIdResponse response = ApisIdResponse.ofApisId(apisService.update(apisDto));
 
 		return ResponseEntity.ok().body(response);
 	}
@@ -67,7 +67,7 @@ public class ApisController {
 	}
 
 	@PostMapping("/developer/oas/{apisId}")
-	public ResponseEntity<ApisResponse> registerOas(@MemberInfo Long memberId, @RequestParam Long apisId,
+	public ResponseEntity<ApisIdResponse> registerOas(@MemberInfo Long memberId, @PathVariable Long apisId,
 		@RequestBody OasRequest request) {
 		ApisDto apisDto = ModelMapperUtil.getModelMapper().map(request, ApisDto.class);
 		apisDto.setApisId(apisId);
