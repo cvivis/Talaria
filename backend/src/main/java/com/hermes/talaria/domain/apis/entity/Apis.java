@@ -88,6 +88,7 @@ public class Apis implements Serializable {
 	public void update(ApisDto apisDto) {
 		this.name = apisDto.getName();
 		this.webServerUrl = apisDto.getWebServerUrl();
+		this.status = apisDto.getStatus();
 	}
 
 	public void registerOas(ApisDto apisDto) {
