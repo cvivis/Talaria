@@ -80,7 +80,17 @@ public class ApisController {
 		ApisDto apisDto = ModelMapperUtil.getModelMapper().map(request, ApisDto.class);
 		apisDto.setApisId(apisId);
 		apisDto.setDeveloperId(memberId);
-		ApisResponse response = ApisResponse.ofApisId(apisService.registerOas(apisDto));
+
+		ApisIdResponse response = ApisIdResponse.ofApisId(apisService.registerOas(apisDto));
+
+		return ResponseEntity.ok().body(response);
+	}
+
+	@GetMapping("/user/all")
+	public ResponseEntity<List<ApisResponse>> findApprovedOn() {
+		List<ApisResponse> response = apisService.findApisByStatus(ApisStatus.APPROVED_ON)
+			.stream().map(apisDto -> ModelMapperUtil.getModelMapper().map(apisDto, ApisResponse.class))
+			.collect(Collectors.toList());
 
 		return ResponseEntity.ok().body(response);
 	}
