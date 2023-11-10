@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hermes.talaria.domain.apis.constant.ApisStatus;
@@ -18,9 +19,11 @@ import com.hermes.talaria.domain.apis.dto.ApisDto;
 import com.hermes.talaria.domain.apis.dto.ApisIdResponse;
 import com.hermes.talaria.domain.apis.dto.ApisRequest;
 import com.hermes.talaria.domain.apis.dto.ApisResponse;
+import com.hermes.talaria.domain.apis.dto.ApisSubResponse;
 import com.hermes.talaria.domain.apis.dto.OasRequest;
 import com.hermes.talaria.domain.apis.dto.OasResponse;
 import com.hermes.talaria.domain.apis.service.ApisService;
+import com.hermes.talaria.domain.subscription.constant.Status;
 import com.hermes.talaria.global.memberinfo.MemberInfo;
 import com.hermes.talaria.global.util.ModelMapperUtil;
 
@@ -98,4 +101,14 @@ public class ApisController {
 		return ResponseEntity.ok().body(response);
 	}
 
+	@GetMapping("/user/me")
+	public ResponseEntity<List<ApisSubResponse>> findSubsByStatus(@MemberInfo Long memberId,
+		@RequestParam String status) {
+
+		List<ApisSubResponse> response = apisService.findApisSubsByStatus(memberId, status)
+			.stream().map(subscriptionDto -> ModelMapperUtil.getModelMapper().map(subscriptionDto, ApisSubResponse.class))
+			.collect(Collectors.toList());
+
+		return ResponseEntity.ok().body(response);
+	}
 }
