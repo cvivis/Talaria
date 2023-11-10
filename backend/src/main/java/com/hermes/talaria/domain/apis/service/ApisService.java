@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.hermes.talaria.domain.apis.dto.ApisDto;
 import com.hermes.talaria.domain.apis.entity.Apis;
@@ -15,6 +16,7 @@ import com.hermes.talaria.global.util.ModelMapperUtil;
 import lombok.RequiredArgsConstructor;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ApisService {
 
