@@ -24,6 +24,9 @@ public enum ErrorCode {
 
 	// APIS
 	NOT_EXIST_APIS(HttpStatus.BAD_REQUEST, "404004", "존재하지 않는 API 그룹입니다."),
+
+	// Subscription
+	NOT_EXIST_SUBSCRIPTION(HttpStatus.BAD_REQUEST, "404005", "존재하지 않는 구독 요청입니다."),
 	;
 
 	ErrorCode(HttpStatus httpStatus, String errorCode, String message) {
