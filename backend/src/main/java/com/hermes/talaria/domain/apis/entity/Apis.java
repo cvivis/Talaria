@@ -70,10 +70,12 @@ public class Apis implements Serializable {
 	@Column(columnDefinition = "text[]")
 	private String[] whiteList;
 
+	@Column
+	private String routingUrl;
+
 	@Builder
-	public Apis(Long apisId, Long developerId, String name, String webServerUrl,
-		String swaggerContent, ApisStatus status, Long quota,
-		RawType rawType, String[] whiteList) {
+	public Apis(Long apisId, Long developerId, String name, String webServerUrl, String swaggerContent,
+		ApisStatus status, Long quota, RawType rawType, String[] whiteList, String routingUrl) {
 		this.apisId = apisId;
 		this.developerId = developerId;
 		this.name = name;
@@ -83,6 +85,7 @@ public class Apis implements Serializable {
 		this.quota = quota;
 		this.rawType = rawType;
 		this.whiteList = whiteList;
+		this.routingUrl = routingUrl;
 	}
 
 	public void update(ApisDto apisDto) {
