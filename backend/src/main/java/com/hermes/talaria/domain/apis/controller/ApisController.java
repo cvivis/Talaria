@@ -101,7 +101,7 @@ public class ApisController {
 		return ResponseEntity.ok().body(response);
 	}
 
-	@GetMapping("user/me")
+	@GetMapping("/user/me")
 	public ResponseEntity<List<ApisSubResponse>> findSubsByStatus(@MemberInfo Long memberId,
 		@RequestParam String status) {
 
