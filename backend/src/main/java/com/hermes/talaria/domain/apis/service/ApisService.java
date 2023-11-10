@@ -53,7 +53,7 @@ public class ApisService {
 		Apis apis = apisRepository.findApisByApisId(apisId).orElseThrow(() -> new BusinessException(
 			ErrorCode.NOT_EXIST_APIS));
 
-		if (!apis.getDeveloperId().equals(apisId)) {
+		if (!apis.getDeveloperId().equals(memberId)) {
 			throw new BusinessException(ErrorCode.WRONG_AUTHORITY);
 		}
 
