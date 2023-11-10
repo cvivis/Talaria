@@ -60,8 +60,16 @@ public class ApisController {
 	}
 
 	@DeleteMapping("/developer/{apisId}")
-	public ResponseEntity<ApisResponse> delete(@MemberInfo Long memberId, @RequestParam Long apisId) {
-		ApisResponse response = ApisResponse.ofApisId(apisService.delete(memberId, apisId));
+	public ResponseEntity<ApisIdResponse> delete(@MemberInfo Long memberId, @PathVariable Long apisId) {
+		ApisIdResponse response = ApisIdResponse.ofApisId(apisService.delete(memberId, apisId));
+
+		return ResponseEntity.ok().body(response);
+	}
+
+	@GetMapping("/developer/{apisId}")
+	public ResponseEntity<OasResponse> findApis(@MemberInfo Long memberId, @PathVariable Long apisId) {
+		OasResponse response = ModelMapperUtil.getModelMapper()
+			.map(apisService.findApisByApisId(memberId, apisId), OasResponse.class);
 
 		return ResponseEntity.ok().body(response);
 	}
