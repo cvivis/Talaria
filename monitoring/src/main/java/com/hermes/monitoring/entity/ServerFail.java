@@ -34,4 +34,6 @@ public class ServerFail {
 
     private String method;
 
+    private String groupName;
+
 }

@@ -30,4 +30,6 @@ public class Success {
     private int statusCode;
 
     private String method;
+
+    private String groupName;
 }
