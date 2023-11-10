@@ -23,7 +23,7 @@ public class AverageTimeCheckService {
 
     private final AverageTimeCheckConfig averageTimeCheckConfig;
 
-    @Scheduled(cron = "0/5 * * * * *") // cron 표기법
+//    @Scheduled(cron = "0/5 * * * * *") // cron 표기법
     public void checkAverageTime() {
         // job parameter 설정
         Map<String, JobParameter> confMap = new HashMap<>();

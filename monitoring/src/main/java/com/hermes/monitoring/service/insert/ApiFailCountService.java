@@ -1,8 +1,7 @@
-package com.hermes.monitoring.service;
+package com.hermes.monitoring.service.insert;
 
 
-import com.hermes.monitoring.job.ApiFailCountConfig;
-import com.hermes.monitoring.job.ErrorCountConfig;
+import com.hermes.monitoring.job.apiDetail.ApiFailCountConfig;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.JobParameter;

@@ -32,7 +32,7 @@ public class UsageRankingService {
 
     private final UsageRankingConfig usageRankingConfig;
     private final CreateLogFile createLogFile;
-    @Scheduled(cron = "0/5 * * * * *") // cron 표기법
+//    @Scheduled(cron = "0/5 * * * * *") // cron 표기법
     public void runJob() throws IOException {
         createLogFile.createLogFile(url,baseUrl);
         // job parameter 설정

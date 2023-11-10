@@ -24,7 +24,7 @@ public class SchedulerService {
 
     private final HttpStatusConfig httpStatusConfig;
 
-    @Scheduled(cron = "0/5 * * * * *") // cron 표기법
+//    @Scheduled(cron = "0/5 * * * * *") // cron 표기법
     public void runJob() {
 
         // job parameter 설정

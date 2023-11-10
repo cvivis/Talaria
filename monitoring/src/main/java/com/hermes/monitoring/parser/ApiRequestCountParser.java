@@ -49,15 +49,22 @@ public class ApiRequestCountParser {
             String regex = "^(\\S+) - - \\[([^\\]]+)\\] \"(\\S+) (\\S+) (\\S+)\" (\\d+) (\\d+) \"([^\"]*)\" \"([^\"]*)\" (\\d+\\.\\d+) ([\\d.\\-]+)$";
             Pattern pattern = Pattern.compile(regex);
             Matcher matcher = pattern.matcher(line);
+            String ip = "ip";
             Date dateTime = new Date();
             String httpMethod = "메서드";
             String path = "path";
+            String httpProtocol = "protocol";
+            String statusCode = "statusCode";
+            String requestTime = "responseTime";
 
             if (matcher.find()) {
 //                log.info("statusCode : {}",matcher.group(6));
+                ip = matcher.group(1);
                 dateTime = getTime.getDateZone(matcher.group(2));
                 httpMethod = matcher.group(3);
                 path = matcher.group(4);
+                httpProtocol = matcher.group(5);
+                statusCode = matcher.group(6);
                 return ApiRequestDetailDto.builder()
                         .path(path)
                         .httpMethod(httpMethod)

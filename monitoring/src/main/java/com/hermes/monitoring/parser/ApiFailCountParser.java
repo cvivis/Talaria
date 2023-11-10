@@ -47,6 +47,7 @@ public class ApiFailCountParser {
         public ApiFailDetailDto parseLogEntry(String line) throws ParseException {
 //            String regex = "^(\\S+) - - \\[([^\\]]+)\\] \"(\\S+) (\\S+) (\\S+)\" (\\d+) (\\d+) \"([^\"]*)\" \"([^\"]*)\" (\\d+\\.\\d+) ([\\d.\\-]+)$";
             String regex = "^(\\S+) - - \\[([^\\]]+)\\] \"(\\S+) (\\S+) (\\S+)\" (\\d+) (\\d+) \"([^\"]*)\" \"([^\"]*)\" (\\d+\\.\\d+) ([\\d.\\-]+)$";
+//            String regex = "^(\\S+) - - /(\\\\w+/\\\\w+)(/\\\\w+.*)? \"(\\S+) (\\S+) (\\S+)\" (\\d+) (\\d+) \"([^\"]*)\" \"([^\"]*)\" (\\d+\\.\\d+) ([\\d.\\-]+)$";
             Pattern pattern = Pattern.compile(regex);
             Matcher matcher = pattern.matcher(line);
             Date dateTime = new Date();

@@ -16,4 +16,18 @@ public interface ClientFailRepository extends JpaRepository<ClientFail,Long> {
             "group by c.date,c.url,c.hour,c.method,c.hourlyCount order by c.date desc, c.hour desc")
     List<ApiClientFailHourlyCountDto> findHourAndCountByUrlAndMethod(@Param("url")String url, @Param("method")String method);
 
+    @Query(value = "SELECT today.status_code as status_code, today.count as count, round(sum(hourly_count)::numeric / (to_date(max(today),'YYYY-MM-DD') - to_date(min(date),'YYYY-MM-DD')::date),1) as avg" +
+            " from client_fail as a JOIN " +
+            "(select date as today,status_code, sum(hourly_count) as count from client_fail where url = '/robots.txt' and method = 'GET' and to_date(date,'YYYY-MM-DD') = current_date group by status_code, date order by count desc limit 3) as today" +
+            "ON a.status_code = today.status_code and a.date != today.today\n" +
+            "where url = '/robots.txt' and method = 'GET' " +
+            "group by (today.status_code, today.count)" , nativeQuery = true)
+    List<ApiClientFailRankingVo> findTodayAndAvgCount(String url, String method);
+
+    interface ApiClientFailRankingVo{
+        Integer getStatusCode();
+        Long getCount();
+        Double getAvg();
+
+    }
 }

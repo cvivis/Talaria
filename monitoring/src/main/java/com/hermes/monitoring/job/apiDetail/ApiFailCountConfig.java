@@ -1,9 +1,13 @@
-package com.hermes.monitoring.job;
+package com.hermes.monitoring.job.apiDetail;
 
 
-import com.hermes.monitoring.entity.RequestCount;
-import com.hermes.monitoring.parser.ApiRequestCountParser;
-import com.hermes.monitoring.repository.RequestCountRepository;
+import com.hermes.monitoring.dto.ErrorCountTypeDto;
+import com.hermes.monitoring.dto.LogDto;
+import com.hermes.monitoring.entity.ClientFail;
+import com.hermes.monitoring.mapper.ApiFailCountMapper;
+import com.hermes.monitoring.parser.ApiFailCountParser;
+import com.hermes.monitoring.parser.GetTime;
+import com.hermes.monitoring.repository.ClientFailRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -11,48 +15,51 @@ import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
+import org.springframework.batch.item.ItemReader;
+import org.springframework.batch.item.ItemWriter;
+import org.springframework.batch.item.file.FlatFileItemReader;
+import org.springframework.batch.item.file.mapping.DefaultLineMapper;
+import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
-public class ApiRequestCountConfig {
+public class ApiFailCountConfig {
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
-    private final ApiRequestCountParser apiRequestCountParser;
-    private final RequestCountRepository requestCountRepository;
-    @Value("${log.url}")
+    private final ApiFailCountParser apiFailCountParser;
+    private final ClientFailRepository clientFailRepository;
+
+    @Value("${fail.log.url}")
     String url;
 
     Map<String, Integer> map = new HashMap<>();
 
     @Bean
-    public Job apiRequestCountJob(){
+    public Job apiFailCountJob(){
 
-        Job fileJob = jobBuilderFactory.get("apiRequestCount")
+        Job fileJob = jobBuilderFactory.get("apiFailCount")
                 .incrementer(new RunIdIncrementer())
-                .start(apiRequestParseStep()) // 처리 후 전송
-                .next(apiRequestCountInsertStep())
+                .start(apiFailParseStep()) // 처리 후 전송
+                .next(apiFailCountInsertStep())
                 .build();
 
         return fileJob;
     }
 
     @Bean
-    public Step apiRequestParseStep(){
-        log.info("-----apiRequestCountParser 시작-----");
-        return stepBuilderFactory.get("apiRequestCountParser")
+    public Step apiFailParseStep(){
+        log.info("-----apiFailCountParser 시작-----");
+        return stepBuilderFactory.get("apiFailCountParser")
                 .tasklet((contribution, chunkContext) ->{
-                    map = apiRequestCountParser.parseLog(url);
+                    map = apiFailCountParser.parseLog(url);
                     return RepeatStatus.FINISHED;
                 })
                 .build();
@@ -61,7 +68,7 @@ public class ApiRequestCountConfig {
     // String key = item.getPath() + "_" + year + "_" + hour + "_" + item.getHttpMethod() + "_" + item.getStatusCode();
     @Bean
     @Transactional
-    public Step apiRequestCountInsertStep(){
+    public Step apiFailCountInsertStep(){
         return stepBuilderFactory.get("apiFailCountParser")
                 .tasklet((contribution, chunkContext) ->{
                     List<String> keySet = new ArrayList<>(map.keySet());
@@ -73,15 +80,17 @@ public class ApiRequestCountConfig {
                         String year = key[1];
                         Integer hour = Integer.parseInt(key[2]);
                         String method = key[3];
+                        Integer statusCode = Integer.parseInt(key[4]);
 //                        log.info("{} {} {} {} {} {}",url,year,hour,method,statusCode, count);
-                        RequestCount requestCount = RequestCount.builder()
+                        ClientFail clientFail = ClientFail.builder()
                                 .url(url)
                                 .date(year)
                                 .hourlyCount(count)
+                                .statusCode(statusCode)
                                 .method(method)
                                 .hour(hour)
                                 .build();
-                        requestCountRepository.save(requestCount);
+                        clientFailRepository.save(clientFail);
                     }
                     return RepeatStatus.FINISHED;
                 })
