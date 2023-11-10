@@ -1,5 +1,6 @@
 package com.hermes.talaria.domain.apis.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -8,8 +9,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.hermes.talaria.domain.apis.constant.ApisStatus;
 import com.hermes.talaria.domain.apis.dto.ApisDto;
+import com.hermes.talaria.domain.apis.dto.ApisSubDto;
 import com.hermes.talaria.domain.apis.entity.Apis;
 import com.hermes.talaria.domain.apis.repository.ApisRepository;
+import com.hermes.talaria.domain.subscription.constant.Status;
+import com.hermes.talaria.domain.subscription.entity.Subscription;
+import com.hermes.talaria.domain.subscription.repository.SubscriptionRepository;
 import com.hermes.talaria.global.error.ErrorCode;
 import com.hermes.talaria.global.error.exception.BusinessException;
 import com.hermes.talaria.global.util.ModelMapperUtil;
@@ -22,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 public class ApisService {
 
 	private final ApisRepository apisRepository;
+	private final SubscriptionRepository subscriptionRepository;
 
 	public Long create(ApisDto apisDto) {
 		Apis apis = apisRepository.save(ModelMapperUtil.getModelMapper().map(apisDto, Apis.class));
@@ -93,5 +99,36 @@ public class ApisService {
 		return apisList.stream()
 			.map(apis -> ModelMapperUtil.getModelMapper().map(apis, ApisDto.class))
 			.collect(Collectors.toList());
+	}
+
+	public List<ApisSubDto> findApisSubsByStatus(Long memberId, String statusStr) {
+		List<Subscription> subscriptions = new ArrayList<>();
+
+		if (statusStr.equals("all")) {
+			for (Status status : Status.values()) {
+				subscriptions.addAll(subscriptionRepository.findByMemberIdAndStatus(memberId, status));
+			}
+		} else {
+			Status status;
+			try {
+				status = Status.valueOf(statusStr);
+			} catch (IllegalArgumentException e) {
+				throw new BusinessException(ErrorCode.NOT_EXIST_SUBSCRIPTION_STATUS);
+			}
+			subscriptions = subscriptionRepository.findByMemberIdAndStatus(memberId, status);
+		}
+
+		List<Apis> apisList = new ArrayList<>();
+		for (Subscription subscription : subscriptions) {
+			apisList.add(apisRepository.findApisByApisId(subscription.getApisId())
+				.orElseThrow(() -> new BusinessException(ErrorCode.NOT_EXIST_APIS)));
+		}
+
+		List<ApisSubDto> apisSubDtos = new ArrayList<>();
+		for (int i = 0; i < subscriptions.size(); i++) {
+			apisSubDtos.add(ApisSubDto.fromSubscriptionAndApis(subscriptions.get(i), apisList.get(i)));
+		}
+
+		return apisSubDtos;
 	}
 }
