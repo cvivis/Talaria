@@ -16,6 +16,7 @@ import lombok.ToString;
 public class ApisDto {
 	private Long apisId;
 	private Long developerId;
+	private String developerEmail;
 	private String name;
 	private String webServerUrl;
 	private String swaggerContent;
@@ -26,10 +27,11 @@ public class ApisDto {
 	private String routingUrl;
 
 	@Builder
-	public ApisDto(Long apisId, Long developerId, String name, String webServerUrl, String swaggerContent,
+	public ApisDto(Long apisId, Long developerId, String developerEmail, String name, String webServerUrl, String swaggerContent,
 		ApisStatus status, Long quota, RawType rawType, String[] whiteList, String routingUrl) {
 		this.apisId = apisId;
 		this.developerId = developerId;
+		this.developerEmail = developerEmail;
 		this.name = name;
 		this.webServerUrl = webServerUrl;
 		this.swaggerContent = swaggerContent;
