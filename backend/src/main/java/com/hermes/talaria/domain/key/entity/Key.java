@@ -56,4 +56,10 @@ public class Key implements Serializable {
 			.expirationDate(expirationDate)
 			.build();
 	}
+
+	public void updateKey(String keyValue, LocalDate createdDate, LocalDate expirationDate) {
+		this.keyValue = keyValue;
+		this.createdDate = createdDate;
+		this.expirationDate = expirationDate;
+	}
 }
