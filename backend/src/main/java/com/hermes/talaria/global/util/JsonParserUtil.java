@@ -1,4 +1,4 @@
-package com.hermes.talaria.global.jsonparser;
+package com.hermes.talaria.global.util;
 
 import java.util.Map;
 
@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Configuration
-public class JsonParser {
+public class JsonParserUtil {
 
 	public static Map<String, Object> parser(String rawJson) {
 
