@@ -1,5 +1,6 @@
 package com.hermes.talaria.domain.apis.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,13 +18,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.hermes.talaria.domain.apis.constant.ApisStatus;
 import com.hermes.talaria.domain.apis.dto.ApisDto;
 import com.hermes.talaria.domain.apis.dto.ApisIdResponse;
+import com.hermes.talaria.domain.apis.dto.ApisManagementRequest;
+import com.hermes.talaria.domain.apis.dto.ApisManagementResponse;
 import com.hermes.talaria.domain.apis.dto.ApisRequest;
 import com.hermes.talaria.domain.apis.dto.ApisResponse;
 import com.hermes.talaria.domain.apis.dto.ApisSubResponse;
 import com.hermes.talaria.domain.apis.dto.OasRequest;
 import com.hermes.talaria.domain.apis.dto.OasResponse;
 import com.hermes.talaria.domain.apis.service.ApisService;
-import com.hermes.talaria.domain.subscription.constant.Status;
 import com.hermes.talaria.global.memberinfo.MemberInfo;
 import com.hermes.talaria.global.util.ModelMapperUtil;
 
@@ -92,13 +94,43 @@ public class ApisController {
 		return ResponseEntity.ok().body(response);
 	}
 
-	@GetMapping("/user/all")
-	public ResponseEntity<List<ApisResponse>> findApprovedOn() {
-		List<ApisResponse> response = apisService.findApisByStatus(ApisStatus.APPROVED_ON)
+	@GetMapping("/user")
+	public ResponseEntity<List<ApisResponse>> findApprovedOn(@RequestParam String status) {
+		List<ApisStatus> statuses = new ArrayList<>();
+		if ("approved_on".equals(status))
+			statuses.add(ApisStatus.APPROVED_ON);
+		List<ApisResponse> response = apisService.getApisByStatus(statuses)
 			.stream().map(apisDto -> ModelMapperUtil.getModelMapper().map(apisDto, ApisResponse.class))
 			.collect(Collectors.toList());
 
 		return ResponseEntity.ok().body(response);
+	}
+
+	@GetMapping("/admin")
+	public ResponseEntity<List<ApisManagementResponse>> getApisManagementListByStatus(@RequestParam String status) {
+		List<ApisStatus> statuses = new ArrayList<>();
+		if ("pending".equals(status)) {
+			statuses.add(ApisStatus.PENDING);
+		} else if ("approved".equals(status)) {
+			statuses.add(ApisStatus.APPROVED_ON);
+			statuses.add(ApisStatus.APPROVED_OFF);
+		}
+		List<ApisDto> apisDtoList = apisService.getApisByStatus(statuses);
+
+		List<ApisManagementResponse> response = apisDtoList.stream()
+			.map(a -> ModelMapperUtil.getModelMapper().map(a, ApisManagementResponse.class))
+			.collect(
+				Collectors.toList());
+
+		return ResponseEntity.ok().body(response);
+	}
+
+	@PatchMapping("/admin")
+	public ResponseEntity<Void> updateApis(@RequestBody ApisManagementRequest request) {
+		ApisDto apisDto = ModelMapperUtil.getModelMapper().map(request, ApisDto.class);
+		apisService.updateApisManagement(apisDto);
+
+		return ResponseEntity.ok().build();
 	}
 
 	@GetMapping("/user/me")
@@ -106,7 +138,8 @@ public class ApisController {
 		@RequestParam String status) {
 
 		List<ApisSubResponse> response = apisService.findApisSubsByStatus(memberId, status)
-			.stream().map(subscriptionDto -> ModelMapperUtil.getModelMapper().map(subscriptionDto, ApisSubResponse.class))
+			.stream()
+			.map(subscriptionDto -> ModelMapperUtil.getModelMapper().map(subscriptionDto, ApisSubResponse.class))
 			.collect(Collectors.toList());
 
 		return ResponseEntity.ok().body(response);
