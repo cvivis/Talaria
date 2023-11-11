@@ -2,7 +2,7 @@ package com.hermes.talaria.domain.apis.dto;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.hermes.talaria.domain.subscription.constant.Status;
+import com.hermes.talaria.domain.subscription.constant.SubscriptionStatus;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -19,11 +19,11 @@ public class ApisSubResponse {
 	private String content;
 	private String routingUrl;
 	private Long quota;
-	private Status status;
+	private SubscriptionStatus status;
 
 	@Builder
 	public ApisSubResponse(Long apisId, String name, String content, String routingUrl, Long quota,
-		Status status) {
+		SubscriptionStatus status) {
 		this.apisId = apisId;
 		this.name = name;
 		this.content = content;
