@@ -88,14 +88,28 @@ public class Apis implements Serializable {
 		this.routingUrl = routingUrl;
 	}
 
-	public void update(ApisDto apisDto) {
-		this.name = apisDto.getName();
-		this.webServerUrl = apisDto.getWebServerUrl();
-		this.status = apisDto.getStatus();
-	}
-
 	public void registerOas(ApisDto apisDto) {
 		this.swaggerContent = apisDto.getSwaggerContent();
 		this.rawType = apisDto.getRawType();
+	}
+
+	public void updateWebServerUrl(String webServerUrl) {
+		this.webServerUrl = webServerUrl;
+	}
+
+	public void updateName(String name) {
+		this.name = name;
+	}
+
+	public void updateQuota(Long quota) {
+		this.quota = quota;
+	}
+
+	public void updateStatus(ApisStatus status) {
+		this.status = status;
+	}
+
+	public void updateWhiteList(String[] whiteList) {
+		this.whiteList = whiteList;
 	}
 }
