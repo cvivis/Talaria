@@ -1,7 +1,7 @@
 package com.hermes.talaria.domain.apis.dto;
 
 import com.hermes.talaria.domain.apis.entity.Apis;
-import com.hermes.talaria.domain.subscription.constant.Status;
+import com.hermes.talaria.domain.subscription.constant.SubscriptionStatus;
 import com.hermes.talaria.domain.subscription.entity.Subscription;
 
 import lombok.Builder;
@@ -20,11 +20,11 @@ public class ApisSubDto {
 	private String content;
 	private String routingUrl;
 	private Long quota;
-	private Status status;
+	private SubscriptionStatus status;
 
 	@Builder
 	public ApisSubDto(Long apisId, String name, String content, String routingUrl, Long quota,
-		Status status) {
+		SubscriptionStatus status) {
 		this.apisId = apisId;
 		this.name = name;
 		this.content = content;

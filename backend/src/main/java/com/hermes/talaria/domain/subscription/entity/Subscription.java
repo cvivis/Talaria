@@ -1,15 +1,31 @@
 package com.hermes.talaria.domain.subscription.entity;
 
-import com.hermes.talaria.domain.subscription.constant.Status;
-import com.hermes.talaria.domain.subscription.dto.SubscriptionDto;
-import lombok.*;
+import java.io.Serializable;
+import java.time.LocalDateTime;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.io.Serializable;
-import java.time.LocalDateTime;
+import com.hermes.talaria.domain.subscription.constant.SubscriptionStatus;
+import com.hermes.talaria.domain.subscription.dto.SubscriptionDto;
+
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
@@ -18,48 +34,58 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 @ToString
 public class Subscription implements Serializable {
-    @Id
-    @Column
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long subscriptionId;
+	@Id
+	@Column
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long subscriptionId;
 
-    @Column
-    @NotNull
-    private Long memberId;
+	@Column
+	@NotNull
+	private Long memberId;
 
-    @Column
-    @NotNull
-    private Long apisId;
+	@Column
+	@NotNull
+	private Long apisId;
 
-    @Column
-    private String content;
+	@Column
+	private Long keyId;
 
-    @Column
-    @CreatedDate
-    private LocalDateTime subscriptionTime;
+	@Column
+	private String content;
 
-    @Column
-    @Enumerated(EnumType.STRING)
-    private Status status;
+	@Column
+	@CreatedDate
+	private LocalDateTime subscriptionTime;
 
-    @Column
-    private String address;
+	@Enumerated(EnumType.STRING)
+	@ColumnDefault("'PENDING'")
+	private SubscriptionStatus status;
 
-    @Builder
-    public Subscription(Long subscriptionId, Long memberId, Long apisId, String content, LocalDateTime subscriptionTime, Status status, String address) {
-        this.subscriptionId = subscriptionId;
-        this.memberId = memberId;
-        this.apisId = apisId;
-        this.content = content;
-        this.subscriptionTime = subscriptionTime;
-        this.status = status;
-        this.address = address;
-    }
+	@Column
+	private String address;
 
-    public void update(SubscriptionDto subscriptionDto) {
-        this.address = subscriptionDto.getAddress();
-        this.content = subscriptionDto.getContent();
-        this.status = Status.PENDING;
-        this.subscriptionTime = LocalDateTime.now();
-    }
+	@Builder
+	public Subscription(Long subscriptionId, Long memberId, Long apisId, Long keyId, String content,
+		LocalDateTime subscriptionTime,
+		SubscriptionStatus status, String address) {
+		this.subscriptionId = subscriptionId;
+		this.memberId = memberId;
+		this.apisId = apisId;
+		this.keyId = keyId;
+		this.content = content;
+		this.subscriptionTime = subscriptionTime;
+		this.status = status;
+		this.address = address;
+	}
+
+	public void update(SubscriptionDto subscriptionDto) {
+		this.address = subscriptionDto.getAddress();
+		this.content = subscriptionDto.getContent();
+		this.status = SubscriptionStatus.PENDING;
+		this.subscriptionTime = LocalDateTime.now();
+	}
+
+	public void updateStatus(SubscriptionStatus status) {
+		this.status = status;
+	}
 }

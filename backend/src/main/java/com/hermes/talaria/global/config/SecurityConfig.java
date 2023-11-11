@@ -31,7 +31,7 @@ public class SecurityConfig {
 
 	@Bean
 	public WebSecurityCustomizer webSecurityCustomizer() {
-		return (web) -> web.ignoring().antMatchers("/auth/login", "/auth/refresh");
+		return (web) -> web.ignoring().antMatchers("/auth/login", "/auth/refresh", "/gateway");
 	}
 
 	@Bean

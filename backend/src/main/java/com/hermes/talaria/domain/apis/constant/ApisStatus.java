@@ -4,7 +4,5 @@ public enum ApisStatus {
 	APPROVED_ON,
 	APPROVED_OFF,
 	PENDING,
-	DECLINED;
-
-
+	REJECTED;
 }

@@ -22,21 +22,24 @@ public enum ErrorCode {
 	NOT_EXIST_MEMBER(HttpStatus.BAD_REQUEST, "404002", "존재하지 않는 회원입니다."),
 	DELETED_MEMBER(HttpStatus.BAD_REQUEST, "404003", "삭제된 회원입니다."),
 
+	//KEY
+	NOT_EXIST_KEY(HttpStatus.BAD_REQUEST, "404011", "존재하지 않는 KEY입니다."),
+
 	// APIS
-	NOT_EXIST_APIS(HttpStatus.BAD_REQUEST, "404004", "존재하지 않는 API 그룹입니다."),
+	NOT_EXIST_APIS(HttpStatus.BAD_REQUEST, "404021", "존재하지 않는 API 그룹입니다."),
 
 	// Subscription
-	NOT_EXIST_SUBSCRIPTION(HttpStatus.BAD_REQUEST, "404005", "존재하지 않는 구독 요청입니다."),
-	NOT_EXIST_SUBSCRIPTION_STATUS(HttpStatus.BAD_REQUEST, "404006", "존재하지 않는 상태입니다.")
+	NOT_EXIST_SUBSCRIPTION(HttpStatus.BAD_REQUEST, "404031", "존재하지 않는 구독 요청입니다."),
+	NOT_EXIST_SUBSCRIPTION_STATUS(HttpStatus.BAD_REQUEST, "404032", "존재하지 않는 상태입니다.")
 	;
+
+	private HttpStatus httpStatus;
+	private String errorCode;
+	private String message;
 
 	ErrorCode(HttpStatus httpStatus, String errorCode, String message) {
 		this.httpStatus = httpStatus;
 		this.errorCode = errorCode;
 		this.message = message;
 	}
-
-	private HttpStatus httpStatus;
-	private String errorCode;
-	private String message;
 }
