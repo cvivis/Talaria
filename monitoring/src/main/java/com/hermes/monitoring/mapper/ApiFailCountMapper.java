@@ -29,16 +29,16 @@ public class ApiFailCountMapper implements FieldSetMapper<LogDto>  {
         for(int i = 0 ; i < fieldSet.getFieldCount();i++){
             log.info("fieldSet {} {}" ,i ,fieldSet.readString(i));
         }
-        logDto.setIpAddress(fieldSet.readString(0));
+        logDto.setIp(fieldSet.readString(0));
         try {
-            logDto.setDateTime(getTime.getDateZone(date));
-            log.info("getTimeDate : {}",logDto.getDateTime());
+            logDto.setDate(getTime.getDateZone(date));
+            log.info("getTimeDate : {}",logDto.getDate());
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
         logDto.setHttpMethod(fieldSet.readString(5).split(" ")[0]);
-        logDto.setPath(fieldSet.readString(5).split(" ")[1]);
-        logDto.setStatusCode(fieldSet.readString(6));
+        logDto.setUrl(fieldSet.readString(5).split(" ")[1]);
+        logDto.setHttpStatusCode(fieldSet.readString(6));
         return logDto;
     }
 }
