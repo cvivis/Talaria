@@ -5,6 +5,7 @@ import com.hermes.monitoring.dto.ApiFailDetailDto;
 import com.hermes.monitoring.dto.ApiRequestDetailDto;
 import com.hermes.monitoring.dto.api.LogGroupDto;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -16,6 +17,7 @@ import java.util.regex.Pattern;
 
 
 @Slf4j
+@Component
 public class ApiGroupLogParser {
     GetTime getTime = new GetTime();
     public Map<String,Integer> apiGroupLogParse(String path) throws IOException {
@@ -38,7 +40,7 @@ public class ApiGroupLogParser {
                 Date date = item.getDateTime();
                 String year = getTime.getYear(date);
                 String hour = getTime.getHour(date);
-                String key = item.getPath() + "_" + year + "_" + hour + "_" + item.getHttpMethod() + "_";
+                String key = item.getRoutingPath()+"_"+item.getPath() + "_" + year + "_" + hour + "_" + item.getHttpMethod() + "_"+item.getStatusCode();
                 map.put(key, map.getOrDefault(key, 0) + 1);
             }
         }
@@ -47,14 +49,14 @@ public class ApiGroupLogParser {
     }
 
     public LogGroupDto apiGroupLogEntry(String line) throws ParseException {
-//        String regex = "^(\\S+) - - \\[([^\\]]+)\\] \"(\\S+) (\\S+) (\\S+)\" (\\d+) (\\d+) \"([^\"]*)\" \"([^\"]*)\" (\\d+\\.\\d+) ([\\d.\\-]+)$";
-        String regex = "^(\\S+) - - (/\\\\w+/\\\\w+)(/\\\\w+.*)? \"(\\S+) (\\S+) (\\S+)\" (\\d+) (\\d+) \"([^\"]*)\" \"([^\"]*)\" (\\d+\\.\\d+) ([\\d.\\-]+)$";
+            String regex = "^(\\S+) - - \\[([^\\]]+)\\] \"(\\S+) (\\S+) (\\S+)\" (\\d+) (\\d+) \"([^\"]*)\" \"([^\"]*)\" (\\d+\\.\\d+) ([\\d.\\-]+)$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(line);
         String ip = "ip";
         Date dateTime = new Date();
         String httpMethod = "method";
         String path = "path";
+        String routingPath = "routingPath";
         String httpProtocol = "protocol";
         String statusCode = "statusCode";
         String requestTime = "requestTime";
@@ -62,11 +64,22 @@ public class ApiGroupLogParser {
 
 
         if (matcher.find()) {
-//                log.info("statusCode : {}",matcher.group(6));
+//            for(int i = 0; i < matcher.groupCount();i++){
+//                log.info("{} : {}",i,matcher.group(i));
+//
+//            }
             ip = matcher.group(1);
             dateTime = getTime.getDateZone(matcher.group(2));
             httpMethod = matcher.group(3);
-            path = matcher.group(4);
+            String[] paths = matcher.group(4).split("/");
+            for(int i = 0 ; i < paths.length;i++){
+                log.info("{},{} ---- path",i,paths[i]);
+            }
+            routingPath = "/"+paths[1]+"/"+paths[2];
+            path = matcher.group(4).replace(routingPath,"");
+            if(path.equals("")){
+                path = "/";
+            }
             httpProtocol = matcher.group(5);
             statusCode = matcher.group(6);
             requestTime = matcher.group(10);
@@ -76,6 +89,7 @@ public class ApiGroupLogParser {
                     .httpProtocol(httpProtocol)
                     .statusCode(statusCode)
                     .dateTime(dateTime)
+                    .routingPath(routingPath)
                     .httpMethod(httpMethod)
                     .path(path)
                     .requestTime(requestTime)

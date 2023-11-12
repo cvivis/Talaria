@@ -15,6 +15,7 @@ public class LogGroupDto {
     Date dateTime;
     String httpMethod;
     String path;
+    String routingPath;
     String statusCode;
     String httpProtocol;
     String requestTime;

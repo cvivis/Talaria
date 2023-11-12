@@ -12,12 +12,19 @@ import java.util.Date;
 @Setter
 public class ApiClientFailHourlyCountDto {
     private Date date;
-    private Integer count;
+    private Long count;
+
+    public ApiClientFailHourlyCountDto(String date, Integer hour, Long count) throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Date newDate = dateFormat.parse(date + " " + hour +":00:00");
+        this.date = newDate;
+        this.count = count;
+    }
 
     public ApiClientFailHourlyCountDto(String date, Integer hour, Integer count) throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Date newDate = dateFormat.parse(date + " " + hour +":00:00");
         this.date = newDate;
-        this.count = count;
+        this.count = Long.valueOf(count);
     }
 }
