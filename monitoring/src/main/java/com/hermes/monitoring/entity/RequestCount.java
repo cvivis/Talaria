@@ -12,7 +12,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "request_count", uniqueConstraints = {
-        @UniqueConstraint(name = "uk_request_count", columnNames = {"date", "hour","hourly_count","url","method"}),
+        @UniqueConstraint(name = "uk_request_count", columnNames = {"date", "hour","hourly_count","url","method","group_name"}),
 })
 public class RequestCount {
     @Id
@@ -34,4 +34,8 @@ public class RequestCount {
 
     @NotNull
     private String method;
+
+    @NotNull
+    @Column(name = "group_name")
+    private String groupName;
 }

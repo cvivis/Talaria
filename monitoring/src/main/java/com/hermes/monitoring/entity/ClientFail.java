@@ -1,13 +1,10 @@
 package com.hermes.monitoring.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sun.istack.NotNull;
 import lombok.*;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
-import java.util.Date;
 
 @Entity
 @Getter
@@ -16,7 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "client_fail", uniqueConstraints = {
-        @UniqueConstraint(name = "uk_fail_count", columnNames = {"date", "hour","hourly_count","url","method","status_code"}),
+        @UniqueConstraint(name = "uk_fail_count", columnNames = {"date", "hour","hourly_count","url","method","status_code","group_name"}),
 })
 public class ClientFail {
     @Id
@@ -35,8 +32,10 @@ public class ClientFail {
     @NotNull
     @Column(name = "status_code")
     private Integer statusCode;
-
     @NotNull
     private String method;
+    @NotNull
+    @Column(name = "group_name")
+    private String groupName;
 
 }
