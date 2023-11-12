@@ -9,7 +9,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "success", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"hour", "date", "statusCode", "url", "method"})
+        @UniqueConstraint(columnNames = {"hour", "date", "statusCode", "url", "method", "groupName"})
 })
 @SuperBuilder
 @Getter
@@ -30,4 +30,6 @@ public class Success {
     private int statusCode;
 
     private String method;
+
+    private String groupName;
 }
