@@ -10,36 +10,25 @@ import java.util.Date;
 @ToString
 @NoArgsConstructor
 public class LogDto {
-    String ipAddress;
-    Date dateTime;
+    String ip;
+    Date date;
     String httpMethod;
-    String path;
-    String statusCode;
+    String group;
+    String url;
     String httpVersion;
-    // 요청 시간
+    String httpStatusCode;
     Double requestTime;
-    // 서버 응답 시간
     Double responseTime;
 
-
-    public LogDto(String ipAddress, Date dateTime, String httpMethod, String path, String httpVersion, String statusCode, double requestTime, double responseTime) {
-        this.ipAddress = ipAddress;
-        this.dateTime = dateTime;
+    public LogDto(String ip, Date date, String httpMethod, String group, String url, String httpVersion, String httpStatusCode, double requestTime, double responseTime) {
+        this.ip = ip;
+        this.date = date;
         this.httpMethod = httpMethod;
-        this.path = path;
-        this.statusCode = statusCode;
+        this.group = group;
+        this.url = url;
         this.httpVersion = httpVersion;
+        this.httpStatusCode = httpStatusCode;
         this.requestTime = requestTime;
         this.responseTime = responseTime;
-    }
-
-    public LogDto(String ipAddress, Date dateTime, String httpMethod, String path, String httpVersion, String statusCode, double requestTime) {
-        this.ipAddress = ipAddress;
-        this.dateTime = dateTime;
-        this.httpMethod = httpMethod;
-        this.path = path;
-        this.statusCode = statusCode;
-        this.httpVersion = httpVersion;
-        this.requestTime = requestTime;
     }
 }

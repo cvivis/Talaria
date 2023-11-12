@@ -70,8 +70,8 @@ public class ApiSuccessCountConfig {
                     // http status로 분류
                     statusUrlCount = new LinkedHashMap<>();
                     for(LogDto logDto : logDtoList){
-                        String statusCode = logDto.getStatusCode(); // LogDto에서 StatusCode를 가져옵니다.
-                        String url = logDto.getPath();
+                        String statusCode = logDto.getHttpStatusCode(); // LogDto에서 StatusCode를 가져옵니다.
+                        String url = logDto.getUrl();
                         String method = logDto.getHttpMethod();
                         String key = statusCode + " " + url + " " + method;
                         ApiSuccessCountDto dto = statusUrlCount.get(key);
