@@ -9,7 +9,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "success", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"hour", "date", "statusCode", "url", "method"})
+        @UniqueConstraint(columnNames = {"hour", "date", "statusCode", "url", "method", "groupName"})
 })
 @SuperBuilder
 @Getter

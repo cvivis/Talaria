@@ -11,7 +11,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "server_fail", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"hour", "date", "statusCode", "url", "method"})
+        @UniqueConstraint(columnNames = {"hour", "date", "statusCode", "url", "method", "groupName"})
 })
 @SuperBuilder
 @Getter
