@@ -8,6 +8,6 @@ else
   DOCKER_COMPOSE_COMMAND="docker-compose"
 fi
 
-$DOCKER_COMPOSE_COMMAND up -d --build
+$DOCKER_COMPOSE_COMMAND down -v
 
-sudo logrotate -f ./nginx/logrotate.conf
+> ./nginx/api_gateway.conf

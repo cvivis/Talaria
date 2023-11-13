@@ -16,10 +16,10 @@ setup: ## Generate Let's Encrypt SSL/TLS certificates Automatically
 	. ./setup/setup-certs.sh
 
 data-plane:	## Start data-plane.
-	$(DOCKER_COMPOSE_COMMAND) ${COMPOSE} up -d --build
+	. ./setup/data-plane.sh
 
 down: ## Down data-plane and all its extra components.
-	$(DOCKER_COMPOSE_COMMAND) ${COMPOSE} down
+	. ./setup/down.sh
 
 stop: ## Stop data-plane and all its extra components.
 	$(DOCKER_COMPOSE_COMMAND) ${COMPOSE} stop
