@@ -1,139 +1,89 @@
 import { Box, Text } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import ReactApexChart from "react-apexcharts";
-import ApexCharts from "apexcharts";
-import * as StompJs from "@stomp/stompjs";
-
+import axios from "axios";
 function Chart1() {
-  /*stomp 관련 */
-  const client = useRef({});
-  const [cpuData , setCpuData] = useState([]);
-  const connect = () => {
-    client.current = new StompJs.Client({
-      brokerURL: "ws://localhost:8080/ws/monitoring",
-      onConnect: () => {
-        // Do something, all subscribes must be done is this callback
-        console.log("연결 SUB");
-        subscribe();
-      },
-    });
-    client.current.activate();
-  };
-
-  const disconnect = () => {
-    client.current.deactivate(); // 활성화된 연결 끊기
-  };
-
-  const subscribe = () => {
-    client.current.subscribe("/sub/cpu-check", (res) => {
-      // server에게 메세지 받으면
-      const json_body = JSON.parse(res.body);
-      console.log(json_body);
-      // setCpuData((prevItems) => [...prevItems, {x: new Date(json_body.date),
-      // y: json_body.cpuUsage}])
-      cpuData.push({
-        x: new Date(json_body.date),
-        y: json_body.cpuUsage,
-      });
-      console.log(cpuData);
-    });
-  };
-
-  // var lastDate = 0;
-  // var data = [];
-  // var TICKINTERVAL = 86400000
-  const [XAXISRANGE, SetXAXISRANGE] = useState(60000);
+  const [requestData , setRequestData] = useState([]);
+  const [categories , setCategories] = useState([]);
+  const [series, setSeries] = useState([{x: "Fri Nov 10 2023 00:00:00 GMT+0900 (한국 표준시)", y: 8}
+    ]);
   const [options, setOptions] = useState({
     chart: {
-      id: "realtime-cpu", // ApexCharts의 메서드 호출 시 필요 (brush chart, syncronized chart, calling exec)
-      height: 350, // 그래프 높이
-      type: "line", // 차트 타입 (line , donut,treemap ... )
-      animations: {
-        enabled: true,
-        easing: "linear", // 애니메이션 속도 변화률 linear = 등속
-        dynamicAnimation: {
-          enabled: true, // 데이터 바뀔 때 re-rendering
-          speed: 1000, // 데이터 바뀔 때 run 속도
+      type: 'bar'
+    },
+    plotOptions: {
+      bar: {
+        horizontal: false,
+        colors: {
+          ranges: [
+            {
+              from: 0,
+              to: 10,
+              color: "#00FF00", // 범위에 따른 색상 설정
+            },
+            {
+              from: 11,
+              to: 20,
+              color: "#FF0000", // 범위에 따른 색상 설정
+            },
+            // 추가적인 범위 및 색상 설정 가능
+          ],
         },
-      },
-      toolbar: {
-        //다운로드같은 메뉴바
-        show: false,
-      },
-      zoom: {
-        enabled: false, // 확대 이동 가능 <- realchart에서는 false
-      },
-    },
-    dataLabels: {
-      enabled: false, //데이터에 라벨링 <- realchart에서는 false
-    },
-    stroke: {
-      curve: "smooth", // 데이터 꺾는 정도
-    },
-    // title: {
-    //   text: "CPU 사용량 모니터링", // title
-    //   align: "left", // 위치
-    // },
-    markers: {
-      size: 0, // 수정 X
+        barWidth: "20%",
+      }
     },
     xaxis: {
-      type: "datetime", // category, datetime, numeric
-      range: XAXISRANGE, //최대, 최소 값을 동적으로 받기위한 용도 ?
+      type: "category", // 시간값으로 사용할 것임을 명시
+      categories:categories
     },
-    yaxis: {
-      max: 100,
-      min: 0,
-    },
-    legend: {
-      show: false, //??
-    },
-    plotOption: {
-        boxPlot: {
-            colors: {
-                upper: "red",
-                lower: "blue",
-            }
-        }
-    }
+    
   });
 
-  const [series, setSeries] = useState([
-    {
-      data: cpuData.slice(), // 배열 복사
-    },
-  ]);
+  const getData = async () =>{
+    const groupName = "/shinhan/banking";
+    const url = "http://localhost:8080/group-detail/request-count?group-name="+groupName;
+    let response = await axios.get(url)
+    // setRequestData(response.data);
+    setRequestData((prevRequestData) => [
+      ...prevRequestData,
+      ...response.data.map(item => ({
+        x: new Date(item.date).toISOString().split("T")[0],
+        y: item.count,
+      })),
+    ]);
+    setCategories((prev)=>[
+      ...prev,
+      ...requestData.map((item)=>item.x),
+    ]
+    )
 
-  useEffect(() => {
-    connect();
-    const interval = setInterval(() => {
-      // setSeries();
-      ApexCharts.exec("realtime-cpu", "updateSeries", [
-        {
-          data: cpuData,
-        },
-      ]);
-    }, 1000);
+  }
 
-    return () => {
-      clearInterval(interval);
-      disconnect();
-    };
-  }, []);
+  useEffect(()=>{
+   getData();
+  },[])
+
+  useEffect(()=>{
+    // console.log(requestData)
+    setSeries([
+      {
+        name: "usage",
+        data: requestData.slice(),
+      },]
+    )
+
+   },[requestData])
+
+
+
 
   return (
     <>
       <Box
-        id="chart-cpu"
-        bg="white"
-        w="36vw"
-        h="40vh"
-        borderRadius="20px"
-        boxShadow="lg"
-        py="10px"
+       bg="white" w="36vw" h="40vh" borderRadius="20px" boxShadow="lg"
       >
-        <Text p={2}>API1</Text>
-        <ReactApexChart options={options} series={series} type="line" width="100%" height="90%"/>
+        <Text pt={4} pl={4} fontWeight="Bold">일일 호출횟수 </Text>
+        <ReactApexChart options={options} series={series} type="bar" width="95%" height="80%"/>
       </Box>
     </>
   );
