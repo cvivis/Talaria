@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { logoutUser, setAccessToken } from '../slices/UserInfoSlice';
 import store from '../store/store';
@@ -11,9 +11,7 @@ const CustomAxios = () => {
         baseURL: `${SeverBaseUrl}`,
         headers: {
             "Content-Type": "application/json",
-        },
-        body: { 
-            "access_token": "",
+            "Authorization": "",
         },
     });
 };
@@ -22,9 +20,8 @@ const instance = CustomAxios();
 instance.interceptors.request.use(
     (config) => {
         const access_token = store.getState().userInfo.access_token;
-
         if (access_token !== "") {
-            config.body.access_token = `Bearer ${access_token}`;
+            config.headers.Authorization = `Bearer ${access_token}`;
         }
         return config;
     },
@@ -42,11 +39,14 @@ instance.interceptors.response.use(
             // access_token 재발급 요청
             await axios
             .post(
-                `${SeverBaseUrl}/refresh`,
+                `${SeverBaseUrl}/auth/refresh`,
                 { 
                     refresh_token: store.getState().userInfo.refresh_token
                 },
                 {
+                    body: {
+                        refresh_token: store.getState().userInfo.refresh_token
+                    },
                     headers: { 
                         Authorization: store.getState().userInfo.access_token
                     },
