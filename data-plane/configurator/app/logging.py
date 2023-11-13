@@ -15,7 +15,7 @@ class Logger:
         self.stream_handler = logging.StreamHandler()
         self.stream_handler.setFormatter(self.formatter)
 
-        logging_path = join(constant.LOGGING_PATH, 'gw-server.log')
+        logging_path = join(constant.LOGGING_PATH, 'configurator.log')
         self.file_handler = logging.FileHandler(logging_path)
         self.file_handler.setFormatter(self.formatter)
 
