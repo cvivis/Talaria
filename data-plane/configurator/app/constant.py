@@ -11,23 +11,15 @@ class Constant:
 
     @property
     def CONFIG_PATH(self):
-        return os.environ.get('CONFIG_PATH')
+        return os.environ.get('/nginx')
 
     @property
     def GREEN_CONFIG_PATH(self):
-        return os.environ.get('GREEN_CONFIG_PATH')
+        return join(self.CONFIG_PATH, 'green_talaria.d')
 
     @property
     def BLUE_CONFIG_PATH(self):
-        return os.environ.get('BLUE_CONFIG_PATH')
-
-    @property
-    def NGINX_LOG_PATH(self):
-        return os.environ.get('NGINX_LOG_PATH')
-
-    @property
-    def RELOAD_PATH(self):
-        return os.environ.get('RELOAD_PATH')
+        return join(self.CONFIG_PATH, 'talaria.d')
 
     @property
     def CONTROL_PLANE_DOMAIN(self):
@@ -59,7 +51,7 @@ class Constant:
 
     @property
     def LOGGING_PATH(self):
-        return os.environ.get('LOGGING_PATH')
+        return '/var/log'
 
 
 constant = Constant()

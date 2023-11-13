@@ -56,13 +56,3 @@ class Executor:
             logger.info('Reloaded Nginx')
         except Exception as e:
             logger.error(f'Failed to reload Nginx ({e})')
-
-    @staticmethod
-    def rotate_current_log(current: datetime):
-        names = ['access_', 'access_200_', 'access_400_', 'access_500_', 'error_']
-        time_format = '%Y_%m_%dT%H'
-
-        for name in names:
-            src_name = f'{name}{current.strftime(time_format)}.log'
-            dest_name = f'{name}current.log'
-            copy_file(constant.NGINX_LOG_PATH, constant.NGINX_LOG_PATH, src_name, dest_name)

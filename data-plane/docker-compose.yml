@@ -16,12 +16,6 @@ services:
     image: python:${PYTHON_VERSION}
     environment:
       MODE: test
-      CONFIG_PATH: /nginx
-      GREEN_CONFIG_PATH: /nginx/green_talaria.d
-      BLUE_CONFIG_PATH: /nginx/talaria.d
-      NGINX_LOG_PATH: /nginx/log
-      LOGGING_PATH: /var/log
-      RELOAD_PATH: nginx/reload
       CONTROL_PLANE_DOMAIN: ${CONTROL_PLANE_DOMAIN}
       DESCRIBING_SERVICE_URI: ${DESCRIBING_SERVICE_URI}
       DATA_PLANE_DOMAIN: ${DATA_PLANE_DOMAIN}
