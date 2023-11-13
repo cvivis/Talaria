@@ -10,64 +10,40 @@ import {
   Th,
   Td,
   TableContainer,
-  Select
+  Select,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
+import CustomAxios from "../axios/CustomAxios";
+import { useSelector } from "react-redux";
 
 const UserManagementList = () => {
   const [users, setUsers] = useState([]);
-  const [selectedOption, setSelectedOption] = useState("");
+  const access_token = useSelector((state) => state.userInfo.access_token);
+
+  const today = new Date();
+  const year = today.getFullYear() + 1;
+  const month = String(today.getMonth() + 1).padStart(2, "0"); // 월은 0부터 시작하므로 1을 더하고, 두 자리로 포맷팅
+  const day = String(today.getDate()).padStart(2, "0"); // 날짜를 두 자리로 포맷팅
+  const formattedDate = `${year}-${month}-${day}`;
 
   useEffect(() => {
-    setUsers([
-      {
-        user_id: 1,
-        email: "abc@gmail.com",
-        password: "abc123",
-        key: "ait3Sf8mbTS2AZ0bKrB7EOt2fBZKAc4w",
-        role: "ADMIN",
-        created_time: "2023-11-07",
-        expiration_time: "2024-11-07",
-      },
-      {
-        user_id: 2,
-        email: "def@gmail.com",
-        password: "def123",
-        key: "berkljglkdfgjklfdkjgEOt2wehfskdf",
-        role: "DEVELOPER",
-        created_time: "2023-10-01",
-        expiration_time: "2024-10-01",
-      },
-      {
-        user_id: 3,
-        email: "ghi@gmail.com",
-        password: "ghi123",
-        key: "cerjgidfgjkeriudnfxcjkvlkdjlgdfj",
-        role: "USER",
-        created_time: "2023-12-25",
-        expiration_time: "2024-12-25",
-      },
-    ]);
-
-    // const modifiedData = response.map((item) => {
-    //     // 예: 데이터의 특정 속성을 수정
-    //     if(item.status === "APPROVED_ON")
-    //         item.status = true;
-    //     else
-    //         item.status = false;
-    //     return item;
-    //   });
-    // setResponse(modifiedData);
+    try {
+      CustomAxios.get(`members/admin`, {
+        headers: { Authorization: `Bearer ${access_token}` },
+      }).then((res) => {
+        setUsers(res.data);
+      });
+    } catch (error) {}
   }, []);
 
   const [newItem, setNewItem] = useState({
-    user_id: "",
+    member_id: "",
     email: "",
     password: "",
     key: "",
-    role: "",
-    created_time: "",
-    expiration_time: "",
+    role: "ADMIN",
+    key_created_date: "",
+    key_expiration_date: formattedDate,
   });
 
   const [selectedRows, setSelectedRows] = useState([]);
@@ -81,31 +57,59 @@ const UserManagementList = () => {
   };
 
   const handleCreateClick = () => {
-    console.log("New Item:", newItem);
+    try {
+      // async setRequest()
 
-    setUsers((prevArr) => [...prevArr, { ...newItem }]);
-    // 새로운 항목 추가 후 입력란 초기화
-    setNewItem({
-      id: "",
-      email: "",
-      password: "",
-      key: "",
-      role: "",
-      created_time: "",
-      due_time: "",
-    });
+      CustomAxios.post(
+        `members/admin/signup`,
+        {
+          email: newItem.email,
+          password: newItem.password,
+          key_expiration_date: newItem.key_expiration_date,
+          role: newItem.role,
+        },
+        {
+          headers: { Authorization: `Bearer ${access_token}` },
+        }
+      ).then((res) => {
+        setUsers((prevArr) => [...prevArr, { ...res.data }]);
+
+        setNewItem({
+          member_id: "",
+          email: "",
+          password: "",
+          key: "",
+          role: "ADMIN",
+          key_created_date: "",
+          key_expiration_date: formattedDate,
+        });
+      });
+    } catch (error) {}
   };
 
   const handleDeleteClick = () => {
     const deletedItems = users.filter((_, index) =>
       selectedRows.includes(index)
     );
-    console.log("Deleted Items:", deletedItems);
 
-    setUsers((prevArr) =>
-      prevArr.filter((_, index) => !selectedRows.includes(index))
-    );
-    setSelectedRows([]);
+    const deletedMemberIds = deletedItems.map((item) => item.member_id);
+
+    try {
+      CustomAxios.post(
+        `members/admin`,
+        {
+          member_ids: deletedMemberIds,
+        },
+        {
+          headers: { Authorization: `Bearer ${access_token}` },
+        }
+      ).then((res) => {
+        setUsers((prevArr) =>
+          prevArr.filter((_, index) => !selectedRows.includes(index))
+        );
+        setSelectedRows([]);
+      });
+    } catch (error) {}
   };
 
   const handleCheckboxChange = (index) => {
@@ -118,10 +122,27 @@ const UserManagementList = () => {
     });
   };
 
-  const handleSelectChange = (event) => {
-    // 선택한 옵션의 값을 가져와서 상태를 업데이트합니다.
-    setSelectedOption(event.target.value);
-    console.log(selectedOption);
+  const handleReissueClick = async (index) => {
+    try {
+      const response = await CustomAxios.post(
+        `keys/admin`,
+        {
+          key_id: users[index].key_id,
+        },
+        {
+          headers: { Authorization: `Bearer ${access_token}` },
+        }
+      );
+
+      setUsers((prevUsers) => {
+        const updatedUsers = [...prevUsers];
+        updatedUsers[index].key = response.data.key;
+        updatedUsers[index].key_created_date = response.data.key_created_date;
+        updatedUsers[index].key_expiration_date =
+          response.data.key_expiration_date;
+        return updatedUsers;
+      });
+    } catch (error) {}
   };
 
   return (
@@ -163,11 +184,13 @@ const UserManagementList = () => {
                 <Td>{item.password}</Td>
                 <Td>{item.key}</Td>
                 <Td>
-                  <Button>Reissue</Button>
+                  <Button onClick={() => handleReissueClick(index)}>
+                    Reissue
+                  </Button>
                 </Td>
                 <Td>{item.role}</Td>
-                <Td>{item.created_time}</Td>
-                <Td>{item.due_time}</Td>
+                <Td>{item.key_created_date}</Td>
+                <Td>{item.key_expiration_date}</Td>
               </Tr>
             ))}
             <Tr>
@@ -192,7 +215,12 @@ const UserManagementList = () => {
               </Td>
               <Td colSpan={2}></Td>
               <Td>
-                <Select value={selectedOption} onChange={handleSelectChange} isRequired>
+                <Select
+                  name="role"
+                  value={newItem.role}
+                  onChange={handleInputChange}
+                  isRequired
+                >
                   <option value="ADMIN">Administrator</option>
                   <option value="DEVELOPER">Developer</option>
                   <option value="USER">User</option>
@@ -201,9 +229,9 @@ const UserManagementList = () => {
               <Td>
                 <Input
                   size="sm"
-                  type="datetime-local"
-                  name="created_time"
-                  value={newItem.created_time}
+                  type="date"
+                  name="key_expiration_date"
+                  value={newItem.key_expiration_date}
                   onChange={handleInputChange}
                   isRequired
                 />

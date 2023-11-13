@@ -19,20 +19,25 @@ import {
   CloseButton,
   InputGroup,
   InputRightElement,
-  TagLabel
+  TagLabel,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
+import CustomAxios from "../axios/CustomAxios";
+import { useSelector } from "react-redux";
 
-const APIEditModal = ({ isOpen, onClose, apiInfo}) => {
+const APIEditModal = ({ isOpen, onClose, apiInfo, onAccept }) => {
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
   const [tags, setTags] = useState([]);
   const [inputValue, setInputValue] = useState("");
   const [error, setError] = useState(false);
+  const access_token = useSelector((state) => state.userInfo.access_token);
+  const [quota, setQuota] = useState();
 
   const isValidCIDR = (input) => {
     // CIDR IP 주소 형식을 검사하는 정규 표현식
-    const cidrPattern = /^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\/(3[0-2]|[12]?[0-9])$/;
+    const cidrPattern =
+      /^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\/(3[0-2]|[12]?[0-9])$/;
     return cidrPattern.test(input);
   };
 
@@ -41,37 +46,55 @@ const APIEditModal = ({ isOpen, onClose, apiInfo}) => {
       setTags([...tags, inputValue]);
       setInputValue("");
       setError(false);
-      console.log(tags);
     } else {
       setError(true);
     }
   };
 
   const removeTag = (idx) => {
-    const updatedTags =  [...tags];
+    const updatedTags = [...tags];
     updatedTags.splice(idx, 1);
     setTags(updatedTags);
   };
 
-  const handleAccept = (idx) => {
-    // idx가 아이디인 api그룹을 수정하는 patch 요청
-    onClose(true);
-    console.log(idx," 수정하기")
+  const handleAccept = (id) => {
+    try {
+      CustomAxios.patch(
+        `apis/admin`,
+        {
+          apis_id: id,
+          quota: quota,
+          white_list: tags,
+        },
+        {
+          headers: { Authorization: `Bearer ${access_token}` },
+        }
+      ).then((res) => {
+        const updatedApiInfo = {
+          apis_id: id,
+          developer_email: apiInfo.developer_email,
+          name: apiInfo.name,
+          routing_url: apiInfo.routing_url,
+          quota: quota,
+          status: apiInfo.status,
+          white_list: tags,
+        };
+
+        onAccept(updatedApiInfo);
+      });
+    } catch (error) {}
+  };
+
+  const handleChangeQuota = (value) => {
+    setQuota(value);
   };
 
   useEffect(() => {
     if (apiInfo.white_list) {
-      // 모달이 열릴 때 apiInfo.white_list를 tags 배열에 복사합니다.
       setTags([...apiInfo.white_list]);
     }
+    setQuota(apiInfo.quota);
   }, [apiInfo]);
-
-  // useEffect(() => {
-  //   console.log()
-  //   let array = [];
-  //   array = [...apiInfo.white_list];
-  //   setTags(array);
-  // }, [])
 
   return (
     <>
@@ -89,23 +112,28 @@ const APIEditModal = ({ isOpen, onClose, apiInfo}) => {
           <ModalBody mt={4}>
             <FormControl isRequired>
               <FormLabel>Dept Name</FormLabel>
-              <Input ref={initialRef} value={apiInfo.dept_name} isReadOnly />
+              <Input
+                ref={initialRef}
+                value={apiInfo.developer_email}
+                isReadOnly
+              />
             </FormControl>
 
             <FormControl mt={4} isRequired>
               <FormLabel>Group Name</FormLabel>
-              <Input value={apiInfo.group_name} isReadOnly />
+              <Input value={apiInfo.name} isReadOnly />
             </FormControl>
 
             <FormControl mt={4} isRequired>
               <FormLabel>Routing URL</FormLabel>
-              <Input defaultValue={apiInfo.routing_url} />
+              <Input defaultValue={apiInfo.routing_url} isReadOnly />
             </FormControl>
 
             <FormControl mt={4} isRequired>
               <FormLabel>Quota</FormLabel>
               <NumberInput
-                defaultValue={apiInfo.quota}
+                value={quota}
+                onChange={handleChangeQuota}
                 min={0}
                 precision={0}
                 step={1}
@@ -119,45 +147,55 @@ const APIEditModal = ({ isOpen, onClose, apiInfo}) => {
               </NumberInput>
             </FormControl>
             <>
-            <FormControl mt={4} isRequired>
-              <FormLabel>White List</FormLabel>
-              <InputGroup>
-                <Input
-                  type="text"
-                  placeholder="Write Tag (e.g. 127.0.0.1/0)"
-                  value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
-                  isInvalid={error}
-                  onKeyPress={(e) => {
-                    if (e.key === "Enter") {
-                      addTag();
-                    }
-                  }}
-                />
-                <InputRightElement width="4.5rem">
-                  <Button h="1.75rem" size="sm" onClick={addTag}>
-                    Add
-                  </Button>
-                </InputRightElement>
-              </InputGroup>
-              {/* <HStack marginTop="2%" spacing={2}> */}
-              <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                {tags.map((tag, index) => (
-                  <Tag key={index} size="md" borderRadius='full'
-                  variant='solid'
-                  colorScheme='blue' marginTop="1%" marginRight="1%">
-                    <TagLabel>{tag}</TagLabel>
-                    <CloseButton size="sm" onClick={() => removeTag(index)} />
-                  </Tag>
-                ))}
-              {/* </HStack> */}
-              </div>
+              <FormControl mt={4} isRequired>
+                <FormLabel>White List</FormLabel>
+                <InputGroup>
+                  <Input
+                    type="text"
+                    placeholder="Write Tag (e.g. 127.0.0.1/0)"
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    isInvalid={error}
+                    onKeyPress={(e) => {
+                      if (e.key === "Enter") {
+                        addTag();
+                      }
+                    }}
+                  />
+                  <InputRightElement width="4.5rem">
+                    <Button h="1.75rem" size="sm" onClick={addTag}>
+                      Add
+                    </Button>
+                  </InputRightElement>
+                </InputGroup>
+                {/* <HStack marginTop="2%" spacing={2}> */}
+                <div style={{ display: "flex", flexWrap: "wrap" }}>
+                  {tags.map((tag, index) => (
+                    <Tag
+                      key={index}
+                      size="md"
+                      borderRadius="full"
+                      variant="solid"
+                      colorScheme="blue"
+                      marginTop="1%"
+                      marginRight="1%"
+                    >
+                      <TagLabel>{tag}</TagLabel>
+                      <CloseButton size="sm" onClick={() => removeTag(index)} />
+                    </Tag>
+                  ))}
+                  {/* </HStack> */}
+                </div>
               </FormControl>
             </>
           </ModalBody>
 
           <ModalFooter>
-            <Button  colorScheme="blue" mr={3} onClick={() => handleAccept(apiInfo.id)}>
+            <Button
+              colorScheme="blue"
+              mr={3}
+              onClick={() => handleAccept(apiInfo.apis_id)}
+            >
               Accept
             </Button>
             <Button onClick={() => onClose(false)}>Cancel</Button>
