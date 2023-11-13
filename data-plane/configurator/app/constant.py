@@ -10,6 +10,10 @@ class Constant:
         return os.environ.get('MODE')
 
     @property
+    def CONFIG_PATH(self):
+        return os.environ.get('CONFIG_PATH')
+
+    @property
     def GREEN_CONFIG_PATH(self):
         return os.environ.get('GREEN_CONFIG_PATH')
 

@@ -1,3 +1,8 @@
+import os
+import re
+import signal
+import subprocess
+
 from app.constant import constant
 from app.file_utils import *
 
@@ -36,9 +41,21 @@ class Executor:
 
     @staticmethod
     def reload_nginx():
-        write_file(constant.RELOAD_PATH, 'nginx.reload', '')
-        result = read_file(join(constant.RELOAD_PATH, 'result.txt'))
-        logger.info(result)
+        nginx_pid = 1
+
+        try:
+            output = subprocess.check_output(['ps', '-eo', 'pid,cmd']).decode('utf-8')
+            match = re.search(r'(\d+)\s+nginx: master process', output)
+            if match:
+                nginx_pid = int(match.group(1))
+        except subprocess.CalledProcessError:
+            pass
+
+        try:
+            os.kill(nginx_pid, signal.SIGHUP)
+            logger.info('Reloaded Nginx')
+        except Exception as e:
+            logger.error(f'Failed to reload Nginx ({e})')
 
     @staticmethod
     def rotate_current_log(current: datetime):

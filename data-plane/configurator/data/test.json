@@ -32,7 +32,7 @@
                 },
                 "servers": [
                     {
-                        "url": "https://k9a107.p.ssafy.io/test1/api"
+                        "url": "https://k9a107.p.ssafy.io"
                     }
                 ],
                 "tags": [
@@ -42,7 +42,7 @@
                     }
                 ],
                 "paths": {
-                    "/name": {
+                    "/test1/api/name": {
                         "get": {
                             "tags": [
                                 "api"
@@ -70,7 +70,7 @@
                             }
                         }
                     },
-                    "/service": {
+                    "/test1/api/service": {
                         "get": {
                             "tags": [
                                 "api"

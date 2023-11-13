@@ -14,14 +14,13 @@ class APIConf(BaseConf):
 
     def generate(self):
         block = f'location {self.location} {{\n'
-        # block += self._get_ip_block()
-        block += f'\taccess_log /var/log/nginx/{self.service_name}_api.log talaria_log_format;\n\n'
-        # block += self._get_limit_block()
-        # block += self._get_auth_block()
+        block += self._get_ip_block()
+        block += '\tauth_request /_validate_apikey;\n\n'
+
         block += self._get_apis_block()
         block += '\treturn 404;\n'
         block += '}\n\n'
-        block += '# vim: syntax=nginx'
+        block += '# vim: syntax=nginx\n\n'
 
         return {'name': self.name, 'content': block}
 
@@ -29,21 +28,8 @@ class APIConf(BaseConf):
         block = ''
         for ip in self.whitelist:
             block += f'\tallow {ip};\n'
-        block += '\tdeny all;\n'
-        block += '\terror_page 403 = @403;\n\n'
+        block += '\tdeny all;\n\n'
 
-        return block
-
-    def _get_limit_block(self) -> str:
-        block = f'\tlimit_req zone=apikey_{self.quota}rs;\n'
-        block += '\tlimit_req_status 429;\n\n'
-        return block
-
-    def _get_auth_block(self) -> str:
-        block = f'\tauth_request /_validate_apikey;\n'
-        block += f'\tif ($is_{self.service_name} = 0) {{\n'
-        block += '\t\treturn 403;\n'
-        block += '\t}\n\n'
         return block
 
     def _get_apis_block(self) -> str:
@@ -65,11 +51,22 @@ class APIConf(BaseConf):
             new_uri = re.sub(pattern, r'[^/]+', api_uri)
             block = f'\tlocation ~ ^{self.location[:-1]}{new_uri}$ {{\n'
 
-        methods_str = ' '.join(methods)
-        block += f'\t\tlimit_except ' + methods_str.upper() + ' {\n'
-        block += '\t\t\tdeny all;\n'
-        block += '\t\t}\n'
-        block += '\t\terror_page 403 = @405;\n'
-        block += f'\t\tproxy_pass http://{self.service_name};\n'
-        block += '\t}\n\n'
+        for num in [401, 403, 405, 429]:
+            block += f'\t\terror_page {num} = @{num};\n'
+        block += '\n'
+
+        block += f'\t\tlimit_req zone=apikey_{self.quota}rs burst={self.quota} nodelay;\n'
+        block += '\t\tlimit_req_status 429;\n\n'
+
+        methods_str = '|'.join(methods)
+        block += f'\t\tif ($request_method !~ ^({methods_str.upper()})$) {{\n'
+        block += '\t\t\treturn 405;\n'
+        block += '\t\t}\n\n'
+
+        block += f'\t\tproxy_pass https://{self.service_name}{api_uri};\n'
+        block += '\t\tproxy_set_header Host $host;\n'
+        block += '\t\tproxy_set_header X-Real-IP $remote_addr;\n'
+        block += '\t\tproxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;\n'
+        block += '\t\tproxy_set_header X-Forwarded-Proto $scheme;\n'
+        block += '\t}\n'
         return block

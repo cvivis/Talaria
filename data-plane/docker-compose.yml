@@ -1,7 +1,8 @@
 version: "3.8"
 
 volumes:
-  talaria_conf.d:
+  talaria.d:
+  nginx_pid:
 
 secrets:
   nginx.fullchain:
@@ -15,8 +16,9 @@ services:
     image: python:${PYTHON_VERSION}
     environment:
       MODE: test
-      GREEN_CONFIG_PATH: /nginx/green_talaria_conf.d
-      BLUE_CONFIG_PATH: /nginx/talaria_conf.d
+      CONFIG_PATH: /nginx
+      GREEN_CONFIG_PATH: /nginx/green_talaria.d
+      BLUE_CONFIG_PATH: /nginx/talaria.d
       NGINX_LOG_PATH: /nginx/log
       LOGGING_PATH: /var/log
       RELOAD_PATH: nginx/reload
@@ -26,9 +28,13 @@ services:
     restart: unless-stopped
     volumes:
       - ./configurator:/code:ro
-      - talaria_conf.d:/nginx/talaria_conf.d
+      - ./nginx/api_gateway.conf:/nginx/api_gateway.conf
+      - talaria.d:/nginx/talaria.d
     working_dir: /code
     entrypoint: /code/entrypoint.sh
+    depends_on:
+      - nginx
+    pid: "container:nginx"
     ports:
       - "${CONFIGURATOR_PORT}:${CONFIGURATOR_PORT}"
 
@@ -38,7 +44,10 @@ services:
     restart: unless-stopped
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      -  talaria_conf.d:/etc/nginx/talaria_conf.d
+      - ./nginx/api_gateway.conf:/etc/nginx/api_gateway.conf
+      - ./nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
+      - talaria.d:/etc/nginx/talaria.d
+      - ./nginx/log/:/var/log/nginx
     secrets:
       - source: nginx.fullchain
         target: /usr/share/nginx/certs/fullchain.pem

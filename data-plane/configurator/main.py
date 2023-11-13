@@ -10,21 +10,20 @@ from datetime import datetime
 
 
 if __name__ == '__main__':
-    write_file(constant.BLUE_CONFIG_PATH, 'api_gateway.conf', '')
-
     generator = Generator()
     requests = Requests()
 
-    prev = datetime.now()
+    # prev = datetime.now()
     while True:
-        current = datetime.now()
-        if current.hour != prev.hour:
-            Executor.rotate_current_log(current)
+        # current = datetime.now()
+        # if current.hour != prev.hour:
+        #     Executor.rotate_current_log(current)
 
         generator.setup_green()
         generator.generate_configs(requests.services())
         Executor.switch_configs_blue_to_green()
-        # Executor.reload_nginx()
+        Executor.reload_nginx()
 
-        prev = current
+        # prev = current
         time.sleep(3)
+        break
