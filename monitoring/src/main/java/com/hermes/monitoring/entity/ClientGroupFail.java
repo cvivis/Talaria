@@ -13,7 +13,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "client_fail_group", uniqueConstraints = {
-        @UniqueConstraint(name = "uk_fail_group_count", columnNames = {"date","routing_group" ,"hour","hourly_count","url","method","status_code"}),
+        @UniqueConstraint(name = "uk_fail_group_count", columnNames = {"date","group_name" ,"hour","hourly_count","url","method","status_code"}),
 })
 public class ClientGroupFail {
     @Id
@@ -29,6 +29,7 @@ public class ClientGroupFail {
     private Integer hourlyCount;
     @NotNull
     private String url;
+
     @NotNull
     @Column(name = "status_code")
     private Integer statusCode;
@@ -37,7 +38,7 @@ public class ClientGroupFail {
     private String method;
 
     @NotNull
-    @Column(name = "routing_group")
-    private String routingGroup;
+    @Column(name = "group_name")
+    private String groupName;
 
 }
