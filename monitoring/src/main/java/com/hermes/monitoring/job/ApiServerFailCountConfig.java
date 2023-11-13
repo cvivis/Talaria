@@ -44,7 +44,7 @@ public class ApiServerFailCountConfig {
         return jobBuilderFactory.get("countServerFailCount")
                 .incrementer(new RunIdIncrementer())
                 .start(apiServerFailLogFileReaderStep())
-                .next(mappingStatusCodeStep())
+                .next(mappingServerFailStatusCodeStep())
                 .next(dbInsertStep())
                 .build();
     }
@@ -64,14 +64,14 @@ public class ApiServerFailCountConfig {
 
     // STEP 2 : 500 파일의 http status code 별로 DTO를 분리한다.
     @Bean
-    public Step mappingStatusCodeStep(){
-        return stepBuilderFactory.get("mappingStatusCode")
+    public Step mappingServerFailStatusCodeStep(){
+        return stepBuilderFactory.get("mappingServerFailStatusCode")
                 .tasklet((contribution, chunkContext) -> {
                     // http status로 분류
                     statusUrlCount = new LinkedHashMap<>();
                     for(LogDto logDto : logDtoList){
-                        String statusCode = logDto.getStatusCode(); // LogDto에서 StatusCode를 가져옵니다.
-                        String url = logDto.getPath();
+                        String statusCode = logDto.getHttpStatusCode(); // LogDto에서 StatusCode를 가져옵니다.
+                        String url = logDto.getUrl();
                         String method = logDto.getHttpMethod();
                         String key = statusCode + " " + url + " " + method;
                         ApiServerFailCountDto dto = statusUrlCount.get(key);
