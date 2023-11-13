@@ -1,11 +1,11 @@
-from app.constant import constant
+from app.utils.constant import constant
 from app.configurator.conf.api_backends_conf import APIBackendsConf
 from app.configurator.conf.api_gateway_conf import APIGatewayConf
 from app.configurator.conf.api_keys_conf import APIKeysConf
 from app.configurator.conf.api_limits_conf import APILimitsConf
 from app.configurator.conf.api_conf import APIConf
 from app.configurator.parser import Parser
-from app.file_utils import *
+from app.utils.file_utils import *
 
 from os.path import join
 
