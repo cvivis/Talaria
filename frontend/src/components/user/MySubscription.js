@@ -1,4 +1,4 @@
-import { Badge, Box, Button, Card, CardBody, Flex, Spacer, Table, Tbody, Td, Text, Th, Thead, Tr, useColorModeValue, useToast } from '@chakra-ui/react';
+import { Box, Button, Card, CardBody, Flex, Spacer, Table, Tbody, Td, Text, Th, Thead, Tr, useColorModeValue, useToast } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { ReactComponent as ApiIcon } from '../../assets/svg/BsFileEarmarkCodeFill.svg';
 import { CopyIcon } from '@chakra-ui/icons';
