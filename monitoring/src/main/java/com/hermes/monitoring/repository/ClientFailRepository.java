@@ -1,6 +1,6 @@
 package com.hermes.monitoring.repository;
 
-import com.hermes.monitoring.dto.api.ApiClientFailHourlyCountDto;
+import com.hermes.monitoring.cvivis.dto.api.ApiClientFailHourlyCountDto;
 import com.hermes.monitoring.entity.ClientFail;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
