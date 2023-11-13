@@ -13,12 +13,14 @@ const Aggregate = () => {
             <Flex gap={10} pr={5} pt={5}>
                 <Chart1></Chart1>
                 <Chart2></Chart2>
-                <Chart3></Chart3>
             </Flex>
             <Flex gap={10} pr={5} pt={5}>
+                <Chart3></Chart3>
                 <Chart4></Chart4>
-                <Chart6></Chart6>
+            </Flex>
+            <Flex gap={10} pr={5} pt={5}>
                 <Chart5></Chart5>
+                <Chart6></Chart6>
             </Flex>
         </Box>
     );
