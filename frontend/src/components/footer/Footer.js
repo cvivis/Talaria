@@ -4,6 +4,7 @@ import { Flex, Link, List, ListItem, Text } from "@chakra-ui/react";
 const Footer = () => {
     return (
         <Flex
+            mt="5"
             flexDirection={{
                 base: "column",
                 xl: "row",
