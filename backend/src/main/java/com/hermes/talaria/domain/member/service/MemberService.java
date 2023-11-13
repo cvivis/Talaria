@@ -30,7 +30,7 @@ public class MemberService {
 	private final MemberRepository memberRepository;
 	private final KeyRepository keyRepository;
 
-	public void signup(MemberDto memberDto, String keyExpirationDate) {
+	public MemberResponse signup(MemberDto memberDto, String keyExpirationDate) {
 
 		// 이메일로 유저 가져오기
 		if (memberRepository.findByEmail(memberDto.getEmail()).isPresent()) {
@@ -49,11 +49,31 @@ public class MemberService {
 
 		Key key = Key.of(keyValue, expirationDate);
 
-		Long keyId = keyRepository.save(key).getKeyId();
+		key = keyRepository.save(key);
 
-		memberRepository.save(member);
+		member = memberRepository.save(member);
 
-		member.updateKeyId(keyId);
+		member.updateKeyId(key.getKeyId());
+
+		MemberResponse response = ModelMapperUtil.getModelMapper().map(member, MemberResponse.class);
+
+		response.setKey(key.getKeyValue());
+		response.setKeyId(key.getKeyId());
+
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+		response.setKeyCreatedDate(key.getCreatedDate().format(formatter));
+		response.setKeyExpirationDate(key.getExpirationDate().format(formatter));
+
+		return response;
+	}
+
+	public void deleteMember(List<Long> memberIds) {
+		for (Long memberId : memberIds) {
+			Member member = memberRepository.findByMemberId(memberId)
+				.orElseThrow(() -> new AuthenticationException(ErrorCode.NOT_EXIST_MEMBER));
+			member.updateDeletedTime(LocalDateTime.now());
+		}
 	}
 
 	public MemberDto getMemberByMemberId(Long memberId) {
@@ -76,18 +96,13 @@ public class MemberService {
 		return ModelMapperUtil.getModelMapper().map(member, MemberDto.class);
 	}
 
-	public void deleteMember(Long memberId) {
-		Member member = memberRepository.findByMemberId(memberId)
-			.orElseThrow(() -> new AuthenticationException(ErrorCode.NOT_EXIST_MEMBER));
-		member.updateDeletedTime(LocalDateTime.now());
-	}
-
 	public List<MemberResponse> getAllMember() {
 		List<Member> memberList = memberRepository.findByDeletedTimeIsNull();
 		List<MemberResponse> result = memberList.stream().map((m) -> {
 			Key key = keyRepository.findByKeyId(m.getKeyId())
 				.orElseThrow(() -> new KeyException(ErrorCode.NOT_EXIST_KEY));
 			MemberResponse response = ModelMapperUtil.getModelMapper().map(m, MemberResponse.class);
+			response.setKeyId(key.getKeyId());
 			response.setKey(key.getKeyValue());
 
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");

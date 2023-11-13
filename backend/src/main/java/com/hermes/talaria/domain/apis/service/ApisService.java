@@ -76,6 +76,15 @@ public class ApisService {
 		return apisId;
 	}
 
+	public Long deleteByAdmin(Long apisId) {
+		Apis apis = apisRepository.findApisByApisId(apisId).orElseThrow(() -> new BusinessException(
+			ErrorCode.NOT_EXIST_APIS));
+
+		apisRepository.deleteApisByApisId(apis.getApisId());
+
+		return apisId;
+	}
+
 	public Long registerOas(ApisDto apisDto) {
 		Apis apis = apisRepository.findApisByApisId(apisDto.getApisId()).orElseThrow(() -> new BusinessException(
 			ErrorCode.NOT_EXIST_APIS));
