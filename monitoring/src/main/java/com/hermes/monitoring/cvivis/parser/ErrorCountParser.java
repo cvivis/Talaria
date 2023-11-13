@@ -1,6 +1,6 @@
 package com.hermes.monitoring.cvivis.parser;
 
-import com.hermes.monitoring.dto.Enum.Error;
+import com.hermes.monitoring.cvivis.dto.myenum.Error;
 import com.hermes.monitoring.cvivis.dto.api.ErrorCountDetailDto;
 import com.hermes.monitoring.cvivis.dto.api.ErrorCountTypeDto;
 import lombok.extern.slf4j.Slf4j;

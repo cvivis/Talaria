@@ -1,4 +1,4 @@
-package com.hermes.monitoring.cvivis.dto;
+package com.hermes.monitoring.cvivis.dto.myenum;
 
 public enum Error {
     ERROR,

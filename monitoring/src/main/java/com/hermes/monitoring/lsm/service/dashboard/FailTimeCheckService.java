@@ -25,23 +25,18 @@ public class FailTimeCheckService {
     private final JobLauncher jobLauncher;
     private final FailTimeCheckConfig failTimeCheckConfig;
 
-    private final CreateLogFile createLogFile;
-
     @Value("${fail.baseLog.url}")
     String baseUrl;
+
 //    @Scheduled(cron = "0/5 * * * * *")
     public void checkSuccessTime() throws IOException {
-        createLogFile.createLogFile(baseUrl+".txt", baseUrl);
-        // job parameter 설정
         Map<String, JobParameter> confMap = new HashMap<>();
-        confMap.put("time", new JobParameter("successTimeCheck_"+System.currentTimeMillis())); // 시스템의 현재 시간을 넣음으로써 실행 시점에 충돌을 피함
+        confMap.put("time", new JobParameter("FailTimeCheckConfig_"+System.currentTimeMillis())); // 시스템의 현재 시간을 넣음으로써 실행 시점에 충돌을 피함
         JobParameters jobParameters = new JobParameters(confMap);
-        log.info("성공 응답 시간 확인");
         try {
             jobLauncher.run(failTimeCheckConfig.failTimeCheckJob(), jobParameters);
         } catch (JobExecutionAlreadyRunningException | JobInstanceAlreadyCompleteException
                  | JobParametersInvalidException | org.springframework.batch.core.repository.JobRestartException e) {
-
             log.error(e.getMessage());
         }
     }

@@ -11,7 +11,7 @@ import java.util.List;
 
 @Repository
 public interface ClientFailRepository extends JpaRepository<ClientFail,Long> {
-    @Query(value = "select new com.hermes.monitoring.dto.api.ApiClientFailHourlyCountDto(c.date,c.hour,c.hourlyCount) " +
+    @Query(value = "select new com.hermes.monitoring.cvivis.dto.api.ApiClientFailHourlyCountDto(c.date,c.hour,c.hourlyCount) " +
             "from ClientFail as c  where c.url = :url and c.method = :method " +
             "group by c.date,c.url,c.hour,c.method,c.hourlyCount order by c.date desc, c.hour desc")
     List<ApiClientFailHourlyCountDto> findHourAndCountByUrlAndMethod(@Param("url")String url, @Param("method")String method);
