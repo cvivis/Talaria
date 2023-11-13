@@ -1,6 +1,8 @@
-package com.hermes.monitoring.service;
+package com.hermes.monitoring.cvivis.service.api.group;
 
-import com.hermes.monitoring.job.AverageTimeCheckConfig;
+import com.hermes.monitoring.job.api.group.ApiGroupCountConfig;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.JobParameter;
@@ -12,29 +14,24 @@ import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteExcep
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
-
-@Slf4j
 @Service
 @RequiredArgsConstructor
-public class AverageTimeCheckService {
+@Slf4j
+public class ApiGroupSuccessCountService {
     private final JobLauncher jobLauncher;
+    private final ApiGroupCountConfig apiGroupCountConfig;
 
-    private final AverageTimeCheckConfig averageTimeCheckConfig;
-
-//    @Scheduled(cron = "0/5 * * * * *") // cron 표기법
-    public void checkAverageTime() {
-        // job parameter 설정
+    @Scheduled(cron = "0/10 * * * * *")
+    public void runJob() {
         Map<String, JobParameter> confMap = new HashMap<>();
-        confMap.put("time", new JobParameter("AverageTimeCheck_"+System.currentTimeMillis())); // 시스템의 현재 시간을 넣음으로써 실행 시점에 충돌을 피함
+        confMap.put("time", new JobParameter("ApiGroupCountConfig_"+System.currentTimeMillis()));
+        confMap.put("statusCode", new JobParameter(200L));
         JobParameters jobParameters = new JobParameters(confMap);
-        log.info("5초동안 평균 응답 시간");
-        try {
-            jobLauncher.run(averageTimeCheckConfig.checkAverageTime(), jobParameters);
+        try{
+            jobLauncher.run(apiGroupCountConfig.apiGroupCountJob(), jobParameters);
         } catch (JobExecutionAlreadyRunningException | JobInstanceAlreadyCompleteException
-                 | JobParametersInvalidException | org.springframework.batch.core.repository.JobRestartException e) {
-            log.error(e.getMessage());
+                | JobParametersInvalidException | org.springframework.batch.core.repository.JobRestartException e) {
+            e.printStackTrace();
         }
     }
 }
