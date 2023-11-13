@@ -1,4 +1,4 @@
-package com.hermes.monitoring.cvivis.service.api.group;
+package com.hermes.monitoring.lsm.service.api;
 
 import com.hermes.monitoring.lsm.job.api.ApiGroupCountConfig;
 import java.util.HashMap;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class ApiGroupServerFailCountService {
+public class ApiGroupSuccessCountService {
     private final JobLauncher jobLauncher;
     private final ApiGroupCountConfig apiGroupCountConfig;
 
@@ -25,7 +25,7 @@ public class ApiGroupServerFailCountService {
     public void runJob() {
         Map<String, JobParameter> confMap = new HashMap<>();
         confMap.put("time", new JobParameter("ApiGroupCountConfig_"+System.currentTimeMillis()));
-        confMap.put("statusCode", new JobParameter(400L));
+        confMap.put("statusCode", new JobParameter(200L));
         JobParameters jobParameters = new JobParameters(confMap);
         try{
             jobLauncher.run(apiGroupCountConfig.apiGroupCountJob(), jobParameters);

@@ -1,4 +1,4 @@
-package com.hermes.monitoring.cvivis.service.api.group;
+package com.hermes.monitoring.lsm.service.api;
 
 import com.hermes.monitoring.lsm.dto.api.ApiCountDto;
 import com.hermes.monitoring.entity.ServerFail;
