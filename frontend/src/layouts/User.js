@@ -1,10 +1,11 @@
-import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Badge, Box, Breadcrumb, BreadcrumbItem, BreadcrumbLink, Button, Flex, LinkBox, LinkOverlay, List, ListIcon, ListItem, Spacer, Text, UnorderedList, useColorModeValue, useDisclosure } from "@chakra-ui/react";
+import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Box, Breadcrumb, BreadcrumbItem, BreadcrumbLink, Button, Flex, ListItem, Text, UnorderedList, useColorModeValue, useDisclosure } from "@chakra-ui/react";
 import Sidebar from "../components/sidebar/Sidebar";
 import MainPanel from "../components/layouts/mainPanel/MainPanel";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../components/slices/UserInfoSlice";
+import { ReactComponent as LogoutIcon } from '../assets/svg/Logout.svg';
 
 function User() {
 
@@ -15,7 +16,6 @@ function User() {
     const [secondCategory, setSecondCategory] = useState("");
     const [thirdCategory, setThirdCategory] = useState("");
     const [products,setProducts] = useState([]);
-    // const [ClickedMainCategory, setClickedMainCategory] = useState("");
     const location = useLocation();
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -141,8 +141,9 @@ function User() {
                                 color="black"
                             >
                                 <Box as="span" flex='1' textAlign='left' w='15vw' onClick={() => onOpen()}>
-                                <Text fontSize={"lg"} fontWeight={"bold"}>LogOut</Text>
+                                    <Text fontSize={"lg"} fontWeight={"bold"}>LogOut</Text>
                                 </Box>
+                                <LogoutIcon/>
                             </AccordionButton>
                         </AccordionItem>
                     </Accordion>
