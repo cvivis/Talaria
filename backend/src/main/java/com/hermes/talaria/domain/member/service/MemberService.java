@@ -94,6 +94,7 @@ public class MemberService {
 			Key key = keyRepository.findByKeyId(m.getKeyId())
 				.orElseThrow(() -> new KeyException(ErrorCode.NOT_EXIST_KEY));
 			MemberResponse response = ModelMapperUtil.getModelMapper().map(m, MemberResponse.class);
+			response.setKeyId(key.getKeyId());
 			response.setKey(key.getKeyValue());
 
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
