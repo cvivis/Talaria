@@ -1,6 +1,6 @@
 package com.hermes.monitoring.cvivis.service.api.group;
 
-import com.hermes.monitoring.job.api.group.ApiGroupCountConfig;
+import com.hermes.monitoring.lsm.job.api.ApiGroupCountConfig;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;

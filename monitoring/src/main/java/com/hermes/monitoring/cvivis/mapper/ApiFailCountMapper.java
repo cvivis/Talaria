@@ -1,6 +1,6 @@
 package com.hermes.monitoring.cvivis.mapper;
 
-import com.hermes.monitoring.dto.LogDto;
+import com.hermes.monitoring.lsm.dto.LogDto;
 import com.hermes.monitoring.cvivis.parser.GetTime;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

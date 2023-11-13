@@ -1,7 +1,6 @@
-package com.hermes.monitoring.cvivis.service.dashboard;
+package com.hermes.monitoring.lsm.service.dashboard;
 
-import com.hermes.monitoring.cvivis.job.dashboard.ErrorCountConfig;
-import com.hermes.monitoring.global.CreateErrorFile;
+import com.hermes.monitoring.lsm.job.dashboard.CpuMemoryCheckConfig;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.JobParameter;
@@ -12,30 +11,30 @@ import org.springframework.batch.core.repository.JobExecutionAlreadyRunningExcep
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-@Service
 @Slf4j
+@Service
 @RequiredArgsConstructor
-public class ErrorCountService {
+public class CpuMemoryCheckService {
+
     private final JobLauncher jobLauncher;
-    private final ErrorCountConfig errorCountConfig;
-    private final CreateErrorFile createErrorFile;
-//    @Scheduled(cron = "0/5 * * * * *") // cron 표기법
-    public void runJob() throws IOException {
+    private final CpuMemoryCheckConfig cpuMemoryCheckConfig;
+
+//    @Scheduled(cron = "0/1 * * * * *")
+    public void checkCpuMemory() {
         // job parameter 설정
-        createErrorFile.createErrorFile();
         Map<String, JobParameter> confMap = new HashMap<>();
-        confMap.put("time", new JobParameter("ErrorCountConfig_"+System.currentTimeMillis()));
+        confMap.put("time", new JobParameter("cpuMemoryCheck"+System.currentTimeMillis())); // 시스템의 현재 시간을 넣음으로써 실행 시점에 충돌을 피함
         JobParameters jobParameters = new JobParameters(confMap);
-        log.info("ErrorCountConfig_스케줄링 중");
+        log.info("CPU MEMORY 시간 확인 스케줄 시작");
         try {
-            jobLauncher.run(errorCountConfig.ErrorCountJob(), jobParameters);
+            jobLauncher.run(cpuMemoryCheckConfig.cpuMemoryCheckJob(), jobParameters);
         } catch (JobExecutionAlreadyRunningException | JobInstanceAlreadyCompleteException
                  | JobParametersInvalidException | org.springframework.batch.core.repository.JobRestartException e) {
-            e.printStackTrace();
+
+            log.error(e.getMessage());
         }
     }
 }

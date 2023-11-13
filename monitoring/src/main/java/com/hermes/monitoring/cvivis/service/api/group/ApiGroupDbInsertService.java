@@ -1,6 +1,6 @@
 package com.hermes.monitoring.cvivis.service.api.group;
 
-import com.hermes.monitoring.dto.api.ApiCountDto;
+import com.hermes.monitoring.lsm.dto.api.ApiCountDto;
 import com.hermes.monitoring.entity.ServerFail;
 import com.hermes.monitoring.entity.Success;
 import com.hermes.monitoring.repository.ApiServerFailRepository;

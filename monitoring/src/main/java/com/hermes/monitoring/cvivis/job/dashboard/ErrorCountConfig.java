@@ -3,7 +3,7 @@ package com.hermes.monitoring.cvivis.job.dashboard;
 
 import com.hermes.monitoring.cvivis.dto.api.ErrorCountTypeDto;
 import com.hermes.monitoring.cvivis.parser.ErrorCountParser;
-import com.hermes.monitoring.service.WebSocketService;
+import com.hermes.monitoring.global.WebSocketService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
