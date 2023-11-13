@@ -1,49 +1,47 @@
-version: "3.5"
-
-networks:
-  default:
-    name: data-plane
-    external: false
+version: "3.8"
 
 volumes:
-  talaria_conf.d:
+  talaria.d:
+  nginx_pid:
 
 secrets:
   nginx.fullchain:
-    file: ./setup/certbot/conf/live/${DOMAIN}/fullchain.pem
+    file: ./setup/certbot/conf/live/${DATA_PLANE_DOMAIN}/fullchain.pem
   nginx.privkey:
-    file: ./setup/certbot/conf/live/${DOMAIN}/privkey.pem
+    file: ./setup/certbot/conf/live/${DATA_PLANE_DOMAIN}/privkey.pem
 
 services:
-  gw-server:
-    container_name: gw-server
-    image: talaria/gw-server
-    build:
-      context: ./gw-server
-      dockerfile: Dockerfile
-      args:
-        PYTHON_VERSION: ${PYTHON_VERSION}
-    env_file:
-      - .env
+  configurator:
+    container_name: configurator
+    image: python:${PYTHON_VERSION}
+    environment:
+      MODE: test
+      CONTROL_PLANE_DOMAIN: ${CONTROL_PLANE_DOMAIN}
+      DESCRIBING_SERVICE_URI: ${DESCRIBING_SERVICE_URI}
+      DATA_PLANE_DOMAIN: ${DATA_PLANE_DOMAIN}
     restart: unless-stopped
     volumes:
-      - talaria_conf.d:/code/nginx
-    ports:
-      - "${GW_SERVER_PORT}:${GW_SERVER_PORT}"
+      - ./configurator:/code:ro
+      - ./nginx/api_gateway.conf:/nginx/api_gateway.conf
+      - talaria.d:/nginx/talaria.d
+    working_dir: /code
+    entrypoint: /code/entrypoint.sh
     depends_on:
       - nginx
+    pid: "container:nginx"
+    ports:
+      - "${CONFIGURATOR_PORT}:${CONFIGURATOR_PORT}"
 
   nginx:
     container_name: nginx
     image: nginx:${NGINX_VERSION}
-    build:
-      context: ./nginx
-      dockerfile: Dockerfile
-      args:
-        NGINX_VERSION: ${NGINX_VERSION}
     restart: unless-stopped
     volumes:
-      - ./nginx/talaria_conf.d:/etc/nginx/talaria_conf.d
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/api_gateway.conf:/etc/nginx/api_gateway.conf
+      - ./nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
+      - talaria.d:/etc/nginx/talaria.d
+      - ./nginx/log/:/var/log/nginx
     secrets:
       - source: nginx.fullchain
         target: /usr/share/nginx/certs/fullchain.pem
