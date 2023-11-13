@@ -19,13 +19,13 @@ public interface ClientFailGroupCountRepository extends JpaRepository<ClientGrou
             "group by r.date,r.hour,r.groupName order by r.date asc , r.hour desc")
     List<ApiClientFailHourlyCountDto> findDateAndCountByUrlAndMethod(@Param("routing")String routingGroup);
 
-    @Query(value = "SELECT today.status_code as status_code, today.count as count, round(cast(sum(hourly_count) as numeric) / (to_date(max(today),'YYYY-MM-DD') - cast(to_date(min(date),'YYYY-MM-DD') as date)),1) as avg" +
+    @Query(value = "SELECT today.status_code as statusCode, today.count as count, round(cast(sum(hourly_count) as numeric) / (to_date(max(today),'YYYY-MM-DD') - cast(to_date(min(date),'YYYY-MM-DD') as date)),1) as avg" +
             " from client_fail_group as a JOIN " +
-            "(select date as today, status_code, sum(hourly_count) as count from client_fail_group as b where b.routing_group = ?1 and to_date(date,'YYYY-MM-DD') = current_date group by b.status_code, date order by count desc limit 3) as today " +
+            "(select date as today, status_code, sum(hourly_count) as count from client_fail_group as b where b.group_name = ?1 and to_date(date,'YYYY-MM-DD') = current_date group by b.status_code, date order by count desc limit 3) as today " +
             "ON a.status_code = today.status_code and a.date != today.today " +
-            "where a.routing_group = ?1 " +
-            "group by (today.status_code, today.count)" , nativeQuery = true)
-    List<ClientFailGroupCountRepository.ApiClientFailRankingVo> findTodayAndAvgCount( String routing);
+            "where a.group_name = ?1 " +
+            "group by (today.status_code, today.count) order by count desc" , nativeQuery = true)
+    List<ClientFailGroupCountRepository.ApiClientFailRankingVo> findTodayAndAvgCount(String groupName);
 
     interface ApiClientFailRankingVo{
         Integer getStatusCode();

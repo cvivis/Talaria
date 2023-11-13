@@ -24,7 +24,7 @@ public class ApiFailCountService {
     private final JobLauncher jobLauncher;
     private final ApiFailCountConfig apiFailCountConfig;
 //    @Scheduled(cron = "0/10 * * * * *") // cron 표기법
-    // @Scheduled(cron = "0 0 0/1 * * *")
+     @Scheduled(cron = "0 0 0/1 * * *")
     public void runJob() throws IOException {
         // job parameter 설정
 //        createErrorFile.createErrorFile();

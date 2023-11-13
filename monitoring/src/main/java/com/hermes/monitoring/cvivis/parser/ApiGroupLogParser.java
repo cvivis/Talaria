@@ -73,11 +73,18 @@ public class ApiGroupLogParser {
             for(int i = 0 ; i < paths.length;i++){
                 log.info("{},{} ---- path",i,paths[i]);
             }
-            routingPath = "/"+paths[1]+"/"+paths[2];
-            path = matcher.group(4).replace(routingPath,"");
-            if(path.equals("")){
-                path = "/";
+            if(paths.length > 2 ){
+                routingPath = "/"+paths[1]+"/"+paths[2];
+                path = matcher.group(4).replace(routingPath,"");
+                if(path.equals("")){
+                    path = "/";
+                }
             }
+            else{
+                routingPath = matcher.group(4);
+                path = "";
+            }
+
             httpProtocol = matcher.group(5);
             statusCode = matcher.group(6);
             requestTime = matcher.group(10);

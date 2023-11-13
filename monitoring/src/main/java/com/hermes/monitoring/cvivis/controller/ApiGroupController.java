@@ -25,19 +25,19 @@ public class ApiGroupController {
 
 
     @GetMapping("/client-fail")
-    public ResponseEntity<List<ApiClientFailHourlyCountDto>> getApiGroupClientFailHourlyCountDto(@RequestParam("group-url")String routingUrl){
+    public ResponseEntity<List<ApiClientFailHourlyCountDto>> getApiGroupClientFailHourlyCountDto(@RequestParam("group-name")String routingUrl){
        List<ApiClientFailHourlyCountDto> result = apiClientFailService.getApiClientGroupHourlyCount(routingUrl);
        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/request-count")
-    public ResponseEntity<List<ApiDailyRequestCountDto>> getDailyRequestCount(@RequestParam("group-url")String groupUrl){
+    public ResponseEntity<List<ApiDailyRequestCountDto>> getDailyRequestCount(@RequestParam("group-name")String groupUrl){
         List<ApiDailyRequestCountDto> result = apiDailyRequestCountService.getDailyRequestGroupCount(groupUrl);
         return ResponseEntity.ok(result);
     }
 
     @GetMapping("/client-fail-ranking")
-    public ResponseEntity<List<ApiClientFailRankingDto>> getClientFailRanking(@RequestParam("group-url")String groupUrl){
+    public ResponseEntity<List<ApiClientFailRankingDto>> getClientFailRanking(@RequestParam("group-name")String groupUrl){
         List<ApiClientFailRankingDto> result = apiClientFailService.getApiClientFailGroupRanking(groupUrl);
         return ResponseEntity.ok(result);
     }
