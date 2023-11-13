@@ -78,7 +78,7 @@ public class ApiGroupFailCountConfig {
                         Integer statusCode = Integer.parseInt(key[5]);
 //                        log.info("{} {} {} {} {} {}",url,year,hour,method,statusCode, count);
                         ClientGroupFail clientGroupFail = ClientGroupFail.builder()
-                                .routingGroup(routingUrl)
+                                .groupName(routingUrl)
                                 .hourlyCount(count)
                                 .method(method)
                                 .date(year)

@@ -14,9 +14,9 @@ public interface RequestGroupCountRepository extends JpaRepository<RequestGroupC
 //select date,hour,url,method,sum(hourly_count) from client_fail where url = '/robots.txt' and method = 'GET' group by (url,method,date,hour) order by date desc,hour desc;
 
 
-    @Query(value = "select new com.hermes.monitoring.dto.api.ApiDailyRequestCountDto(r.date, sum(r.hourlyCount)) " +
-            "from RequestGroupCount as r  where r.routingGroup = :routing " +
-            "group by r.date,r.routingGroup order by r.date asc")
+    @Query(value = "select new com.hermes.monitoring.cvivis.dto.api.ApiDailyRequestCountDto(r.date, sum(r.hourlyCount)) " +
+            "from RequestGroupCount as r  where r.groupName = :routing " +
+            "group by r.date,r.groupName order by r.date asc")
     List<ApiDailyRequestCountDto> findDateAndCountByUrlAndMethod(@Param("routing")String routing);
 }
 
