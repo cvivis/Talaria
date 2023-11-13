@@ -1,6 +1,6 @@
 from app.configurator.conf.base import BaseConf
-from app.file_utils import *
-from app.constant import constant
+from app.utils.file_utils import *
+from app.utils.constant import constant
 
 from os.path import join
 

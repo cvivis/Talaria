@@ -1,4 +1,4 @@
-from app.logging import logger
+from app.utils.logging import logger
 
 import shutil
 

@@ -1,4 +1,4 @@
-from app.constant import constant
+from app.utils.constant import constant
 
 import logging
 

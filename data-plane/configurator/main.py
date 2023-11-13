@@ -1,4 +1,4 @@
-from app.requests import Requests
+from app.utils.requests import Requests
 from app.configurator.generator import Generator
 from app.configurator.executor import Executor
 
