@@ -3,7 +3,7 @@ package com.hermes.monitoring.job.api.group;
 import com.hermes.monitoring.dto.LogDto;
 import com.hermes.monitoring.dto.api.ApiCountDto;
 import com.hermes.monitoring.parser.LogParser;
-import com.hermes.monitoring.service.api.group.ApiGroupDbInsertService;
+import com.hermes.monitoring.cvivis.service.api.group.ApiGroupDbInsertService;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;

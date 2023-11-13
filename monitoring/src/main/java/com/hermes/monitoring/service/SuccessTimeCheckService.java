@@ -30,7 +30,7 @@ public class SuccessTimeCheckService {
     @Value("${success.baseLog.url}")
     String baseUrl;
 
-    @Scheduled(cron = "0/5 * * * * *")
+//    @Scheduled(cron = "0/5 * * * * *")
     public void checkSuccessTime() throws IOException {
         createLogFile.createLogFile(baseUrl+".txt", baseUrl);
         // job parameter 설정
