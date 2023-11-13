@@ -10,6 +10,7 @@ import ApiProducts from './components/user/ApiProducts.js';
 import MySubscription from './components/user/MySubscription.js';
 import Product from './components/user/Product.js';
 import Chart from "./components/admin/MainChart.js";
+import Aggregate from "./components/admin/APIAggregate.js"
 
 function App() {
 
@@ -27,6 +28,7 @@ function App() {
           </Route>
           <Route exact path='/admin' element={<PrivateRoute selectRole="ADMIN" component={<Admin />} />} >
             <Route exact index element={<Chart/>}></Route>
+            <Route exact  path='/admin/aggregate' element={<Aggregate/>}></Route>
           </Route>
           <Route exact path='/developer' element={<PrivateRoute selectRole="DEVELOPER" component={<Developer />} />} />
 					{/* 상단에 위치하는 라우트들의 규칙을 모두 확인, 일치하는 라우트가 없는경우 처리 */}
