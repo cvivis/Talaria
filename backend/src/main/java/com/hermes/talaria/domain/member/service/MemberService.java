@@ -68,6 +68,14 @@ public class MemberService {
 		return response;
 	}
 
+	public void deleteMember(List<Long> memberIds) {
+		for (Long memberId : memberIds) {
+			Member member = memberRepository.findByMemberId(memberId)
+				.orElseThrow(() -> new AuthenticationException(ErrorCode.NOT_EXIST_MEMBER));
+			member.updateDeletedTime(LocalDateTime.now());
+		}
+	}
+
 	public MemberDto getMemberByMemberId(Long memberId) {
 		Member member = memberRepository.findByMemberId(memberId)
 			.orElseThrow(() -> new AuthenticationException(ErrorCode.NOT_EXIST_MEMBER));
