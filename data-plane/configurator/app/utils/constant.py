@@ -11,7 +11,7 @@ class Constant:
 
     @property
     def CONFIG_PATH(self):
-        return os.environ.get('/nginx')
+        return '/nginx'
 
     @property
     def GREEN_CONFIG_PATH(self):

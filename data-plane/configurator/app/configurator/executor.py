@@ -52,6 +52,6 @@ class Executor:
 
         try:
             os.kill(nginx_pid, signal.SIGHUP)
-            logger.info('Reloaded Nginx')
+            logger.info(f'Reloaded Nginx, pid: {nginx_pid}')
         except Exception as e:
             logger.error(f'Failed to reload Nginx ({e})')
