@@ -1,4 +1,4 @@
-import { Box, Button, Card, CardBody, Flex, Spacer, Table, Tbody, Td, Text, Th, Thead, Tr, useColorModeValue, useToast } from '@chakra-ui/react';
+import { Badge, Box, Button, Card, CardBody, Flex, Spacer, Table, Tbody, Td, Text, Th, Thead, Tr, useColorModeValue, useToast } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { ReactComponent as ApiIcon } from '../../assets/svg/BsFileEarmarkCodeFill.svg';
 import { CopyIcon } from '@chakra-ui/icons';
@@ -9,11 +9,14 @@ import Footer from '../footer/Footer';
 const MySubscription = () => {
 
     const mainText = useColorModeValue("white", "gray.200");
-    const textColor = useColorModeValue("gray.700", "white");
+    const textColor = useColorModeValue("black", "white");
+    // const textColor = useColorModeValue("gray.700", "white");
     const borderColor = useColorModeValue("gray.200", "gray.600");
     const bgProfile = useColorModeValue("hsla(0,0%,100%,.8)", "navy.800");
-    const mainColor = useColorModeValue("gray.500", "white");
-    const secondaryColor = useColorModeValue("gray.400", "white");
+    const mainColor = useColorModeValue("black", "white");
+    // const mainColor = useColorModeValue("gray.500", "white");
+    const secondaryColor = useColorModeValue("black", "white");
+    // const secondaryColor = useColorModeValue("gray.400", "white");
     const borderProfileColor = useColorModeValue("white", "transparent");
     const [apiKey, setApiKey] = useState("No keys available");
     const [mySubscription, setMySubscription] = useState([]);
@@ -82,7 +85,7 @@ const MySubscription = () => {
                 discription:"설명2",
                 domain:"www.asdasd2.com",
                 quata:"100",
-                status:"Rejected",
+                status:"rejected",
                 exprtationDate:"2024.03.20",
             },
             {
@@ -307,11 +310,8 @@ const MySubscription = () => {
                     <Table variant="simple" color={textColor}>
                         <Thead>
                         <Tr my=".8rem" ps="0px" color="gray.400">
-                            <Th ps="0px" color="gray.400" borderColor={borderColor}>
-                            Product
-                            </Th>
                             <Th color="gray.400" borderColor={borderColor}>
-                            Discription
+                            Product
                             </Th>
                             <Th color="gray.400" borderColor={borderColor}>
                             Application Domain
@@ -321,9 +321,6 @@ const MySubscription = () => {
                             </Th>
                             <Th color="gray.400" borderColor={borderColor}>
                             Status
-                            </Th>
-                            <Th color="gray.400" borderColor={borderColor}>
-                            Expiration Date
                             </Th>
                         </Tr>
                         </Thead>
@@ -350,22 +347,6 @@ const MySubscription = () => {
                                             minWidth="100%"
                                         >
                                             {product.name}
-                                        </Text>
-                                        </Flex>
-                                    </Td>
-                                    <Td
-                                        borderColor={borderColor}
-                                        minW={{ sm: "150px", lg: "150px" }}
-                                        border={index === (mySubscription.length-1) ? "none" : null}
-                                        px={{ xl: "2px", "2xl": "20px" }}
-                                    >
-                                        <Flex direction="column">
-                                        <Text
-                                            fontSize={{ sm: "md", xl: "sm", "2xl": "md" }}
-                                            color={mainColor}
-                                            fontWeight="bold"
-                                        >
-                                            {product.discription}
                                         </Text>
                                         </Flex>
                                     </Td>
@@ -411,22 +392,18 @@ const MySubscription = () => {
                                             fontWeight="normal"
                                             pb=".5rem"
                                         >
-                                            {product.status}
-                                        </Text>
-                                    </Td>
-                                    <Td
-                                        borderColor={borderColor}
-                                        minW={{ sm: "150px", lg: "170px" }}
-                                        border={index === (mySubscription.length-1) ? "none" : null}
-                                        px={{ xl: "2px", "2xl": "20px" }}
-                                    >
-                                        <Text
-                                            fontSize={{ sm: "md", xl: "sm", "2xl": "md" }}
-                                            color={secondaryColor}
-                                            fontWeight="normal"
-                                            pb=".5rem"
-                                        >
-                                            {product.exprtationDate}
+                                            {
+                                                {
+                                                    rejected:
+                                                        <Badge variant='solid' colorScheme='pink' fontSize='15px' borderRadius='5' cursor={"default"}>REJECTED</Badge>,
+                                                    pending:
+                                                        <Badge variant='solid' colorScheme='yellow' fontSize='15px' borderRadius='5' cursor={"default"}>PENDING</Badge>,
+                                                    subscribing:
+                                                        <Badge variant='solid' colorScheme='green' fontSize='15px' borderRadius='5' cursor={"default"}>SUBSCRIBING</Badge>,
+                                                    subscribe:
+                                                        <Badge variant='solid' colorScheme='cyan' fontSize='15px' borderRadius='5' cursor={"default"}>SUBSCRIBE</Badge>,
+                                                }[product.status]
+                                            }
                                         </Text>
                                     </Td>
                                 </Tr>
