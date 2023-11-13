@@ -2,12 +2,10 @@ package com.hermes.monitoring.lsm.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import java.util.Date;
 
 @Data
-@ToString
 @NoArgsConstructor
 public class LogDto {
     String ip;

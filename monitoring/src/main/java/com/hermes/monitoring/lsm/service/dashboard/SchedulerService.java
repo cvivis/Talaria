@@ -25,17 +25,13 @@ public class SchedulerService {
 
 //    @Scheduled(cron = "0/5 * * * * *") // cron 표기법
     public void runJob() {
-
-        // job parameter 설정
         Map<String, JobParameter> confMap = new HashMap<>();
-        confMap.put("time", new JobParameter("2"+System.currentTimeMillis()));
+        confMap.put("time", new JobParameter("HttpStatusConfig_"+System.currentTimeMillis()));
         JobParameters jobParameters = new JobParameters(confMap);
-        log.info("스케줄링 중");
         try {
             jobLauncher.run(httpStatusConfig.HttpStatusJob(), jobParameters);
         } catch (JobExecutionAlreadyRunningException | JobInstanceAlreadyCompleteException
                  | JobParametersInvalidException | org.springframework.batch.core.repository.JobRestartException e) {
-
             log.error(e.getMessage());
         }
     }

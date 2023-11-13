@@ -24,16 +24,13 @@ public class CpuMemoryCheckService {
 
 //    @Scheduled(cron = "0/1 * * * * *")
     public void checkCpuMemory() {
-        // job parameter 설정
         Map<String, JobParameter> confMap = new HashMap<>();
-        confMap.put("time", new JobParameter("cpuMemoryCheck"+System.currentTimeMillis())); // 시스템의 현재 시간을 넣음으로써 실행 시점에 충돌을 피함
+        confMap.put("time", new JobParameter("CpuMemoryCheckConfig_"+System.currentTimeMillis())); // 시스템의 현재 시간을 넣음으로써 실행 시점에 충돌을 피함
         JobParameters jobParameters = new JobParameters(confMap);
-        log.info("CPU MEMORY 시간 확인 스케줄 시작");
         try {
             jobLauncher.run(cpuMemoryCheckConfig.cpuMemoryCheckJob(), jobParameters);
         } catch (JobExecutionAlreadyRunningException | JobInstanceAlreadyCompleteException
                  | JobParametersInvalidException | org.springframework.batch.core.repository.JobRestartException e) {
-
             log.error(e.getMessage());
         }
     }

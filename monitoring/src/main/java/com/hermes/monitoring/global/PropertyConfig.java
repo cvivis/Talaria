@@ -1,4 +1,4 @@
-package com.hermes.monitoring.config;
+package com.hermes.monitoring.global;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
