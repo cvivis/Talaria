@@ -1,9 +1,10 @@
-import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Badge, Box, Breadcrumb, BreadcrumbItem, BreadcrumbLink, Flex, LinkBox, LinkOverlay, List, ListIcon, ListItem, Spacer, Text, UnorderedList, useColorModeValue } from "@chakra-ui/react";
+import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Badge, Box, Breadcrumb, BreadcrumbItem, BreadcrumbLink, Button, Flex, LinkBox, LinkOverlay, List, ListIcon, ListItem, Spacer, Text, UnorderedList, useColorModeValue, useDisclosure } from "@chakra-ui/react";
 import Sidebar from "../components/sidebar/Sidebar";
 import MainPanel from "../components/layouts/mainPanel/MainPanel";
-import Footer from "../components/footer/Footer";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+import { logoutUser } from "../components/slices/UserInfoSlice";
 
 function User() {
 
@@ -17,6 +18,9 @@ function User() {
     // const [ClickedMainCategory, setClickedMainCategory] = useState("");
     const location = useLocation();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const cancelRef = useRef();
 
     function moveProductPage(productName) {
         return navigate("/user/API Products/"+productName);
@@ -25,6 +29,12 @@ function User() {
     const movePage = (route,e) => {
         e.preventDefault();
         return navigate(decodeURI(route));
+    }
+
+    const logOut = () => {
+        dispatch(logoutUser());
+        onClose();
+        return navigate("/");
     }
 
     useEffect(() => {
@@ -124,8 +134,47 @@ function User() {
                                 </Box>
                             </AccordionButton>
                         </AccordionItem>
+
+                        <AccordionItem maxW='13vw'>
+                            <AccordionButton 
+                                _hover={{backgroundColor: "white"}}
+                                color="black"
+                            >
+                                <Box as="span" flex='1' textAlign='left' w='15vw' onClick={() => onOpen()}>
+                                <Text fontSize={"lg"} fontWeight={"bold"}>LogOut</Text>
+                                </Box>
+                            </AccordionButton>
+                        </AccordionItem>
                     </Accordion>
                 </Sidebar>
+
+                <AlertDialog
+                    isOpen={isOpen}
+                    leastDestructiveRef={cancelRef}
+                    onClose={onClose}
+                >
+                    <AlertDialogOverlay>
+                    <AlertDialogContent>
+                        <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+                        Confirm LogOut
+                        </AlertDialogHeader>
+
+                        <AlertDialogBody>
+                        Are you sure you want to log out?
+                        </AlertDialogBody>
+
+                        <AlertDialogFooter>
+                        <Button ref={cancelRef} onClick={onClose}>
+                            Cancel
+                        </Button>
+                        <Button colorScheme='red' onClick={() => {logOut()}} ml={3}>
+                            LogOut
+                        </Button>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                    </AlertDialogOverlay>
+                </AlertDialog>
+
                 <Box ml='16vw' >
                     <Box mx='10' mt='10'>
                         <Breadcrumb>
@@ -167,7 +216,6 @@ function User() {
                     <MainPanel setWidth='80vw' setHeigth='95vh' >
                         <Outlet />
                     </MainPanel>
-                    <Footer />
                 </Box>
             </Flex>
         </>
