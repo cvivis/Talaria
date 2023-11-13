@@ -4,7 +4,7 @@ package com.hermes.monitoring.cvivis.job.dashboard;
 import com.hermes.monitoring.cvivis.dto.dashboard.UsageRankingDto;
 import com.hermes.monitoring.cvivis.dto.dashboard.UsageRankingListDto;
 import com.hermes.monitoring.cvivis.parser.UsageRangkingParser;
-import com.hermes.monitoring.service.WebSocketService;
+import com.hermes.monitoring.global.WebSocketService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;

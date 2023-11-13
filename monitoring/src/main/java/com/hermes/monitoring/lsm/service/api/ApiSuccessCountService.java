@@ -1,7 +1,7 @@
-package com.hermes.monitoring.cvivis.service.dashboard;
+package com.hermes.monitoring.lsm.service.api;
 
-import com.hermes.monitoring.cvivis.job.dashboard.ErrorCountConfig;
-import com.hermes.monitoring.global.CreateErrorFile;
+
+import com.hermes.monitoring.lsm.job.api.ApiSuccessCountConfig;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.JobParameter;
@@ -10,32 +10,30 @@ import org.springframework.batch.core.JobParametersInvalidException;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-@Service
 @Slf4j
+@Service
 @RequiredArgsConstructor
-public class ErrorCountService {
+public class ApiSuccessCountService {
+
     private final JobLauncher jobLauncher;
-    private final ErrorCountConfig errorCountConfig;
-    private final CreateErrorFile createErrorFile;
-//    @Scheduled(cron = "0/5 * * * * *") // cron 표기법
-    public void runJob() throws IOException {
-        // job parameter 설정
-        createErrorFile.createErrorFile();
+    private final ApiSuccessCountConfig apiSuccessCountConfig;
+
+    @Scheduled(cron = "0 0 0/1 * * *")
+    public void runJob(){
         Map<String, JobParameter> confMap = new HashMap<>();
-        confMap.put("time", new JobParameter("ErrorCountConfig_"+System.currentTimeMillis()));
+        confMap.put("time", new JobParameter("ApiSuccessCountConfig_"+System.currentTimeMillis()));
         JobParameters jobParameters = new JobParameters(confMap);
-        log.info("ErrorCountConfig_스케줄링 중");
         try {
-            jobLauncher.run(errorCountConfig.ErrorCountJob(), jobParameters);
+            jobLauncher.run(apiSuccessCountConfig.countSuccessCountJob(), jobParameters);
         } catch (JobExecutionAlreadyRunningException | JobInstanceAlreadyCompleteException
                  | JobParametersInvalidException | org.springframework.batch.core.repository.JobRestartException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
     }
 }
