@@ -82,7 +82,7 @@ public class ApiGroupRequestCountConfig {
                                 .hourlyCount(count)
                                 .method(method)
                                 .hour(hour)
-                                .routingGroup(routingUrl)
+                                .groupName(routingUrl)
                                 .build();
                         requestGroupCountRepository.save(requestCount);
                     }

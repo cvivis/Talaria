@@ -1,7 +1,6 @@
 package com.hermes.monitoring.cvivis.dto.dashboard;
 
 
-import com.hermes.monitoring.dto.Enum.Method;
 import lombok.Builder;
 import lombok.Data;
 

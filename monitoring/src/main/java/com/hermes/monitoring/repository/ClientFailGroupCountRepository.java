@@ -14,9 +14,9 @@ public interface ClientFailGroupCountRepository extends JpaRepository<ClientGrou
 //select date,hour,url,method,sum(hourly_count) from client_fail where url = '/robots.txt' and method = 'GET' group by (url,method,date,hour) order by date desc,hour desc;
 
 
-    @Query(value = "select new com.hermes.monitoring.dto.api.ApiClientFailHourlyCountDto(r.date,r.hour,sum(r.hourlyCount)) " +
-            "from ClientGroupFail as r  where r.routingGroup = :routing " +
-            "group by r.date,r.hour,r.routingGroup order by r.date asc , r.hour desc")
+    @Query(value = "select new com.hermes.monitoring.cvivis.dto.api.ApiClientFailHourlyCountDto(r.date,r.hour,sum(r.hourlyCount)) " +
+            "from ClientGroupFail as r  where r.groupName = :routing " +
+            "group by r.date,r.hour,r.groupName order by r.date asc , r.hour desc")
     List<ApiClientFailHourlyCountDto> findDateAndCountByUrlAndMethod(@Param("routing")String routingGroup);
 
     @Query(value = "SELECT today.status_code as status_code, today.count as count, round(cast(sum(hourly_count) as numeric) / (to_date(max(today),'YYYY-MM-DD') - cast(to_date(min(date),'YYYY-MM-DD') as date)),1) as avg" +
