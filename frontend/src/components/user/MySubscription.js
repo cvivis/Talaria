@@ -2,6 +2,9 @@ import { Badge, Box, Button, Card, CardBody, Flex, Spacer, Table, Tbody, Td, Tex
 import React, { useEffect, useState } from 'react';
 import { ReactComponent as ApiIcon } from '../../assets/svg/BsFileEarmarkCodeFill.svg';
 import { CopyIcon } from '@chakra-ui/icons';
+import instance from '../axios/CustomAxios';
+import { useSelector } from 'react-redux';
+import Footer from '../footer/Footer';
 
 const MySubscription = () => {
 
@@ -14,6 +17,7 @@ const MySubscription = () => {
     const borderProfileColor = useColorModeValue("white", "transparent");
     const [apiKey, setApiKey] = useState("No keys available");
     const [mySubscription, setMySubscription] = useState([]);
+    const memberId = useSelector(state => state.userInfo.member_id);
     const toast = useToast();
 
     const copyText = async() => {
@@ -26,7 +30,41 @@ const MySubscription = () => {
             variant:"subtle",
             colorScheme:"blue"
         })
-    };                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+    };
+    
+    const GetKey = async() => {
+        try {
+            const data = await instance.get('keys/user');
+            console.log(data);
+            setApiKey(data);
+        } catch {
+            return alert("에러 겟");
+        }
+    };
+
+    const ReIssueKey = async() => {
+        try {
+            const data = await instance.post('keys/user');
+            setApiKey(data);
+        } catch {
+            return alert("에러 리이슈");
+        }
+    };
+
+    const GetMySubscription = async(status) => {
+        try {
+            const data = await instance.get('apis/user/me',{
+                params: {
+                    member_id: memberId,
+                    status: status,
+                }
+            });
+            console.log(data);
+            setMySubscription(data);
+        } catch {
+            return alert("에러 구독");
+        }
+    }
 
     useEffect(() => {
 
@@ -127,9 +165,15 @@ const MySubscription = () => {
                 status:"subscribing",
                 exprtationDate:"2024.03.20",
             },
-        ])
+        ]);
+
+        // GetKey();
 
     },[]);
+
+    useEffect(() => {
+
+    },[apiKey,mySubscription])
 
     return (
         <>
@@ -169,7 +213,7 @@ const MySubscription = () => {
                             <Flex flexDir={"row"} justifyContent={"center"} alignItems={"center"}>
                                 <Text fontSize={"md"} color={"gray.400"}>{apiKey}</Text>
                                 <CopyIcon mx={2} onClick={() => copyText()} cursor={"copy"}/>
-                                <Button colorScheme="blue" size={"xs"}>REISSUE</Button>
+                                <Button colorScheme="blue" size={"xs"} onClick={() => {ReIssueKey()}}>REISSUE</Button>
                             </Flex>
                         </Box>
                         <Spacer />
@@ -183,6 +227,8 @@ const MySubscription = () => {
                                 display="flex"
                                 border="2px"
                                 borderColor="cyan.400"
+                                onClick={() => {GetMySubscription(null)}}
+                                cursor={"pointer"}
                             >
                                 <Box h={"80px"} w={"60px"} maxW={{ base: '100%', sm: '60px' }} bgColor={"white"} color={"cyan.600"} display="flex" alignItems="center" justifyContent="center">
                                     <Text textAlign={"center"} as={"b"} fontSize={"4xl"}>12</Text>
@@ -201,6 +247,8 @@ const MySubscription = () => {
                                 display="flex"
                                 border="2px"
                                 borderColor="yellow.400"
+                                onClick={() => {GetMySubscription("PENDING")}}
+                                cursor={"pointer"}
                             >
                                 <Box h={"80px"} w={"60px"} maxW={{ base: '100%', sm: '60px' }} bgColor={"white"} color={"yellow.600"} display="flex" alignItems="center" justifyContent="center">
                                     <Text textAlign={"center"} as={"b"} fontSize={"4xl"}>3</Text>
@@ -219,6 +267,8 @@ const MySubscription = () => {
                                 display="flex"
                                 border="2px"
                                 borderColor="green.300"
+                                onClick={() => {GetMySubscription("SUBSCRIBING")}}
+                                cursor={"pointer"}
                             >
                                 <Box h={"80px"} w={"60px"} maxW={{ base: '100%', sm: '60px' }} bgColor={"white"} color={"green.600"} display="flex" alignItems="center" justifyContent="center">
                                     <Text textAlign={"center"} as={"b"} fontSize={"4xl"}>8</Text>
@@ -237,6 +287,8 @@ const MySubscription = () => {
                                 display="flex"
                                 border="2px"
                                 borderColor="pink.300"
+                                onClick={() => {GetMySubscription("REJECTED")}}
+                                cursor={"pointer"}
                             >
                                 <Box h={"80px"} w={"60px"} maxW={{ base: '100%', sm: '60px' }} bgColor={"white"} color={"pink.600"} display="flex" alignItems="center" justifyContent="center">
                                     <Text textAlign={"center"} as={"b"} fontSize={"4xl"}>1</Text>
@@ -384,6 +436,7 @@ const MySubscription = () => {
                     </Table>
                 </CardBody>
             </Card>
+            <Footer />
         </>
     );
 };
