@@ -1,4 +1,6 @@
-    # TLS config
+    ##
+	# SSL/TLS Settings
+	##
     ssl_certificate      /usr/share/nginx/certs/fullchain.pem;
     ssl_certificate_key  /usr/share/nginx/certs/privkey.pem;
     ssl_session_cache    shared:SSL:10m;
@@ -6,27 +8,35 @@
     ssl_ciphers          HIGH:!aNULL:!MD5;
     ssl_protocols        TLSv1.2 TLSv1.3;
 
-    # API definitions, one per file
-    include /etc/nginx/talaria_conf.d/api_conf.d/*.conf;
 
-    # Error responses
-    error_page 404 = @400;         # Invalid paths are treated as bad requests
-    proxy_intercept_errors on;     # Do not send backend errors to the client
-    include /etc/nginx/talaria_conf.d/api_json_errors.conf;  # API client friendly JSON error responses
-    default_type application/json; # If no content-type then assume JSON
+    ##
+	# APIs Settings
+	##
+    include talaria.d/api_conf.d/*conf;
 
-    # API key validation
+
+    # Error Responses
+    error_page 404 = @400;
+    proxy_intercept_errors on;
+    include talaria.d/api_json_errors.conf;
+    default_type application/json;
+
+
+    ##
+	# API Key Validation
+	##
     location = /_validate_apikey {
         internal;
 
         if ($http_apikey = "") {
-            return 401; # Unauthorized
-        }
-        if ($api_client_name = "") {
-            return 403; # Forbidden
+            return 401;
         }
 
-        return 204; # OK (no content)
+        if ($api_client_name = "") {
+            return 403;
+        }
+
+        return 204;
     }
 }
 

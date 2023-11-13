@@ -9,17 +9,18 @@ class APIBackendsConf(BaseConf):
     def generate(self) -> dict:
         blocks = ''
 
-        for name, addresses in self.servers.items():
+        for name, server_dict in self.servers.items():
             block = f'upstream {name} {{\n'
             zone, server_str = '', ''
 
-            if len(addresses) >= 2:
+            if len(server_dict) >= 2:
                 zone = f'\tzone {name}_service 64k;\n'
 
-            for address in addresses:
-                server_str += f'\tserver {address};\n'
+            for address in server_dict:
+                server_str += f'\tserver {address}:443;\n'
 
             block += f'{zone}{server_str}}}\n\n'
             blocks += block
+            blocks += '#vim: syntax=nginx\n'
 
         return {'name': self.name, 'content': blocks}

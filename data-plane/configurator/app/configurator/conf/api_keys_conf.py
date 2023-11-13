@@ -12,7 +12,7 @@ class APIKeysConf(BaseConf):
         block += self._get_key_user_map()
         for service_name, service_users in self.keys['service'].items():
             block += self._get_service_key_map(service_name, service_users)
-        block += '# vim: syntax=nginx'
+        block += '# vim: syntax=nginx\n'
 
         return {'name': self.name, 'content': block}
 
