@@ -18,17 +18,20 @@ public class MemberResponse {
 	String email;
 	String password;
 	Role role;
+	Long keyId;
 	String key;
 	String keyCreatedDate;
 	String keyExpirationDate;
 
 	@Builder
-	public MemberResponse(Long memberId, String email, String password, Role role, String key, String keyCreatedDate,
+	public MemberResponse(Long memberId, String email, String password, Role role, Long keyId, String key,
+		String keyCreatedDate,
 		String keyExpirationDate) {
 		this.memberId = memberId;
 		this.email = email;
 		this.password = password;
 		this.role = role;
+		this.keyId = keyId;
 		this.key = key;
 		this.keyCreatedDate = keyCreatedDate;
 		this.keyExpirationDate = keyExpirationDate;
