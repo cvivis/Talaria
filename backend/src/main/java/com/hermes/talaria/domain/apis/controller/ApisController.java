@@ -133,6 +133,12 @@ public class ApisController {
 		return ResponseEntity.ok().build();
 	}
 
+	@DeleteMapping("/admin/{apisId}")
+	public ResponseEntity<Void> deleteApis(@PathVariable Long apisId) {
+		apisService.deleteByAdmin(apisId);
+		return ResponseEntity.ok().build();
+	}
+
 	@GetMapping("/user/me")
 	public ResponseEntity<List<ApisSubResponse>> findSubsByStatus(@MemberInfo Long memberId,
 		@RequestParam String status) {
