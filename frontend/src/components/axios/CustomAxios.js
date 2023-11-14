@@ -11,7 +11,6 @@ const CustomAxios = () => {
         baseURL: `${SeverBaseUrl}`,
         headers: {
             "Content-Type": "application/json",
-            "Authorization": "",
         },
     });
 };

@@ -10,7 +10,6 @@ const ApiProducts = () => {
     const [products,setProducts] = useState([]);
 
     const mainText = useColorModeValue("white", "gray.200");
-    const textColor = useColorModeValue("gray.400", "white");
     const boxShadow = useColorModeValue(
         "0px 5px 14px rgba(0, 0, 0, 0.05)",
         "unset"
@@ -23,37 +22,19 @@ const ApiProducts = () => {
 
     const GetProducts = async() => {
         try {
-            const data = await instance.get("apis/user");
-            setProducts(data);
-        } catch {
-            alert("에러 api 리스트 가져오기");
+            const data = await instance.get("apis/user",{
+                params: {
+                    status: "approved_on",
+                }
+            });
+            setProducts(data.data);
+        } catch(error) {
+            alert(error);
         }
     }
 
     useEffect(() => {
-        setProducts([
-            {
-                name:"product1",
-                description:"냉무1",
-            },
-            {
-                name:"product2",
-                description:"",
-            },
-            {
-                name:"product3",
-                description:"냉무3",
-            },
-            {
-                name:"product4",
-                description:"냉무4",
-            },
-            {
-                name:"product5",
-                description:"냉무5",
-            },
-        ]);
-        // GetProducts();
+        GetProducts();
     },[]);
 
     return (

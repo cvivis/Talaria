@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../components/slices/UserInfoSlice";
 import { ReactComponent as LogoutIcon } from '../assets/svg/Logout.svg';
+import instance from "../components/axios/CustomAxios";
 
 function User() {
 
@@ -37,6 +38,19 @@ function User() {
         return navigate("/");
     }
 
+    const GetProducts = async() => {
+        try {
+            const data = await instance.get("apis/user",{
+                params: {
+                    status: "approved_on",
+                }
+            });
+            setProducts(data.data);
+        } catch(error) {
+            alert(error);
+        }
+    }
+
     useEffect(() => {
         setMainCategory("API Products");
         setSecondCategory("");
@@ -55,32 +69,7 @@ function User() {
             }
         }
 
-        setProducts([
-            {
-                name:"product1",
-                description:"냉무1",
-            },
-            {
-                name:"product2",
-                description:"",
-            },
-            {
-                name:"product3",
-                description:"냉무3",
-            },
-            {
-                name:"product4",
-                description:"냉무4",
-            },
-            {
-                name:"product5",
-                description:"냉무5",
-            },
-            {
-                name:"하나 더 테스트",
-                description:"냉무5",
-            },
-        ]);
+        GetProducts();
 
     },[location,mainCategory]);
 

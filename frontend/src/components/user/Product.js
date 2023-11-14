@@ -31,28 +31,28 @@ const Product = () => {
     
     const GetProduct = async(apisName) => {
         try{
-            const ProductData = await instance.get('apis/user',{
+            const data = await instance.get('apis/user/product',{
                 params: {
-                    name: apisName,
+                    apisName: apisName.productName,
                 }
             });
-            setProduct(ProductData);
-        } catch {
-            
+            setProduct(data.data);
+            GetSubscription(data.data.apis_id);
+        } catch(error) {
+            alert(error);
         }
     };
 
-    const GetSubscription = async() => {
+    const GetSubscription = async(apisId) => {
         try {
-            const SubscriptionData = await instance.get('subscription/user',{
+            const data = await instance.get('subscriptions/user',{
                 params: {
-                    apis_id: product.apisId,
-                    member_id: memberId,
+                    apisId: apisId,
                 }
             });
-            setSubscription(SubscriptionData);
-        } catch {
-
+            setSubscription(data.data);
+        } catch(error) {
+            alert(error);
         }
     };
 
@@ -126,9 +126,8 @@ const Product = () => {
     const finalRef = useRef(null);
 
     useEffect(() => {
-        // GetProduct(params);
-        // GetStatus();
-    },[product,subscription]);
+        GetProduct(params);
+    },[params,subscription]);
 
     return (
         <>
@@ -138,7 +137,7 @@ const Product = () => {
                 <Box mr={3}>
                     {
                         {
-                            reject:
+                            REJECTED:
                                 <Badge 
                                     variant='solid' 
                                     colorScheme='pink' 
@@ -149,9 +148,9 @@ const Product = () => {
                                 >
                                     REJECTED
                                 </Badge>,
-                            pending:<Badge variant='solid' colorScheme='yellow' fontSize='25px' borderRadius='5' cursor={"default"}>PENDING</Badge>,
-                            subscribing:<Badge variant='solid' colorScheme='green' fontSize='25px' borderRadius='5' cursor={"default"}>SUBSCRIBING</Badge>,
-                            subscribe:
+                            PENDING:<Badge variant='solid' colorScheme='yellow' fontSize='25px' borderRadius='5' cursor={"default"}>PENDING</Badge>,
+                            SUBSCRIBING:<Badge variant='solid' colorScheme='green' fontSize='25px' borderRadius='5' cursor={"default"}>SUBSCRIBING</Badge>,
+                            SUBSCRIBE:
                                 <Badge
                                     variant='solid' 
                                     colorScheme='cyan' 
@@ -162,7 +161,7 @@ const Product = () => {
                                 >
                                     SUBSCRIBE
                                 </Badge>,
-                        }[subscription.status]
+                        }[subscription]
                     }
                 </Box>
             </Flex>
