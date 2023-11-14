@@ -10,8 +10,8 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { ReactComponent as LogoutIcon } from '../assets/svg/Logout.svg';
 
 function Admin() {
-    let bgBoxColor = useColorModeValue('blue.500', 'navy.900');
-    let mainText = useColorModeValue("white", "gray.200");
+    let bgBoxColor = useColorModeValue('navy.900', 'navy.900');
+    let mainText = useColorModeValue("gray.200", "gray.200");
     const location = useLocation();
     const navigate = useNavigate();
     const dispatch = useDispatch();
