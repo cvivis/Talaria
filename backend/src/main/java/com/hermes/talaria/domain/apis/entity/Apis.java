@@ -47,7 +47,7 @@ public class Apis implements Serializable {
 	@Column
 	private Long developerId;
 
-	@Column
+	@Column(unique = true)
 	private String name;
 
 	@Column
