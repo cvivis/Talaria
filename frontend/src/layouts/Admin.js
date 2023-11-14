@@ -154,13 +154,14 @@ function Admin() {
                                 <BreadcrumbLink 
                                     color={mainText}
                                 >
-                                    {mainCategory}
+                                    <Text fontSize='2xl' fontWeight={"bold"} marginBottom='10%'>
+                                    {mainCategory}</Text>
                                 </BreadcrumbLink>
                             </BreadcrumbItem>
                         </Breadcrumb>
                     </Box>
 
-                <MainPanel setWidth='80vw' setHeigth='95vh' >
+                <MainPanel setWidth='75vw' setHeigth='95vh' >
                         <Outlet />
                     </MainPanel>
                     <Footer />
