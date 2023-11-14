@@ -1,116 +1,87 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Box, Text } from "@chakra-ui/react";
-import * as StompJs from "@stomp/stompjs";
-import {
-  Table,
-  Thead,
-  Tbody,
-  Tfoot,
-  Tr,
-  Th,
-  Td,
-  TableCaption,
-  TableContainer,
-} from "@chakra-ui/react";
-function Chart4() {
-  const client = useRef({});
-  const [data, setData] = useState([]);
-  const connect = () => {
-    client.current = new StompJs.Client({
-      brokerURL: "ws://localhost:8080/ws/monitoring",
-      onConnect: () => {
-        // Do something, all subscribes must be done is this callback
-        console.log("연결 SUB");
-        subscribe();
-      },
-    });
-    client.current.activate();
+import axios from "axios";
+import ReactApexChart from "react-apexcharts";
+function Chart2() {
+  const [requestData, setRequestData] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [series, setSeries] = useState([
+    { x: "Fri Nov 10 2023 00:00:00 GMT+0900 (한국 표준시)", y: 8 },
+  ]);
+  const [options, setOptions] = useState({
+    chart: {
+      height: 350,
+      type: "line",
+    },
+    colors: ["#2D3748", "#2D3748"],
+    // dataLabels: {
+    //   enabled: true,
+    //   style: {
+    //     fontSize: '12px',
+    //     colors: ["#2D3748"],
+    //     borderRadius: 1, // 둥글게 만들기 위한 설정
+    //   },
+    // },
+
+    stroke: {
+      curve: "smooth",
+    },
+    yaxis: {
+      min: 0,
+      max: 40,
+    },
+    legend: {
+      position: "top",
+      horizontalAlign: "right",
+      floating: true,
+      offsetY: -25,
+      offsetX: -5,
+    },
+  });
+
+  const getData = async () => {
+    const groupName = "/shinhan/banking";
+    const url = "http://localhost:8080/group-detail/success?group-name=" + groupName;
+    let response = await axios.get(url);
+    // setRequestData(response.data);
+    setRequestData((prevRequestData) => [
+      ...prevRequestData,
+      ...response.data.map((item) => ({
+        x:
+          new Date(item.date).toLocaleString().split(" ")[2].replace(".", "일") +
+          " " +
+          new Date(item.date).toLocaleString().split(" ")[3] +
+          " " +
+          new Date(item.date).toLocaleString().split(" ")[4],
+        y: item.count,
+      })),
+    ]);
+    setCategories((prev) => [...prev, ...requestData.map((item) => item.x)]);
   };
-
-  const disconnect = () => {
-    client.current.deactivate(); // 활성화된 연결 끊기
-  };
-
-  const subscribe = () => {
-    client.current.subscribe("/sub/usage-ranking", (res) => {
-      // server에게 메세지 받으면
-      console.log(res.body);
-      const json_body = JSON.parse(res.body);
-      setData(json_body.data.slice());
-      //   console.log(data.map((info, rank) => info.url));
-    });
-  };
-
-  const getTextColor = (type) => {
-    if (type === "GET") {
-      return "#38A169";
-    } else if (type === "POST") {
-      return "#DD6B20";
-    } else if (type === "DELETE") {
-      return "#E53E3E";
-    } else if(type === "PATCH"){
-      return "#805AD5";
-    } else{
-      return "#3182CE"
-    }
-  };
-
-
 
   useEffect(() => {
-    connect();
-    // const interval = setInterval(() => {
-
-    // }, 1000);
-
-    return () => {
-      //   clearInterval(interval);
-      disconnect();
-    };
+    getData();
   }, []);
+
+  useEffect(() => {
+    console.log(requestData);
+    setSeries([
+      {
+        name: "usage",
+        data: requestData.slice(),
+      },
+    ]);
+  }, [requestData]);
 
   return (
     <>
-      <Box bg="white" w="40vw" h="55vh" borderRadius="20px" boxShadow="lg">
-        <Text fontWeight="Bold" p={4}>
-          API4
+      <Box bg="white" w="40vw" h="40vh" borderRadius="20px" boxShadow="lg" pl={5}>
+        <Text fontWeight="Bold" pt={4} pl={4}>
+          200 시간별 호출 횟수
         </Text>
-        <TableContainer>
-          <Table variant="simple" w="100%" h="100%" minH="50px" maxW="100%">
-            <Thead>
-              <Tr>
-                <Th>Ranking</Th>
-                <Th>URL</Th>
-                <Th>METHOD</Th>
-                <Th isNumeric>USAGE</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {data.map((info, rank) => (
-                <Tr key={rank}>
-                  <Td>
-                  <div style={{ margin: "0 auto" , textAlign:"center"}}>{info.ranking}</div>
-                  </Td>
-                  <Td>{info.url}</Td>
-                  <Td color={"white"} fontWeight="Bold" border="none">
-                  <div style={{backgroundColor:getTextColor(info.method), 
-                            width:"100%",
-                            height:"100%",
-                            display: "flex",
-                            justifyContent: "center",
-                            borderRadius:"7px",
-                            alignItems: "center",}} > {info.method}</div>
-                    </Td>
-                  <Td isNumeric>
-                  <div style={{ margin: "0 auto" , textAlign:"center"}}>{info.usage}</div>
-                    </Td>
-                </Tr>
-              ))}
-            </Tbody>
-          </Table>
-        </TableContainer>
+        <ReactApexChart options={options} series={series} type="line" height="80%" width="100%" />
       </Box>
     </>
   );
 }
-export default Chart4;
+export default Chart2;
