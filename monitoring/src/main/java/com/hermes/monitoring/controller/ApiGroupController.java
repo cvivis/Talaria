@@ -1,11 +1,14 @@
-package com.hermes.monitoring.cvivis.controller;
-
+package com.hermes.monitoring.controller;
 
 import com.hermes.monitoring.cvivis.dto.api.ApiClientFailHourlyCountDto;
 import com.hermes.monitoring.cvivis.dto.api.ApiClientFailRankingDto;
 import com.hermes.monitoring.cvivis.dto.api.ApiDailyRequestCountDto;
 import com.hermes.monitoring.cvivis.service.api.detail.ApiClientFailService;
 import com.hermes.monitoring.cvivis.service.api.detail.ApiDailyRequestCountService;
+import com.hermes.monitoring.lsm.dto.api.ApiHourlyCountDto;
+import com.hermes.monitoring.lsm.dto.api.ApiRankingDto;
+import com.hermes.monitoring.lsm.service.api.ApiServerFailService;
+import com.hermes.monitoring.lsm.service.api.ApiSuccessService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +25,8 @@ public class ApiGroupController {
 
     private final ApiClientFailService apiClientFailService;
     private final ApiDailyRequestCountService apiDailyRequestCountService;
+    private final ApiSuccessService apiSuccessService;
+    private final ApiServerFailService apiServerFailService;
 
 
     @GetMapping("/client-fail")
@@ -41,4 +46,23 @@ public class ApiGroupController {
         List<ApiClientFailRankingDto> result = apiClientFailService.getApiClientFailGroupRanking(groupUrl);
         return ResponseEntity.ok(result);
     }
+
+    @GetMapping("/success")
+    public ResponseEntity<List<ApiHourlyCountDto>> getApiGroupSuccessHourlyCount(@RequestParam("group-name")String groupName){
+        List<ApiHourlyCountDto> result = apiSuccessService.getApiGroupSuccessHourlyCount(groupName);
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/server-fail")
+    public ResponseEntity<List<ApiHourlyCountDto>> getApiGroupServerFailHourlyCount(@RequestParam("group-name")String groupName){
+        List<ApiHourlyCountDto> result = apiServerFailService.getApiGroupServerFailHourlyCount(groupName);
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/server-fail-ranking")
+    public ResponseEntity<List<ApiRankingDto>> getApiGroupServerFailRanking(@RequestParam("group-name")String groupName){
+        List<ApiRankingDto> result = apiServerFailService.getApiGroupServerFailRanking(groupName);
+        return ResponseEntity.ok(result);
+    }
+
 }

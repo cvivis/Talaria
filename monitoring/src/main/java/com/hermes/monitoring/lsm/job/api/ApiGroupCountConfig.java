@@ -9,10 +9,9 @@ import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
-import org.springframework.batch.core.JobExecution;
-import org.springframework.batch.core.JobExecutionListener;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
+import org.springframework.batch.core.configuration.annotation.JobScope;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.repeat.RepeatStatus;
@@ -27,9 +26,7 @@ public class ApiGroupCountConfig {
     private final StepBuilderFactory stepBuilderFactory;
     private final LogParser logParser = new LogParser();
     private final ApiGroupDbInsertService apiGroupDbInsertService;
-    private Long statusCode;
     private List<LogDto> logDtoList;
-
     private Map<String, ApiCountDto> statusCount;
 
 
@@ -42,32 +39,22 @@ public class ApiGroupCountConfig {
         // STEP 2: DtoList를 url,method,group,http status code로 분리한다.
         // STEP 3: DB에 넣는다.
         return jobBuilderFactory.get("apiGroupCount")
-                .listener(new JobExecutionListener() {
-                    @Override
-                    public void beforeJob(JobExecution jobExecution) {
-                        // Access the JobParameters and retrieve the 'statusCode' parameter
-                        statusCode = jobExecution.getJobParameters().getLong("statusCode");
-                    }
-
-                    @Override
-                    public void afterJob(JobExecution jobExecution) {
-                        // Do something after the job is executed
-                    }
-                })
                 .incrementer(new RunIdIncrementer())
-                .start(apiGroupLogFileReaderStep())
+                .start(apiGroupLogFileReaderStep(null))
                 .next(mappingGroupStep())
-                .next(dbInsertGroupStep())
+                .next(dbInsertGroupStep(null))
                 .build();
     }
 
     // STEP 1: log file을 DtoList로 불러온다.
     @Bean
-    public Step apiGroupLogFileReaderStep(){
+    @JobScope
+    public Step apiGroupLogFileReaderStep(@Value("#{jobParameters[statusCode]}") Long statusCode){
         return stepBuilderFactory.get("apiGroupLogFileReader")
                 .tasklet((contribution, chunkContext) -> {
                     // 파일을 읽어 logDtoList로 변환
-                    logDtoList = logParser.parseLog(logFolderPath + "access" + statusCode.intValue() + ".log");
+                    String filepath = logFolderPath + "access_" + statusCode.intValue() + ".log.1";
+                    logDtoList = logParser.parseLog(filepath);
                     return RepeatStatus.FINISHED;
                 })
                 .build();
@@ -82,7 +69,6 @@ public class ApiGroupCountConfig {
                     // http status code로 분류
                     statusCount = new LinkedHashMap<>();
                     for(LogDto logDto : logDtoList){
-                        System.out.println(logDto.toString());
                         String group = logDto.getGroup();
                         String statusCode = logDto.getHttpStatusCode();
                         String url = logDto.getUrl();
@@ -102,8 +88,9 @@ public class ApiGroupCountConfig {
     }
 
     @Bean
+    @JobScope
     // STEP 3: DB에 넣는다.
-    public Step dbInsertGroupStep(){
+    public Step dbInsertGroupStep(@Value("#{jobParameters[statusCode]}") Long statusCode){
         return stepBuilderFactory.get("dbInsertGroup")
                 .tasklet((contribution, chunkContext) -> {
                     for(String key : statusCount.keySet()){
