@@ -8,13 +8,14 @@ import {
     Th,
     Td,
     TableContainer,
+    Box
   } from "@chakra-ui/react";
   import React, { useEffect, useState } from "react";
   import APIEditModal from "./APIEditModal";
   import CustomAxios from "../axios/CustomAxios";
   import { useSelector } from "react-redux";
   
-  const APIApprovalList = () => {
+  const APIRegistration = () => {
     const [response, setResponse] = useState([]);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [apis, setApis] = useState({});
@@ -83,7 +84,7 @@ import {
     };
   
     return (
-      <>
+      <Box bgColor='white' borderRadius={20} height="100%" minHeight="100%">
         <TableContainer marginLeft="5%" marginRight="5%">
           <Table variant="simple">
             <Thead>
@@ -126,9 +127,9 @@ import {
           onClose={closeEditModal}
           apiInfo={apis}
         />
-      </>
+        </Box>
     );
   };
   
-  export default APIApprovalList;
+  export default APIRegistration;
   
