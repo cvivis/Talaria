@@ -1,9 +1,9 @@
-import { Box, Button, Flex, FormControl, FormLabel, Image, Input, Link, Text, useColorModeValue } from "@chakra-ui/react";
+import { Box, Button, Flex, FormControl, FormLabel, Image, Input, Link, Text, useColorModeValue, useToast } from "@chakra-ui/react";
 import Footer from "../components/footer/Footer";
 import image from "../assets/img/BasicImage.png";
 import logo from "../assets/img/Talaria-logo-light.png";
 import { useDispatch } from "react-redux";
-import { logoutUser, setUser } from "../components/slices/UserInfoSlice";
+import { setUser } from "../components/slices/UserInfoSlice";
 import React, { useState } from 'react';
 import CustomAxios from '../components/axios/CustomAxios'
 
@@ -13,6 +13,7 @@ function SignIn() {
     const bgForm = useColorModeValue("white", "navy.800");
     const titleColor = useColorModeValue("gray.700", "blue.500");
     const dispatch = useDispatch();
+    const toast = useToast();
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -22,16 +23,26 @@ function SignIn() {
         console.log(password);
 
         try {
-            CustomAxios.post(`/auth/login`,
+            CustomAxios.post(`auth/login`,
                 {
                     email: email,
                     password: password
                 })
                 .then((res) => {
                     console.log(res);
+
+                    dispatch(setUser(res.data));
+
+                    toast({
+                        title:"WELCOME TO TALARIA !",
+                        position:"top",
+                        status:"info",
+                        variant:"subtle",
+                        isClosable:"true",
+                    })
                 })
         } catch(error) {
-            console.log(error);
+            console.log('error');
         }
     }
 
@@ -113,33 +124,36 @@ function SignIn() {
                             Welcome To Talaria !
                         </Text>
                         <FormControl>
-                            <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
+                            <FormLabel fontSize="sm" fontWeight="normal">
                                 E-Mail
                             </FormLabel>
                             <Input
                                 variant="auth"
                                 fontSize="sm"
-                                ms="4px"
                                 type="text"
                                 placeholder="Your E-Mail"
                                 mb="24px"
                                 size="lg"
-                                w="91%"
+                                w="100%"
                                 onChange={(e) => setEmail(e.target.value)}
                             />
-                            <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
+                            <FormLabel fontSize="sm" fontWeight="normal">
                                 Password
                             </FormLabel>
                             <Input
                                 variant="auth"
                                 fontSize="sm"
-                                ms="4px"
                                 type="password"
                                 placeholder="Your password"
                                 mb="24px"
                                 size="lg"
-                                w="91%"
+                                w="100%"
                                 onChange={(e) => setPassword(e.target.value)}
+                                onKeyDown={(e) => {
+                                    if (e.key === "Enter") {
+                                        HandleLogin();
+                                    }
+                                }}
                             />
                             <Button
                                 fontSize="10px"
@@ -148,16 +162,6 @@ function SignIn() {
                                 w="100%"
                                 h="45"
                                 mb="24px"
-                                // onClick={() => {
-                                //     dispatch(setUser({
-                                //         member_id: "1",
-                                //         email: "a@a.com",
-                                //         role: "user",
-                                //         key_id: "3",
-                                //         access_token: "asdasdadasd1",
-                                //         refresh_token: "asdasdadasd2",
-                                //     }));
-                                // }}
                                 onClick={() => HandleLogin()}
                             >
                                 SIGN IN
@@ -178,9 +182,6 @@ function SignIn() {
                                 ms="5px"
                                 href="#"
                                 fontWeight="bold"
-                                // onClick={() => {
-                                //     dispatch(logoutUser());
-                                // }}
                             >
                                 Account registration
                             </Link>

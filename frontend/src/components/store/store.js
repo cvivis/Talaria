@@ -1,6 +1,6 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import storage from "redux-persist/lib/storage"; // local storage
-// import storage from "redux-persist/lib/storage/session"; // session storage
+// import storage from "redux-persist/lib/storage"; // local storage
+import storage from "redux-persist/lib/storage/session"; // session storage
 import UserInfoSlice from "../slices/UserInfoSlice";
 import { persistReducer } from "redux-persist";
 

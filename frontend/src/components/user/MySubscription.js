@@ -2,19 +2,35 @@ import { Badge, Box, Button, Card, CardBody, Flex, Spacer, Table, Tbody, Td, Tex
 import React, { useEffect, useState } from 'react';
 import { ReactComponent as ApiIcon } from '../../assets/svg/BsFileEarmarkCodeFill.svg';
 import { CopyIcon } from '@chakra-ui/icons';
+import instance from '../axios/CustomAxios';
+import { useDispatch, useSelector } from 'react-redux';
+import Footer from '../footer/Footer';
+import { useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const MySubscription = () => {
 
     const mainText = useColorModeValue("white", "gray.200");
-    const textColor = useColorModeValue("gray.700", "white");
+    const textColor = useColorModeValue("black", "white");
     const borderColor = useColorModeValue("gray.200", "gray.600");
     const bgProfile = useColorModeValue("hsla(0,0%,100%,.8)", "navy.800");
-    const mainColor = useColorModeValue("gray.500", "white");
-    const secondaryColor = useColorModeValue("gray.400", "white");
+    const mainColor = useColorModeValue("black", "white");
+    const secondaryColor = useColorModeValue("black", "white");
     const borderProfileColor = useColorModeValue("white", "transparent");
     const [apiKey, setApiKey] = useState("No keys available");
     const [mySubscription, setMySubscription] = useState([]);
+    const [allApi, setAllApi] = useState(0);
+    const [pendingApi, setPendingApi] = useState(0);
+    const [subscribingApi, setSubscribingApi] = useState(0);
+    const [rejectedApi, setRejectedApi] = useState(0);
+    const allCount = useRef(0);
+    const pendingCount = useRef(0);
+    const subscribingCount = useRef(0);
+    const rejectedCount = useRef(0);
+    const memberId = useSelector(state => state.userInfo.member_id);
+    const dispatch = useDispatch();
     const toast = useToast();
+    const navigate = useNavigate();
 
     const copyText = async() => {
         await navigator.clipboard.writeText(apiKey);
@@ -26,108 +42,76 @@ const MySubscription = () => {
             variant:"subtle",
             colorScheme:"blue"
         })
-    };                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+    };
+
+    const goProductPage = (productName) => {
+        return navigate("/user/API Products/"+productName);
+    }
+    
+    const GetKey = async() => {
+        try {
+            const data = await instance.get('keys/user');
+            setApiKey(data.data.key);
+        } catch(error) {
+            return alert(error);
+        }
+    };
+
+    const ReIssueKey = async() => {
+        try {
+            const data = await instance.post('keys/user');
+            setApiKey(data);
+        } catch(error) {
+            return alert(error);
+        }
+    };
+
+    const GetMySubscription = async(status) => {
+        try {
+            const data = await instance.get('apis/user/me',{
+                params: {
+                    status: status,
+                }
+            });
+            setMySubscription(data.data);
+            if(status === "all") {
+                CountApi(data.data);
+            }
+        } catch (error) {
+            alert(error);
+        }
+    }
+
+    const CountApi = (data) => {
+        let pending = 0;
+        let subscribing = 0;
+        let rejected = 0;
+        console.log(data);
+        data.map(function(product) {
+            if(product.status === "PENDING") {
+                pending = pending + 1;
+            } else if(product.status === "SUBSCRIBING") {
+                subscribing = subscribing + 1;
+                setSubscribingApi(subscribingApi+1);
+            } else if(product.status === "REJECTED") {
+                rejected = rejected + 1;
+            }
+        });
+
+        setPendingApi(pending);
+        pendingCount.current = pending;
+        setSubscribingApi(subscribing);
+        subscribingCount.current = subscribing;
+        setRejectedApi(rejected);
+        rejectedCount.current = rejected;
+        setAllApi(pending+subscribing+rejected);
+        allCount.current = (pending+subscribing+rejected);
+    }
 
     useEffect(() => {
 
-        setMySubscription([
-            {
-                name:"product1",
-                discription:"설명1",
-                domain:"www.asdasd1.com",
-                quata:"60",
-                status:"pending",
-                exprtationDate:"2024.03.20",
-            },
-            {
-                name:"product2",
-                discription:"설명2",
-                domain:"www.asdasd2.com",
-                quata:"100",
-                status:"Rejected",
-                exprtationDate:"2024.03.20",
-            },
-            {
-                name:"product3",
-                discription:"설명3",
-                domain:"www.asdasd1.com",
-                quata:"75",
-                status:"pending",
-                exprtationDate:"2024.03.20",
-            },
-            {
-                name:"product4",
-                discription:"설명4",
-                domain:"www.asdasd1.com",
-                quata:"160",
-                status:"subscribing",
-                exprtationDate:"2024.03.20",
-            },
-            {
-                name:"product5",
-                discription:"설명5",
-                domain:"www.asdasd5.com",
-                quata:"50",
-                status:"subscribing",
-                exprtationDate:"2024.03.20",
-            },
-            {
-                name:"product5",
-                discription:"설명6",
-                domain:"www.asdasd6.com",
-                quata:"50",
-                status:"pending",
-                exprtationDate:"2024.03.20",
-            },
-            {
-                name:"product7",
-                discription:"설명7",
-                domain:"www.asdasd5.com",
-                quata:"50",
-                status:"subscribing",
-                exprtationDate:"2024.03.20",
-            },
-            {
-                name:"product8",
-                discription:"설명8",
-                domain:"www.asdasd5.com",
-                quata:"50",
-                status:"subscribing",
-                exprtationDate:"2024.03.20",
-            },
-            {
-                name:"product9",
-                discription:"설명9",
-                domain:"www.asdasd9.com",
-                quata:"50",
-                status:"subscribing",
-                exprtationDate:"2024.03.20",
-            },
-            {
-                name:"product10",
-                discription:"설명10",
-                domain:"www.asdasd5.com",
-                quata:"50",
-                status:"subscribing",
-                exprtationDate:"2024.03.20",
-            },
-            {
-                name:"product11",
-                discription:"설명11",
-                domain:"www.asdasd5.com",
-                quata:"50",
-                status:"subscribing",
-                exprtationDate:"2024.03.20",
-            },
-            {
-                name:"product12",
-                discription:"설명12",
-                domain:"www.asdasd5.com",
-                quata:"50",
-                status:"subscribing",
-                exprtationDate:"2024.03.20",
-            },
-        ])
+        GetMySubscription("all");
+        GetKey();
 
     },[]);
 
@@ -169,7 +153,7 @@ const MySubscription = () => {
                             <Flex flexDir={"row"} justifyContent={"center"} alignItems={"center"}>
                                 <Text fontSize={"md"} color={"gray.400"}>{apiKey}</Text>
                                 <CopyIcon mx={2} onClick={() => copyText()} cursor={"copy"}/>
-                                <Button colorScheme="blue" size={"xs"}>REISSUE</Button>
+                                <Button colorScheme="blue" size={"xs"} onClick={() => {ReIssueKey()}}>REISSUE</Button>
                             </Flex>
                         </Box>
                         <Spacer />
@@ -183,9 +167,11 @@ const MySubscription = () => {
                                 display="flex"
                                 border="2px"
                                 borderColor="cyan.400"
+                                onClick={() => {GetMySubscription("all")}}
+                                cursor={"pointer"}
                             >
                                 <Box h={"80px"} w={"60px"} maxW={{ base: '100%', sm: '60px' }} bgColor={"white"} color={"cyan.600"} display="flex" alignItems="center" justifyContent="center">
-                                    <Text textAlign={"center"} as={"b"} fontSize={"4xl"}>12</Text>
+                                    <Text textAlign={"center"} as={"b"} fontSize={"4xl"}>{allCount.current}</Text>
                                 </Box>
                                 <Box h={"80px"} w={"160px"} display="flex" alignItems="center" justifyContent="center" bgColor={"cyan.400"} color={"white"}>
                                     <Text as={"b"} fontSize={"2xl"}>All APIs</Text>
@@ -201,9 +187,11 @@ const MySubscription = () => {
                                 display="flex"
                                 border="2px"
                                 borderColor="yellow.400"
+                                onClick={() => {GetMySubscription("PENDING")}}
+                                cursor={"pointer"}
                             >
                                 <Box h={"80px"} w={"60px"} maxW={{ base: '100%', sm: '60px' }} bgColor={"white"} color={"yellow.600"} display="flex" alignItems="center" justifyContent="center">
-                                    <Text textAlign={"center"} as={"b"} fontSize={"4xl"}>3</Text>
+                                    <Text textAlign={"center"} as={"b"} fontSize={"4xl"}>{pendingCount.current}</Text>
                                 </Box>
                                 <Box h={"80px"} w={"160px"} display="flex" alignItems="center" justifyContent="center" bgColor={"yellow.400"} color={"white"} >
                                     <Text as={"b"} fontSize={"2xl"}>Pending</Text>
@@ -219,9 +207,11 @@ const MySubscription = () => {
                                 display="flex"
                                 border="2px"
                                 borderColor="green.300"
+                                onClick={() => {GetMySubscription("SUBSCRIBING")}}
+                                cursor={"pointer"}
                             >
                                 <Box h={"80px"} w={"60px"} maxW={{ base: '100%', sm: '60px' }} bgColor={"white"} color={"green.600"} display="flex" alignItems="center" justifyContent="center">
-                                    <Text textAlign={"center"} as={"b"} fontSize={"4xl"}>8</Text>
+                                    <Text textAlign={"center"} as={"b"} fontSize={"4xl"}>{subscribingCount.current}</Text>
                                 </Box>
                                 <Box h={"80px"} w={"160px"} display="flex" alignItems="center" justifyContent="center" bgColor={"green.300"} color={"white"} >
                                     <Text as={"b"} fontSize={"2xl"}>Subscribing</Text>
@@ -237,9 +227,11 @@ const MySubscription = () => {
                                 display="flex"
                                 border="2px"
                                 borderColor="pink.300"
+                                onClick={() => {GetMySubscription("REJECTED")}}
+                                cursor={"pointer"}
                             >
                                 <Box h={"80px"} w={"60px"} maxW={{ base: '100%', sm: '60px' }} bgColor={"white"} color={"pink.600"} display="flex" alignItems="center" justifyContent="center">
-                                    <Text textAlign={"center"} as={"b"} fontSize={"4xl"}>1</Text>
+                                    <Text textAlign={"center"} as={"b"} fontSize={"4xl"}>{rejectedCount.current}</Text>
                                 </Box>
                                 <Box h={"80px"} w={"160px"} display="flex" alignItems="center" justifyContent="center" bgColor={"pink.300"} color={"white"}>
                                     <Text as={"b"} fontSize={"2xl"}>Rejected</Text>
@@ -255,30 +247,24 @@ const MySubscription = () => {
                     <Table variant="simple" color={textColor}>
                         <Thead>
                         <Tr my=".8rem" ps="0px" color="gray.400">
-                            <Th ps="0px" color="gray.400" borderColor={borderColor}>
-                            Product
-                            </Th>
                             <Th color="gray.400" borderColor={borderColor}>
-                            Discription
+                            Product
                             </Th>
                             <Th color="gray.400" borderColor={borderColor}>
                             Application Domain
                             </Th>
                             <Th color="gray.400" borderColor={borderColor}>
-                            Quata per Second
+                            Quota per Second
                             </Th>
                             <Th color="gray.400" borderColor={borderColor}>
                             Status
-                            </Th>
-                            <Th color="gray.400" borderColor={borderColor}>
-                            Expiration Date
                             </Th>
                         </Tr>
                         </Thead>
                         <Tbody pb="0px">
                             {
                                 mySubscription.map((product,index) => (
-                                <Tr border="none" key={index}>
+                                <Tr border="none" key={index} onClick={(e) => {goProductPage(product.name)}} cursor={"pointer"}>
                                     <Td
                                         borderColor={borderColor}
                                         minW={{ sm: "220px", xl: "180px", "2xl": "220px" }}
@@ -303,22 +289,6 @@ const MySubscription = () => {
                                     </Td>
                                     <Td
                                         borderColor={borderColor}
-                                        minW={{ sm: "150px", lg: "150px" }}
-                                        border={index === (mySubscription.length-1) ? "none" : null}
-                                        px={{ xl: "2px", "2xl": "20px" }}
-                                    >
-                                        <Flex direction="column">
-                                        <Text
-                                            fontSize={{ sm: "md", xl: "sm", "2xl": "md" }}
-                                            color={mainColor}
-                                            fontWeight="bold"
-                                        >
-                                            {product.discription}
-                                        </Text>
-                                        </Flex>
-                                    </Td>
-                                    <Td
-                                        borderColor={borderColor}
                                         minW={{ sm: "150px", lg: "120px" }}
                                         border={index === (mySubscription.length-1) ? "none" : null}
                                         px={{ xl: "2px", "2xl": "20px" }}
@@ -328,7 +298,7 @@ const MySubscription = () => {
                                                 color={secondaryColor}
                                                 fontSize={{ sm: "md", xl: "sm", "2xl": "md" }}
                                             >
-                                                {product.domain}
+                                                {product.routing_url}
                                             </Text>
                                         </Flex>
                                     </Td>
@@ -344,7 +314,7 @@ const MySubscription = () => {
                                             fontWeight="normal"
                                             pb=".5rem"
                                         >
-                                            {product.quata}
+                                            {product.quota}
                                         </Text>
                                     </Td>
                                     <Td
@@ -359,22 +329,16 @@ const MySubscription = () => {
                                             fontWeight="normal"
                                             pb=".5rem"
                                         >
-                                            {product.status}
-                                        </Text>
-                                    </Td>
-                                    <Td
-                                        borderColor={borderColor}
-                                        minW={{ sm: "150px", lg: "170px" }}
-                                        border={index === (mySubscription.length-1) ? "none" : null}
-                                        px={{ xl: "2px", "2xl": "20px" }}
-                                    >
-                                        <Text
-                                            fontSize={{ sm: "md", xl: "sm", "2xl": "md" }}
-                                            color={secondaryColor}
-                                            fontWeight="normal"
-                                            pb=".5rem"
-                                        >
-                                            {product.exprtationDate}
+                                            {
+                                                {
+                                                    REJECTED:
+                                                        <Badge variant='solid' colorScheme='pink' fontSize='15px' borderRadius='5' cursor={"default"}>REJECTED</Badge>,
+                                                    PENDING:
+                                                        <Badge variant='solid' colorScheme='yellow' fontSize='15px' borderRadius='5' cursor={"default"}>PENDING</Badge>,
+                                                    SUBSCRIBING:
+                                                        <Badge variant='solid' colorScheme='green' fontSize='15px' borderRadius='5' cursor={"default"}>SUBSCRIBING</Badge>,
+                                                }[product.status]
+                                            }
                                         </Text>
                                     </Td>
                                 </Tr>
@@ -384,6 +348,7 @@ const MySubscription = () => {
                     </Table>
                 </CardBody>
             </Card>
+            <Footer />
         </>
     );
 };

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { logoutUser, setAccessToken } from '../slices/UserInfoSlice';
 import store from '../store/store';
@@ -12,25 +12,22 @@ const CustomAxios = () => {
         headers: {
             "Content-Type": "application/json",
         },
-        body: { 
-            "access_token": "",
-        },
     });
 };
+const instance = CustomAxios();
 
-CustomAxios.interceptors.request.use(
+instance.interceptors.request.use(
     (config) => {
         const access_token = store.getState().userInfo.access_token;
-
         if (access_token !== "") {
-            config.body.access_token = `Bearer ${access_token}`;
+            config.headers.Authorization = `Bearer ${access_token}`;
         }
         return config;
     },
     (error) => Promise.reject(error),
 );
 
-CustomAxios.interceptors.response.use(
+instance.interceptors.response.use(
     (response) => response,
     async (error) => {
         const originalRequest = error.config;
@@ -41,11 +38,14 @@ CustomAxios.interceptors.response.use(
             // access_token 재발급 요청
             await axios
             .post(
-                `${SeverBaseUrl}/refresh`,
+                `${SeverBaseUrl}/auth/refresh`,
                 { 
                     refresh_token: store.getState().userInfo.refresh_token
                 },
                 {
+                    body: {
+                        refresh_token: store.getState().userInfo.refresh_token
+                    },
                     headers: { 
                         Authorization: store.getState().userInfo.access_token
                     },
@@ -65,11 +65,11 @@ CustomAxios.interceptors.response.use(
             useNavigate("/");
         }
         } else if(error.response.status === 400) { // ERROR 400 => 존재하지 않는 계정
-            alert(error.response.data.errorMessage);
+                        alert(error.response.data.errorMessage);
         }
 
-        return Promise.reject(error);
+        return Promise.resolve(error.response);
     },
 );
 
-export default CustomAxios;
+export default instance;
