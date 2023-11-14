@@ -23,9 +23,6 @@ public class ServerFailTimeCheckService {
     private final JobLauncher jobLauncher;
     private final ServerFailTimeCheckConfig serverFailTimeCheckConfig;
 
-    @Value("${serverFail.baseLog.url}")
-    String baseUrl;
-
 //    @Scheduled(cron = "0/5 * * * * *")
     public void checkServerFailTime() throws IOException {
         Map<String, JobParameter> confMap = new HashMap<>();
