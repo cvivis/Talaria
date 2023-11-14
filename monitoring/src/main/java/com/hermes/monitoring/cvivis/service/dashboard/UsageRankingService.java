@@ -12,6 +12,7 @@ import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -32,7 +33,7 @@ public class UsageRankingService {
 
     private final UsageRankingConfig usageRankingConfig;
     private final CreateLogFile createLogFile;
-//    @Scheduled(cron = "0/5 * * * * *") // cron 표기법
+    @Scheduled(cron = "0/5 * * * * *") // cron 표기법
     public void runJob() throws IOException {
         createLogFile.createLogFile(url,baseUrl);
         // job parameter 설정

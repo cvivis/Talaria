@@ -32,7 +32,9 @@ public class CreateLogFile {
 
 
             while((result = br.readLine()) != null) {
-                String regex = "^(\\S+) - - \\[([^\\]]+)\\] \"(\\S+) (\\S+)\\s+HTTP/\\d\\.\\d\" (\\d+) (\\d+) \"([^\"]+)\" \"([^\"]+)\" (\\d+\\.\\d+) (\\d+\\.\\d+)$";
+//                String regex = "^(\\S+) - - \\[([^\\]]+)\\] \"(\\S+) (\\S+)\\s+HTTP/\\d\\.\\d\" (\\d+) (\\d+) \"([^\"]+)\" \"([^\"]+)\" (\\d+\\.\\d+) (\\d+\\.\\d+)$";
+                String regex = "^(\\S+) - - \\[([^\\]]+)\\] \"(\\S+) (\\S+) (\\S+)\" (\\d+) (\\d+) \"([^\"]*)\" \"([^\"]*)\" (\\d+\\.\\d+) ([\\d.\\-]+)$";
+//                String regex = "^(\\d+\\.\\d+\\.\\d+\\.\\d+) - - \\[([\\w:/]+\\s[+\\-]\\d{4})\\] \"(GET|POST|HEAD) (.+?) HTTP/1\\.1\" (\\d+) (\\d+) \"(.*?)\" \"(.*?)\" (\\d+\\.\\d+)$";
                 Pattern pattern = Pattern.compile(regex);
                 Matcher matcher = pattern.matcher(result);
                 if (matcher.find()) {

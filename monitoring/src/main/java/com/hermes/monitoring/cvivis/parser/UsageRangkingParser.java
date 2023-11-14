@@ -92,13 +92,20 @@ public class UsageRangkingParser {
     }
 
     public String parseLogEntry(String line) throws ParseException {
-        String regex = "^(\\S+) - - \\[([^\\]]+)\\] \"(\\S+) (\\S+)\\s+HTTP/\\d\\.\\d\" (\\d+) (\\d+) \"([^\"]+)\" \"([^\"]+)\" (\\d+\\.\\d+) (\\d+\\.\\d+)$";
-//        log.info(line);
+//        String regex = "^(\\S+) - - \\[([^\\]]+)\\] \"(\\S+) (\\S+)\\s+HTTP/\\d\\.\\d\" (\\d+) (\\d+) \"([^\"]+)\" \"([^\"]+)\" (\\d+\\.\\d+) (\\d+\\.\\d+)$";
+        String regex = "^(\\S+) - - \\[([^\\]]+)\\] \"([^\\\"]+) (\\S+) (\\S+)\" (\\d+) (\\d+) \"([^\"]*)\" \"([^\"]*)\" (\\d+\\.\\d+) ([\\d.\\-]+)$";
+/*  \[([^\]]+)\] : []안에 들어간 그룹 뽑기
+*   \"([^\"]+) : \이나 " 을 제외한 그룹  "로 시작
+* */
+
+
+        log.info(line);
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(line);
         String method = "초기 메소드";
         String url = "초기 url";
         Long date = new Date().getTime();
+        System.out.println("그룹을 찾아ㅏ라라라ㅏㅏㄹ "+matcher.group(0));
         if (matcher.find()) {
             method = matcher.group(3);
             url = matcher.group(4);
@@ -111,7 +118,7 @@ public class UsageRangkingParser {
             return url+ "_"+method;
         }
         else{
-//            log.info("group: ",matcher);
+            log.info("group: ",matcher.group(0));
 //            log.info("틀림 : "+line);
             return null;
         }

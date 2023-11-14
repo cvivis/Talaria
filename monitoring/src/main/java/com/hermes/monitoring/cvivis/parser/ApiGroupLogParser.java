@@ -47,7 +47,7 @@ public class ApiGroupLogParser {
     }
 
     public LogGroupDto apiGroupLogEntry(String line) throws ParseException {
-            String regex = "^(\\S+) - - \\[([^\\]]+)\\] \"(\\S+) (\\S+) (\\S+)\" (\\d+) (\\d+) \"([^\"]*)\" \"([^\"]*)\" (\\d+\\.\\d+) ([\\d.\\-]+)$";
+        String regex = "^(\\S+) - - \\[([^\\]]+)\\] \"(\\S+) (\\S+) (\\S+)\" (\\d+) (\\d+) \"([^\"]*)\" \"([^\"]*)\" (\\d+\\.\\d+) ([\\d.\\-]+)$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(line);
         String ip = "ip";
