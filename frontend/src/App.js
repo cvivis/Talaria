@@ -16,6 +16,7 @@ import APIManagement from "./components/admin/APIManagement.js"
 import APIRegistration from "./components/admin/APIRegistration.js"
 import APISubscription from "./components/admin/APISubscription.js"
 import MemberManagement from "./components/admin/MemberManagement.js"
+import API from "./components/admin/API.js"
 
 function App() {
 
@@ -39,6 +40,7 @@ function App() {
             <Route exact path='/admin/apiManagement' element={<APIManagement/>}></Route>
             <Route exact path='/admin/apiSubscription' element={<APISubscription/>}></Route>
             <Route exact path='/admin/memberManagement' element={<MemberManagement/>}></Route>
+            <Route path='/admin/api/:apiId' element={<API />} />
           </Route>
           <Route exact path='/developer' element={<PrivateRoute selectRole="DEVELOPER" component={<Developer />} />} />
 					{/* 상단에 위치하는 라우트들의 규칙을 모두 확인, 일치하는 라우트가 없는경우 처리 */}
