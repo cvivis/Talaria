@@ -44,6 +44,7 @@ public class GatewayService {
 		List<GatewayResponse> gatewayResponses = new ArrayList<>();
 
 		for (Apis apis : apisList) {
+			if (apis.getSwaggerContent() == null) continue;
 			Member developer = memberRepository.findByMemberId(apis.getDeveloperId())
 				.orElseThrow(() -> new AuthenticationException(
 					ErrorCode.NOT_EXIST_MEMBER));
