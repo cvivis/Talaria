@@ -10,8 +10,8 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { ReactComponent as LogoutIcon } from '../assets/svg/Logout.svg';
 
 function Admin() {
-    let bgBoxColor = useColorModeValue('blue.500', 'navy.900');
-    let mainText = useColorModeValue("white", "gray.200");
+    let bgBoxColor = useColorModeValue('navy.900', 'navy.900');
+    let mainText = useColorModeValue("gray.200", "gray.200");
     const location = useLocation();
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -154,13 +154,14 @@ function Admin() {
                                 <BreadcrumbLink 
                                     color={mainText}
                                 >
-                                    {mainCategory}
+                                    <Text fontSize='2xl' fontWeight={"bold"} marginBottom='10%'>
+                                    {mainCategory}</Text>
                                 </BreadcrumbLink>
                             </BreadcrumbItem>
                         </Breadcrumb>
                     </Box>
 
-                <MainPanel setWidth='80vw' setHeigth='95vh' >
+                <MainPanel setWidth='75vw' setHeigth='95vh' >
                         <Outlet />
                     </MainPanel>
                     <Footer />

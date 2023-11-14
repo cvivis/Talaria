@@ -118,13 +118,13 @@ const APIManagement = () => {
 
   return (
     <>
-      <TableContainer marginLeft="5%" marginRight="5%">
+      <TableContainer marginLeft="3%" marginRight="3%" paddingTop="2%">
         <Table variant="simple">
           <Thead>
             <Tr>
-              <Th fontSize="xs">Dept Name</Th>
-              <Th fontSize="xs">Group Name</Th>
-              <Th fontSize="xs">Quota Per Second (QPS)</Th>
+              <Th fontSize="xs">Developer</Th>
+              <Th fontSize="xs">API Name</Th>
+              <Th fontSize="xs">QPS (Quota Per Second)</Th>
               <Th fontSize="xs">Available</Th>
               <Th fontSize="xs"></Th>
             </Tr>
