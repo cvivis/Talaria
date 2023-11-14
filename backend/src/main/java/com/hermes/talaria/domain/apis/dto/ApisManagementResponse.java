@@ -1,5 +1,7 @@
 package com.hermes.talaria.domain.apis.dto;
 
+import java.util.Map;
+
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.hermes.talaria.domain.apis.constant.ApisStatus;
@@ -19,16 +21,18 @@ public class ApisManagementResponse {
 	String name; //apis entity
 	Long quota;    //apis entity
 	ApisStatus status;    //apis entity
+	Map<String, Object> swaggerContent;
 	String[] whiteList; // apis entity
 
 	@Builder
 	public ApisManagementResponse(Long apisId, String developerEmail, String name, Long quota, ApisStatus status,
-		String[] whiteList) {
+		Map<String, Object> swaggerContent, String[] whiteList) {
 		this.apisId = apisId;
 		this.developerEmail = developerEmail;
 		this.name = name;
 		this.quota = quota;
 		this.status = status;
+		this.swaggerContent = swaggerContent;
 		this.whiteList = whiteList;
 	}
 }
