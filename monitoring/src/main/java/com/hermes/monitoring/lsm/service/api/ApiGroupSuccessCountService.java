@@ -21,7 +21,7 @@ public class ApiGroupSuccessCountService {
     private final JobLauncher jobLauncher;
     private final ApiGroupCountConfig apiGroupCountConfig;
 
-    @Scheduled(cron = "0/10 * * * * *")
+    @Scheduled(cron = "0 0 0/1 * * *")
     public void runJob() {
         Map<String, JobParameter> confMap = new HashMap<>();
         confMap.put("time", new JobParameter("ApiGroupCountConfig_"+System.currentTimeMillis()));
