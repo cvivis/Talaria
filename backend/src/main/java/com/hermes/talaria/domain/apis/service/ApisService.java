@@ -109,6 +109,15 @@ public class ApisService {
 		return ModelMapperUtil.getModelMapper().map(apis, ApisDto.class);
 	}
 
+	public ApisDto findApisByApisId(Long apisId) {
+		Apis apis = apisRepository.findApisByApisId(apisId).orElseThrow(() -> new BusinessException(
+			ErrorCode.NOT_EXIST_APIS));
+
+		ApisDto apisDto = ModelMapperUtil.getModelMapper().map(apis, ApisDto.class);
+
+		return apisDto;
+	}
+
 	public List<ApisDto> getApisByStatus(List<ApisStatus> status) {
 		List<Apis> apis = new ArrayList<>();
 
