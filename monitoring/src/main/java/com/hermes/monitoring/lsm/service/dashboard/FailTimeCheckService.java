@@ -25,9 +25,6 @@ public class FailTimeCheckService {
     private final JobLauncher jobLauncher;
     private final FailTimeCheckConfig failTimeCheckConfig;
 
-    @Value("${fail.baseLog.url}")
-    String baseUrl;
-
 //    @Scheduled(cron = "0/5 * * * * *")
     public void checkSuccessTime() throws IOException {
         Map<String, JobParameter> confMap = new HashMap<>();
