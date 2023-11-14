@@ -60,6 +60,7 @@ public class Apis implements Serializable {
 	private ApisStatus status;
 
 	@Column
+	@ColumnDefault("0")
 	private Long quota;
 
 	@Enumerated(EnumType.STRING)
