@@ -3,25 +3,34 @@ import React, { useEffect, useState } from 'react';
 import { ReactComponent as ApiIcon } from '../../assets/svg/BsFileEarmarkCodeFill.svg';
 import { CopyIcon } from '@chakra-ui/icons';
 import instance from '../axios/CustomAxios';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Footer from '../footer/Footer';
+import { useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const MySubscription = () => {
 
     const mainText = useColorModeValue("white", "gray.200");
     const textColor = useColorModeValue("black", "white");
-    // const textColor = useColorModeValue("gray.700", "white");
     const borderColor = useColorModeValue("gray.200", "gray.600");
     const bgProfile = useColorModeValue("hsla(0,0%,100%,.8)", "navy.800");
     const mainColor = useColorModeValue("black", "white");
-    // const mainColor = useColorModeValue("gray.500", "white");
     const secondaryColor = useColorModeValue("black", "white");
-    // const secondaryColor = useColorModeValue("gray.400", "white");
     const borderProfileColor = useColorModeValue("white", "transparent");
     const [apiKey, setApiKey] = useState("No keys available");
     const [mySubscription, setMySubscription] = useState([]);
+    const [allApi, setAllApi] = useState(0);
+    const [pendingApi, setPendingApi] = useState(0);
+    const [subscribingApi, setSubscribingApi] = useState(0);
+    const [rejectedApi, setRejectedApi] = useState(0);
+    const allCount = useRef(0);
+    const pendingCount = useRef(0);
+    const subscribingCount = useRef(0);
+    const rejectedCount = useRef(0);
     const memberId = useSelector(state => state.userInfo.member_id);
+    const dispatch = useDispatch();
     const toast = useToast();
+    const navigate = useNavigate();
 
     const copyText = async() => {
         await navigator.clipboard.writeText(apiKey);
@@ -34,14 +43,17 @@ const MySubscription = () => {
             colorScheme:"blue"
         })
     };
+
+    const goProductPage = (productName) => {
+        return navigate("/user/API Products/"+productName);
+    }
     
     const GetKey = async() => {
         try {
             const data = await instance.get('keys/user');
-            console.log(data);
-            setApiKey(data);
-        } catch {
-            return alert("에러 겟");
+            setApiKey(data.data.key);
+        } catch(error) {
+            return alert(error);
         }
     };
 
@@ -49,8 +61,8 @@ const MySubscription = () => {
         try {
             const data = await instance.post('keys/user');
             setApiKey(data);
-        } catch {
-            return alert("에러 리이슈");
+        } catch(error) {
+            return alert(error);
         }
     };
 
@@ -58,125 +70,50 @@ const MySubscription = () => {
         try {
             const data = await instance.get('apis/user/me',{
                 params: {
-                    member_id: memberId,
                     status: status,
                 }
             });
-            console.log(data);
-            setMySubscription(data);
-        } catch {
-            return alert("에러 구독");
+            setMySubscription(data.data);
+            if(status === "all") {
+                CountApi(data.data);
+            }
+        } catch (error) {
+            alert(error);
         }
+    }
+
+    const CountApi = (data) => {
+        let pending = 0;
+        let subscribing = 0;
+        let rejected = 0;
+        console.log(data);
+        data.map(function(product) {
+            if(product.status === "PENDING") {
+                pending = pending + 1;
+            } else if(product.status === "SUBSCRIBING") {
+                subscribing = subscribing + 1;
+                setSubscribingApi(subscribingApi+1);
+            } else if(product.status === "REJECTED") {
+                rejected = rejected + 1;
+            }
+        });
+
+        setPendingApi(pending);
+        pendingCount.current = pending;
+        setSubscribingApi(subscribing);
+        subscribingCount.current = subscribing;
+        setRejectedApi(rejected);
+        rejectedCount.current = rejected;
+        setAllApi(pending+subscribing+rejected);
+        allCount.current = (pending+subscribing+rejected);
     }
 
     useEffect(() => {
 
-        setMySubscription([
-            {
-                name:"product1",
-                discription:"설명1",
-                domain:"www.asdasd1.com",
-                quata:"60",
-                status:"pending",
-                exprtationDate:"2024.03.20",
-            },
-            {
-                name:"product2",
-                discription:"설명2",
-                domain:"www.asdasd2.com",
-                quata:"100",
-                status:"rejected",
-                exprtationDate:"2024.03.20",
-            },
-            {
-                name:"product3",
-                discription:"설명3",
-                domain:"www.asdasd1.com",
-                quata:"75",
-                status:"pending",
-                exprtationDate:"2024.03.20",
-            },
-            {
-                name:"product4",
-                discription:"설명4",
-                domain:"www.asdasd1.com",
-                quata:"160",
-                status:"subscribing",
-                exprtationDate:"2024.03.20",
-            },
-            {
-                name:"product5",
-                discription:"설명5",
-                domain:"www.asdasd5.com",
-                quata:"50",
-                status:"subscribing",
-                exprtationDate:"2024.03.20",
-            },
-            {
-                name:"product5",
-                discription:"설명6",
-                domain:"www.asdasd6.com",
-                quata:"50",
-                status:"pending",
-                exprtationDate:"2024.03.20",
-            },
-            {
-                name:"product7",
-                discription:"설명7",
-                domain:"www.asdasd5.com",
-                quata:"50",
-                status:"subscribing",
-                exprtationDate:"2024.03.20",
-            },
-            {
-                name:"product8",
-                discription:"설명8",
-                domain:"www.asdasd5.com",
-                quata:"50",
-                status:"subscribing",
-                exprtationDate:"2024.03.20",
-            },
-            {
-                name:"product9",
-                discription:"설명9",
-                domain:"www.asdasd9.com",
-                quata:"50",
-                status:"subscribing",
-                exprtationDate:"2024.03.20",
-            },
-            {
-                name:"product10",
-                discription:"설명10",
-                domain:"www.asdasd5.com",
-                quata:"50",
-                status:"subscribing",
-                exprtationDate:"2024.03.20",
-            },
-            {
-                name:"product11",
-                discription:"설명11",
-                domain:"www.asdasd5.com",
-                quata:"50",
-                status:"subscribing",
-                exprtationDate:"2024.03.20",
-            },
-            {
-                name:"product12",
-                discription:"설명12",
-                domain:"www.asdasd5.com",
-                quata:"50",
-                status:"subscribing",
-                exprtationDate:"2024.03.20",
-            },
-        ]);
-
-        // GetKey();
+        GetMySubscription("all");
+        GetKey();
 
     },[]);
-
-    useEffect(() => {
-
-    },[apiKey,mySubscription])
 
     return (
         <>
@@ -230,11 +167,11 @@ const MySubscription = () => {
                                 display="flex"
                                 border="2px"
                                 borderColor="cyan.400"
-                                onClick={() => {GetMySubscription(null)}}
+                                onClick={() => {GetMySubscription("all")}}
                                 cursor={"pointer"}
                             >
                                 <Box h={"80px"} w={"60px"} maxW={{ base: '100%', sm: '60px' }} bgColor={"white"} color={"cyan.600"} display="flex" alignItems="center" justifyContent="center">
-                                    <Text textAlign={"center"} as={"b"} fontSize={"4xl"}>12</Text>
+                                    <Text textAlign={"center"} as={"b"} fontSize={"4xl"}>{allCount.current}</Text>
                                 </Box>
                                 <Box h={"80px"} w={"160px"} display="flex" alignItems="center" justifyContent="center" bgColor={"cyan.400"} color={"white"}>
                                     <Text as={"b"} fontSize={"2xl"}>All APIs</Text>
@@ -254,7 +191,7 @@ const MySubscription = () => {
                                 cursor={"pointer"}
                             >
                                 <Box h={"80px"} w={"60px"} maxW={{ base: '100%', sm: '60px' }} bgColor={"white"} color={"yellow.600"} display="flex" alignItems="center" justifyContent="center">
-                                    <Text textAlign={"center"} as={"b"} fontSize={"4xl"}>3</Text>
+                                    <Text textAlign={"center"} as={"b"} fontSize={"4xl"}>{pendingCount.current}</Text>
                                 </Box>
                                 <Box h={"80px"} w={"160px"} display="flex" alignItems="center" justifyContent="center" bgColor={"yellow.400"} color={"white"} >
                                     <Text as={"b"} fontSize={"2xl"}>Pending</Text>
@@ -274,7 +211,7 @@ const MySubscription = () => {
                                 cursor={"pointer"}
                             >
                                 <Box h={"80px"} w={"60px"} maxW={{ base: '100%', sm: '60px' }} bgColor={"white"} color={"green.600"} display="flex" alignItems="center" justifyContent="center">
-                                    <Text textAlign={"center"} as={"b"} fontSize={"4xl"}>8</Text>
+                                    <Text textAlign={"center"} as={"b"} fontSize={"4xl"}>{subscribingCount.current}</Text>
                                 </Box>
                                 <Box h={"80px"} w={"160px"} display="flex" alignItems="center" justifyContent="center" bgColor={"green.300"} color={"white"} >
                                     <Text as={"b"} fontSize={"2xl"}>Subscribing</Text>
@@ -294,7 +231,7 @@ const MySubscription = () => {
                                 cursor={"pointer"}
                             >
                                 <Box h={"80px"} w={"60px"} maxW={{ base: '100%', sm: '60px' }} bgColor={"white"} color={"pink.600"} display="flex" alignItems="center" justifyContent="center">
-                                    <Text textAlign={"center"} as={"b"} fontSize={"4xl"}>1</Text>
+                                    <Text textAlign={"center"} as={"b"} fontSize={"4xl"}>{rejectedCount.current}</Text>
                                 </Box>
                                 <Box h={"80px"} w={"160px"} display="flex" alignItems="center" justifyContent="center" bgColor={"pink.300"} color={"white"}>
                                     <Text as={"b"} fontSize={"2xl"}>Rejected</Text>
@@ -317,7 +254,7 @@ const MySubscription = () => {
                             Application Domain
                             </Th>
                             <Th color="gray.400" borderColor={borderColor}>
-                            Quata per Second
+                            Quota per Second
                             </Th>
                             <Th color="gray.400" borderColor={borderColor}>
                             Status
@@ -327,7 +264,7 @@ const MySubscription = () => {
                         <Tbody pb="0px">
                             {
                                 mySubscription.map((product,index) => (
-                                <Tr border="none" key={index}>
+                                <Tr border="none" key={index} onClick={(e) => {goProductPage(product.name)}} cursor={"pointer"}>
                                     <Td
                                         borderColor={borderColor}
                                         minW={{ sm: "220px", xl: "180px", "2xl": "220px" }}
@@ -361,7 +298,7 @@ const MySubscription = () => {
                                                 color={secondaryColor}
                                                 fontSize={{ sm: "md", xl: "sm", "2xl": "md" }}
                                             >
-                                                {product.domain}
+                                                {product.routing_url}
                                             </Text>
                                         </Flex>
                                     </Td>
@@ -377,7 +314,7 @@ const MySubscription = () => {
                                             fontWeight="normal"
                                             pb=".5rem"
                                         >
-                                            {product.quata}
+                                            {product.quota}
                                         </Text>
                                     </Td>
                                     <Td
@@ -394,14 +331,12 @@ const MySubscription = () => {
                                         >
                                             {
                                                 {
-                                                    rejected:
+                                                    REJECTED:
                                                         <Badge variant='solid' colorScheme='pink' fontSize='15px' borderRadius='5' cursor={"default"}>REJECTED</Badge>,
-                                                    pending:
+                                                    PENDING:
                                                         <Badge variant='solid' colorScheme='yellow' fontSize='15px' borderRadius='5' cursor={"default"}>PENDING</Badge>,
-                                                    subscribing:
+                                                    SUBSCRIBING:
                                                         <Badge variant='solid' colorScheme='green' fontSize='15px' borderRadius='5' cursor={"default"}>SUBSCRIBING</Badge>,
-                                                    subscribe:
-                                                        <Badge variant='solid' colorScheme='cyan' fontSize='15px' borderRadius='5' cursor={"default"}>SUBSCRIBE</Badge>,
                                                 }[product.status]
                                             }
                                         </Text>
