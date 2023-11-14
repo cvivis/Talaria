@@ -10,6 +10,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
@@ -74,6 +75,12 @@ public class Apis implements Serializable {
 	@Column
 	private String routingUrl;
 
+	@PrePersist
+	public void prePersist() {
+		// whiteList가 null인 경우 빈 배열로 초기화
+		this.whiteList = (this.whiteList != null) ? this.whiteList : new String[]{};
+	}
+
 	@Builder
 	public Apis(Long apisId, Long developerId, String name, String webServerUrl, String swaggerContent,
 		ApisStatus status, Long quota, RawType rawType, String[] whiteList, String routingUrl) {
@@ -85,7 +92,7 @@ public class Apis implements Serializable {
 		this.status = status;
 		this.quota = quota;
 		this.rawType = rawType;
-		this.whiteList = whiteList;
+		this.whiteList = whiteList != null ? whiteList : new String[]{};
 		this.routingUrl = routingUrl;
 	}
 
