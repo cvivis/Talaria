@@ -20,7 +20,7 @@ import React, { useEffect, useState } from "react";
 import CustomAxios from "../axios/CustomAxios";
 import { useSelector } from "react-redux";
 
-const APISubscriptionList = () => {
+const APISubscription = () => {
   const [response, setResponse] = useState([]);
   const access_token = useSelector((state) => state.userInfo.access_token);
 
@@ -140,4 +140,4 @@ const APISubscriptionList = () => {
   );
 };
 
-export default APISubscriptionList;
+export default APISubscription;
