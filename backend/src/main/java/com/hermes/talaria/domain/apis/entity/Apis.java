@@ -53,7 +53,7 @@ public class Apis implements Serializable {
 	@Column
 	private String webServerUrl;
 
-	@Column(columnDefinition = "LONGTEXT")
+	@Column(columnDefinition = "TEXT")
 	private String swaggerContent;
 
 	@Enumerated(EnumType.STRING)
