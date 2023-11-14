@@ -16,7 +16,7 @@ import React, { useEffect, useState } from "react";
 import CustomAxios from "../axios/CustomAxios";
 import { useSelector } from "react-redux";
 
-const UserManagementList = () => {
+const MemberManagement = () => {
   const [users, setUsers] = useState([]);
   const access_token = useSelector((state) => state.userInfo.access_token);
 
@@ -247,4 +247,4 @@ const UserManagementList = () => {
   );
 };
 
-export default UserManagementList;
+export default MemberManagement;

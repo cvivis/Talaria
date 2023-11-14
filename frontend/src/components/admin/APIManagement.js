@@ -21,7 +21,7 @@ import APIEditModal from "./APIEditModal";
 import CustomAxios from "../axios/CustomAxios";
 import { useSelector } from "react-redux";
 
-const APIManagementList = () => {
+const APIManagement = () => {
   const [response, setResponse] = useState([]);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [apis, setApis] = useState({});
@@ -174,4 +174,4 @@ const APIManagementList = () => {
   );
 };
 
-export default APIManagementList;
+export default APIManagement;
