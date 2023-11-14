@@ -93,9 +93,16 @@ public class UsageRangkingParser {
 
     public String parseLogEntry(String line) throws ParseException {
 //        String regex = "^(\\S+) - - \\[([^\\]]+)\\] \"(\\S+) (\\S+)\\s+HTTP/\\d\\.\\d\" (\\d+) (\\d+) \"([^\"]+)\" \"([^\"]+)\" (\\d+\\.\\d+) (\\d+\\.\\d+)$";
-        String regex = "^(\\S+) - - \\[([^\\]]+)\\] \"([^\\\"]+) (\\S+) (\\S+)\" (\\d+) (\\d+) \"([^\"]*)\" \"([^\"]*)\" (\\d+\\.\\d+) ([\\d.\\-]+)$";
-/*  \[([^\]]+)\] : []안에 들어간 그룹 뽑기
+        String regex = "^(\\S+) - - \\[([^\\]]+)\\] \"(\\S+) (\\S+) (\\S+)\" (\\d+) (\\d+) \"([^\"]*)\" \"([^\"]*)\" (\\d+\\.\\d+) ([\\d.\\-]+)$";
+
+        /*  \[([^\]]+)\] : []안에 들어간 그룹 뽑기
 *   \"([^\"]+) : \이나 " 을 제외한 그룹  "로 시작
+*  \"([^\"]+) (\S+) (\S+)" :  method url protocol
+*  (\d+) (\d+) : 에러코드 , 뭔 숫자
+*  "([^"]*)" : "-" 이걸로 자주 찍힘
+*  "([^"]*)"  : client info "아닌 문자가 여러개 올 수 있음
+*   (\d+\.\d+) : 숫자 , 문자 그대로 . , 숫자 형태
+*   ([\d.\-]+) : 숫자 혹은 점, 혹은 - 중 1개라도 있어야함
 * */
 
 
@@ -105,7 +112,7 @@ public class UsageRangkingParser {
         String method = "초기 메소드";
         String url = "초기 url";
         Long date = new Date().getTime();
-        System.out.println("그룹을 찾아ㅏ라라라ㅏㅏㄹ "+matcher.group(0));
+//        System.out.println("그룹을 찾아ㅏ라라라ㅏㅏㄹ "+matcher.group(0));
         if (matcher.find()) {
             method = matcher.group(3);
             url = matcher.group(4);
