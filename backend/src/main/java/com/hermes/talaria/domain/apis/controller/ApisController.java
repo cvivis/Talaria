@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.hermes.talaria.domain.apis.dto.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,15 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hermes.talaria.domain.apis.constant.ApisStatus;
-import com.hermes.talaria.domain.apis.dto.ApisDto;
-import com.hermes.talaria.domain.apis.dto.ApisIdResponse;
-import com.hermes.talaria.domain.apis.dto.ApisManagementRequest;
-import com.hermes.talaria.domain.apis.dto.ApisManagementResponse;
-import com.hermes.talaria.domain.apis.dto.ApisRequest;
-import com.hermes.talaria.domain.apis.dto.ApisResponse;
-import com.hermes.talaria.domain.apis.dto.ApisSubResponse;
-import com.hermes.talaria.domain.apis.dto.OasRequest;
-import com.hermes.talaria.domain.apis.dto.OasResponse;
 import com.hermes.talaria.domain.apis.service.ApisService;
 import com.hermes.talaria.global.memberinfo.MemberInfo;
 import com.hermes.talaria.global.util.ModelMapperUtil;
@@ -148,6 +140,12 @@ public class ApisController {
 			.map(subscriptionDto -> ModelMapperUtil.getModelMapper().map(subscriptionDto, ApisSubResponse.class))
 			.collect(Collectors.toList());
 
+		return ResponseEntity.ok().body(response);
+	}
+
+	@GetMapping("/user/product")
+	public ResponseEntity<ProductResponse> getProductDetail(@RequestParam String apisName) {
+		ProductResponse response = apisService.findApisByApisName(apisName);
 		return ResponseEntity.ok().body(response);
 	}
 }

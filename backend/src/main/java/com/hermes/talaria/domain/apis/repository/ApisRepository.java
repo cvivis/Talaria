@@ -19,4 +19,6 @@ public interface ApisRepository extends JpaRepository<Apis, Long> {
 	void deleteApisByApisId(Long apisId);
 
 	List<Apis> findApisByStatus(ApisStatus status);
+
+	Optional<Apis> findApisByName(String apisName);
 }
