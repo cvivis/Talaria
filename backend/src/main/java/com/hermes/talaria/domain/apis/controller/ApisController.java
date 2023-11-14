@@ -27,6 +27,7 @@ import com.hermes.talaria.domain.apis.dto.OasRequest;
 import com.hermes.talaria.domain.apis.dto.OasResponse;
 import com.hermes.talaria.domain.apis.service.ApisService;
 import com.hermes.talaria.global.memberinfo.MemberInfo;
+import com.hermes.talaria.global.util.JsonParserUtil;
 import com.hermes.talaria.global.util.ModelMapperUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -121,6 +122,18 @@ public class ApisController {
 			.map(a -> ModelMapperUtil.getModelMapper().map(a, ApisManagementResponse.class))
 			.collect(
 				Collectors.toList());
+
+		return ResponseEntity.ok().body(response);
+	}
+
+	@GetMapping("/admin/{apisId}")
+	public ResponseEntity<ApisManagementResponse> getApisManagementByApisId(@PathVariable Long apisId) {
+
+		ApisDto apisDto = apisService.findApisByApisId(apisId);
+
+		ApisManagementResponse response = ModelMapperUtil.getModelMapper().map(apisDto, ApisManagementResponse.class);
+
+		response.setSwaggerContent(JsonParserUtil.parser(apisDto.getSwaggerContent()));
 
 		return ResponseEntity.ok().body(response);
 	}
