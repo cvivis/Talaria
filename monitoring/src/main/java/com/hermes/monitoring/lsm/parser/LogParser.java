@@ -18,7 +18,6 @@ public class LogParser {
     // ip, date, http_method, /developer/groupName, /url, http_status_code, body_bytes_sent, http_referer, http_user_agent request_time, upstream_response_time
     private static final String LOGFILE_REGEX_2 = "^(\\S+) - - \\[([^\\]]+)\\] \"(\\S+) (\\/[^\\/]+\\/[^\\/]+) (\\S+)\" (\\d+) (\\d+) \"([^\"]*)\" \"([^\"]*)\" (\\d+\\.\\d+) ([\\d.\\-]+)$";
     // ip, date, http_method, /developer/groupName, http_status_code, body_bytes_sent, http_referer, http_user_agent request_time, upstream_response_time
-    SimpleDateFormat sdf = new SimpleDateFormat("dd/MMM/yyyy:HH:mm:ss Z", Locale.US);
 
     public List<LogDto> parseLog(String filePath) throws IOException, ParseException {
         List<LogDto> logList = new ArrayList<>();
@@ -52,6 +51,7 @@ public class LogParser {
         // 이 메서드에서 로그 항목을 파싱하여 LogDTO 객체로 변환합니다.
         Pattern pattern1 = Pattern.compile(LOGFILE_REGEX_1);
         Pattern pattern2 = Pattern.compile(LOGFILE_REGEX_2);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MMM/yyyy:HH:mm:ss Z", Locale.US);
         Matcher matcher1 = pattern1.matcher(logEntry);
         Matcher matcher2 = pattern2.matcher(logEntry);
         String ip = "";
@@ -94,6 +94,7 @@ public class LogParser {
     private LogDto parseLogEntry(String logEntry, long extractTime) throws ParseException {
         Pattern pattern1 = Pattern.compile(LOGFILE_REGEX_1);
         Pattern pattern2 = Pattern.compile(LOGFILE_REGEX_2);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MMM/yyyy:HH:mm:ss Z", Locale.US);
         Matcher matcher1 = pattern1.matcher(logEntry);
         Matcher matcher2 = pattern2.matcher(logEntry);
         String ip = "";

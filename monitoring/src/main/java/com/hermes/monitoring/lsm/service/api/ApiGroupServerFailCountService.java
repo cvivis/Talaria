@@ -25,7 +25,7 @@ public class ApiGroupServerFailCountService {
     public void runJob() {
         Map<String, JobParameter> confMap = new HashMap<>();
         confMap.put("time", new JobParameter("ApiGroupCountConfig_"+System.currentTimeMillis()));
-        confMap.put("statusCode", new JobParameter(400L));
+        confMap.put("statusCode", new JobParameter(500L));
         JobParameters jobParameters = new JobParameters(confMap);
         try{
             jobLauncher.run(apiGroupCountConfig.apiGroupCountJob(), jobParameters);
