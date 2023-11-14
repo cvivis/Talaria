@@ -20,12 +20,14 @@ import React, { useEffect, useState } from "react";
 import APIEditModal from "./APIEditModal";
 import CustomAxios from "../axios/CustomAxios";
 import { useSelector } from "react-redux";
+import { useNavigate } from 'react-router-dom';
 
 const APIManagement = () => {
   const [response, setResponse] = useState([]);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [apis, setApis] = useState({});
   const access_token = useSelector((state) => state.userInfo.access_token);
+  const navigate = useNavigate();
 
   useEffect(() => {
     try {
@@ -110,6 +112,10 @@ const APIManagement = () => {
     setIsEditModalOpen(false);
   };
 
+  const goProductPage = (id) => {
+    return navigate("/admin/api/"+id);
+}
+
   return (
     <>
       <TableContainer marginLeft="5%" marginRight="5%">
@@ -126,9 +132,9 @@ const APIManagement = () => {
           <Tbody>
             {response.map((item, idx) => (
               <Tr key={idx}>
-                <Td fontSize="xs">{item.developer_email}</Td>
-                <Td fontSize="xs">{item.name}</Td>
-                <Td fontSize="xs">{item.quota}</Td>
+                <Td fontSize="xs" onClick={() => goProductPage(item.apis_id)}>{item.developer_email}</Td>
+                <Td fontSize="xs" onClick={() => goProductPage(item.apis_id)}>{item.name}</Td>
+                <Td fontSize="xs" onClick={() => goProductPage(item.apis_id)}>{item.quota}</Td>
                 <Td>
                   <Switch
                     onChange={() => handleSwitchChange(item.apis_id, idx)}
