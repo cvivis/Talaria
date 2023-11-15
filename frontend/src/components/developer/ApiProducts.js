@@ -33,14 +33,12 @@ const ApiProducts = () => {
     };
 
     const goProductPage = (product) => {
-        console.log('product', product)
-        return navigate("/developer/API Products/" + product.name, { state: { product } });
+        return navigate("/developer/API Products/" + product.apis_id, { state: { product } });
     }
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                console.log(`access_token`, access_token)
                 CustomAxios.get(
                     `apis/developer`,
                     {
@@ -48,8 +46,6 @@ const ApiProducts = () => {
                     }
                 )
                     .then((res) => {
-                        console.log(res);
-
                         setProducts(res.data);
                     })
             } catch (error) {

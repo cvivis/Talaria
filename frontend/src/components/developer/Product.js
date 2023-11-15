@@ -13,14 +13,14 @@ import { useSelector } from 'react-redux';
 const Product = () => {
 
     const location = useLocation();
-    const apisInfo = location.state?.product || 'DefaultProductName';
+    const [apisInfo, setApisInfo] = useState(location.state?.product || 'DefaultProductName');
     const access_token = useSelector(state => state.userInfo.access_token)
-    console.log(`asdf`, apisInfo)
     const [isInformationModalOpen, setIsInformationModalOpen] = useState(false);
+    const { apiId } = useParams();
     const [isModalOpen, setIsModalOpen] = useState(false);
-
+    const [productName, setProductName] = useState('');
     let params = useParams(); // params 통해서 조회 API 돌릴 예정
-    const mainText = useColorModeValue("white", "gray.200");
+    const mainText = useColorModeValue("black", "gray.200");
 
     const [textareaValue, setTextareaValue] = React.useState('');
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -44,7 +44,6 @@ const Product = () => {
 
     const RegisterOas = async () => {
         try {
-            console.log(`get`, textareaValue)
             const response = await CustomAxios.post(
                 `apis/developer/oas/` + apisInfo.apis_id,
                 {
@@ -54,54 +53,72 @@ const Product = () => {
                     headers: { Authorization: `Bearer ${access_token}` },
                 }
             );
-
-            console.log(response);
         } catch (error) {
             console.error('Error:', error);
         }
         onClose();
     }
 
-    useEffect(() => {
-        // const editor = SwaggerEditor({
-        //     dom_id: '#swagger-editor',
-        //     layout: 'EditorLayout',
-        //     swagger2GeneratorUrl: 'https://generator.swagger.io/api/swagger.json',
-        //     oas3GeneratorUrl: 'https://generator3.swagger.io/openapi.json',
-        //     swagger2ConverterUrl: 'https://converter.swagger.io/api/convert',
-        // });
-
-        const fetchData = async () => {
-            try {
-                console.log(`access_token`, access_token)
-                CustomAxios.get(
-                    `apis/developer/` + apisInfo.apis_id,
-                    {
-                        headers: { Authorization: `Bearer ${access_token}` },
-                    }
-                )
-                    .then((res) => {
-                        console.log(`oas`, res);
-                        console.log(`set`, res.data.swagger_content);
-
-                        setTextareaValue(JSON.stringify(res.data.swagger_content, null, 4))
-                    })
-            } catch (error) {
-                console.error('Error:', error);
-            }
-
+    const fetchData = async () => {
+        try {
+            CustomAxios.get(
+                `apis/developer/` + apisInfo.apis_id,
+                {
+                    headers: { Authorization: `Bearer ${access_token}` },
+                }
+            )
+                .then((res) => {
+                    setTextareaValue(JSON.stringify(res.data.swagger_content, null, 4))
+                    
+                })
+        } catch (error) {
+            console.error('Error:', error);
         }
 
-        fetchData();
+    }
 
-    }, []);
+    const fetchData2 = async () => {
+        try {
+            console.log(apiId,'apiId')
+            CustomAxios.get(
+                `apis/developer/` + apiId,
+                {
+                    headers: { Authorization: `Bearer ${access_token}` },
+                }
+            )
+                .then((res) => {
+                    setTextareaValue(JSON.stringify(res.data.swagger_content, null, 4))
+                    setProductName(res.data.name)
+                })
+        } catch (error) {
+            console.error('Error:', error);
+        }
+
+    }
+
+    // useEffect(() => {
+    //     setApisInfo(location.state?.product || 'DefaultProductName')
+    //     fetchData();
+    //     console.log('apisInfo', apisInfo)
+    // }, [apiId]);
+
+    // useEffect(() => {
+    //     console.log('useEffect')
+    //     fetchData2();
+    // }, []);
+
+    useEffect(() => {
+        console.log('useEffect')
+        fetchData2();
+        console.log('name', productName)
+    }, [apiId]);
 
     return (
         <>
             <Flex mb={2}>
-                <Text fontSize="2xl" color={mainText} m={0}>{params.productName}</Text>
+                <Text fontSize="2xl" color={mainText} m={1}>{productName}</Text>
                 <Spacer />
-                <Box m={3}>
+                <Box m={1}>
                     <Button variant='solid' colorScheme='pink' fontSize='25px' borderRadius='5'
                         onClick={openInformationModal} mr={3}
                     >INFO</Button>

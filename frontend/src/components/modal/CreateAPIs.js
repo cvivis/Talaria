@@ -10,13 +10,53 @@ import {
   ModalFooter,
   ModalBody,
 } from '@chakra-ui/react';
-import React from 'react';
+import React, { useState } from 'react';
+import CustomAxios from '../axios/CustomAxios';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
-
-const CreateAPIs = ( { isOpen, onClose} ) => {
+const CreateAPIs = ({ isOpen, onClose }) => {
 
   const initialRef = React.useRef(null)
   const finalRef = React.useRef(null)
+
+  const [name, setName] = useState("");
+  const [url, setUrl] = useState("");
+  const access_token = useSelector(state => state.userInfo.access_token)
+
+  const HandleCreate = () => {
+
+    const fetchData = () => {
+      try {
+        CustomAxios.post(
+          `apis/developer`,
+          {
+            name: name,
+            web_server_url: url,
+          },
+          {
+            headers: { Authorization: `Bearer ${access_token}` },
+          }
+        )
+          .then((res) => {
+            goProductPage({
+              apis_id: res.data.apis_id,
+              name: name,
+              web_server_url: url
+            });
+          })
+      } catch (error) {
+        console.error('Error:', error);
+      }
+
+    }
+    fetchData();
+  };
+
+  const navigate = useNavigate();
+  const goProductPage = (product) => {
+    return navigate("/developer/API Products/" + product.apis_id, { state: { product } });
+  }
 
   return (
     <>
@@ -34,12 +74,12 @@ const CreateAPIs = ( { isOpen, onClose} ) => {
           <ModalBody pb={6}>
             <FormControl isRequired>
               <FormLabel>Name</FormLabel>
-              <Input ref={initialRef} />
+              <Input ref={initialRef} onChange={(e) => setName(e.target.value)} />
             </FormControl>
 
             <FormControl mt={4} isRequired>
-              <FormLabel>Web service URL</FormLabel>
-              <Input />
+              <FormLabel>Web server URL</FormLabel>
+              <Input onChange={(e) => setUrl(e.target.value)} />
             </FormControl>
 
             {/* <FormControl>
@@ -49,7 +89,7 @@ const CreateAPIs = ( { isOpen, onClose} ) => {
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme='blue' mr={3}>
+            <Button colorScheme='blue' mr={3} onClick={HandleCreate}>
               Next
             </Button>
             <Button onClick={onClose}>Cancel</Button>
