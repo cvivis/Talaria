@@ -71,7 +71,7 @@ public class ApiRequestCountParser {
                         .build();
             }
             else{
-                log.info("no line: {}",line);
+                // log.info("no line: {}",line);
                 return null;
             }
 

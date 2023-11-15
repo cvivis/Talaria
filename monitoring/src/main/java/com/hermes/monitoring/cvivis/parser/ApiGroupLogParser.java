@@ -71,7 +71,7 @@ public class ApiGroupLogParser {
             httpMethod = matcher.group(3);
             String[] paths = matcher.group(4).split("/");
             for(int i = 0 ; i < paths.length;i++){
-                log.info("{},{} ---- path",i,paths[i]);
+                 // log.info("{},{} ---- path",i,paths[i]);
             }
             if(paths.length > 2 ){
                 routingPath = "/"+paths[1]+"/"+paths[2];
@@ -102,7 +102,7 @@ public class ApiGroupLogParser {
                     .build();
         }
         else{
-            log.info("no line: {}",line);
+            // log.info("no line: {}",line);
             return null;
         }
     }

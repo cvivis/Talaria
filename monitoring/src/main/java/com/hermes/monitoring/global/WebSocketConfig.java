@@ -32,7 +32,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureClientInboundChannel(ChannelRegistration registration) {
-        log.info("연결됨!!!");
+        //log.info("연결됨!!!");
         WebSocketMessageBrokerConfigurer.super.configureClientInboundChannel(registration);
     }
 }

@@ -23,70 +23,71 @@ import java.util.*;
 @Configuration
 @RequiredArgsConstructor
 public class ApiFailCountConfig {
-    private final JobBuilderFactory jobBuilderFactory;
-    private final StepBuilderFactory stepBuilderFactory;
-    private final ApiFailCountParser apiFailCountParser;
-    private final ClientFailRepository clientFailRepository;
-
-    @Value("${fail.log.url}")
-    String url;
-
-    Map<String, Integer> map = new HashMap<>();
-
-    @Bean
-    public Job apiFailCountJob(){
-
-        Job fileJob = jobBuilderFactory.get("apiFailCount")
-                .incrementer(new RunIdIncrementer())
-                .start(apiFailParseStep()) // 처리 후 전송
-                .next(apiFailCountInsertStep())
-                .build();
-
-        return fileJob;
-    }
-
-    @Bean
-    public Step apiFailParseStep(){
-        log.info("-----apiFailCountParser 시작-----");
-        return stepBuilderFactory.get("apiFailCountParser")
-                .tasklet((contribution, chunkContext) ->{
-                    map = apiFailCountParser.parseLog(url);
-                    return RepeatStatus.FINISHED;
-                })
-                .build();
-    }
-
-    // String key = item.getPath() + "_" + year + "_" + hour + "_" + item.getHttpMethod() + "_" + item.getStatusCode();
-    @Bean
-    @Transactional
-    public Step apiFailCountInsertStep(){
-        return stepBuilderFactory.get("apiFailCountParser")
-                .tasklet((contribution, chunkContext) ->{
-                    List<String> keySet = new ArrayList<>(map.keySet());
-                    for(String info:keySet){
-                        log.info("info: {}",info);
-                        int count = map.get(info);
-                        String[] key = info.split("_");
-                        String url = key[0];
-                        String year = key[1];
-                        Integer hour = Integer.parseInt(key[2]);
-                        String method = key[3];
-                        Integer statusCode = Integer.parseInt(key[4]);
-//                        log.info("{} {} {} {} {} {}",url,year,hour,method,statusCode, count);
-                        ClientFail clientFail = ClientFail.builder()
-                                .url(url)
-                                .date(year)
-                                .hourlyCount(count)
-                                .statusCode(statusCode)
-                                .method(method)
-                                .hour(hour)
-                                .build();
-                        clientFailRepository.save(clientFail);
-                    }
-                    return RepeatStatus.FINISHED;
-                })
-                .build();
-    }
+//    private final JobBuilderFactory jobBuilderFactory;
+//    private final StepBuilderFactory stepBuilderFactory;
+//    private final ApiFailCountParser apiFailCountParser;
+//    private final ClientFailRepository clientFailRepository;
+//
+//    @Value("${fail.log.url}")
+//    String url;
+//
+//    Map<String, Integer> map = new HashMap<>();
+//
+//    @Bean
+//    public Job apiFailCountJob(){
+//
+//        Job fileJob = jobBuilderFactory.get("apiFailCount")
+//                .incrementer(new RunIdIncrementer())
+//                .start(apiFailParseStep()) // 처리 후 전송
+//                .next(apiFailCountInsertStep())
+//                .build();
+//
+//        return fileJob;
+//    }
+//
+//    @Bean
+//    public Step apiFailParseStep(){
+//        // log.info("-----apiFailCountParser 시작-----");
+//        return stepBuilderFactory.get("apiFailCountParser")
+//                .tasklet((contribution, chunkContext) ->{
+//                    map = apiFailCountParser.parseLog(url);
+//                    return RepeatStatus.FINISHED;
+//                })
+//                .build();
+//    }
+//
+//    // String key = item.getPath() + "_" + year + "_" + hour + "_" + item.getHttpMethod() + "_" + item.getStatusCode();
+//    @Bean
+//    @Transactional
+//    public Step apiFailCountInsertStep(){
+//        return stepBuilderFactory.get("apiFailCountParser")
+//                .tasklet((contribution, chunkContext) ->{
+//                    List<String> keySet = new ArrayList<>(map.keySet());
+//                    for(String info:keySet){
+//                        // log.info("info: {}",info);
+//                        int count = map.get(info);
+//                        String[] key = info.split("_");
+//                        String url = key[0];
+//                        String year = key[1];
+//                        Integer hour = Integer.parseInt(key[2]);
+//                        String method = key[3];
+//                        Integer statusCode = Integer.parseInt(key[4]);
+////                        log.info("{} {} {} {} {} {}",url,year,hour,method,statusCode, count);
+//                        ClientFail clientFail = ClientFail.builder()
+//                                .url(url)
+//                                .date(year)
+//                                .hourlyCount(count)
+//                                .statusCode(statusCode)
+//                                .method(method)
+//                                .hour(hour)
+//                                .groupName()
+//                                .build();
+//                        clientFailRepository.save(clientFail);
+//                    }
+//                    return RepeatStatus.FINISHED;
+//                })
+//                .build();
+//    }
 
 //    @Bean
 //    public ItemReader<LogDto> itemReader() {

@@ -68,7 +68,7 @@ public class ApiFailCountParser {
                         .build();
             }
             else{
-                log.info("no line: {}",line);
+                // log.info("no line: {}",line);
                 return null;
             }
 

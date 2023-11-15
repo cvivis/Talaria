@@ -31,7 +31,7 @@ public class ApiGroupFailCountService {
         Map<String, JobParameter> confMap = new HashMap<>();
         confMap.put("time", new JobParameter("ApiFailCountConfig_"+System.currentTimeMillis()));
         JobParameters jobParameters = new JobParameters(confMap);
-        log.info("ApiFailCountConfig_스케줄링 중");
+        // log.info("ApiFailCountConfig_스케줄링 중");
         try {
             jobLauncher.run(apiGroupFailCountConfig.apiGroupFailCountJob(), jobParameters);
         } catch (JobExecutionAlreadyRunningException | JobInstanceAlreadyCompleteException

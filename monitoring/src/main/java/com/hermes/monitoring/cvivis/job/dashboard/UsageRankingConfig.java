@@ -35,7 +35,7 @@ public class UsageRankingConfig {
 
     @Bean
     public Job UsageRankingJob(){
-        log.info("-----UsageRankingJob 시작-----");
+        // log.info("-----UsageRankingJob 시작-----");
         return jobBuilderFactory.get("usageRanking")
                 .incrementer(new RunIdIncrementer())
                 .start(logParseStep()) // 처리 후 전송
@@ -44,7 +44,7 @@ public class UsageRankingConfig {
 
     @Bean
     public Step logParseStep(){
-        log.info("-----Usage Parsing 시작-----");
+        // log.info("-----Usage Parsing 시작-----");
         return stepBuilderFactory.get("rankingParser")
                 .tasklet((contribution, chunkContext) ->{
                     List<UsageRankingDto> ranking = new ArrayList<>();
