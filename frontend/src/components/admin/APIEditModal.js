@@ -115,18 +115,18 @@ const APIEditModal = ({ isOpen, onClose, apiInfo, onAccept }) => {
               <Input
                 ref={initialRef}
                 value={apiInfo.developer_email}
-                isReadOnly
+                isDisabled
               />
             </FormControl>
 
             <FormControl mt={4} isRequired>
               <FormLabel>Group Name</FormLabel>
-              <Input value={apiInfo.name} isReadOnly />
+              <Input value={apiInfo.name} isDisabled/>
             </FormControl>
 
             <FormControl mt={4} isRequired>
               <FormLabel>Routing URL</FormLabel>
-              <Input defaultValue={apiInfo.routing_url} isReadOnly />
+              <Input defaultValue={apiInfo.routing_url} isDisabled/>
             </FormControl>
 
             <FormControl mt={4} isRequired>
