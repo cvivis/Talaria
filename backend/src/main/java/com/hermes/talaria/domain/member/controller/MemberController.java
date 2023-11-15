@@ -3,13 +3,14 @@ package com.hermes.talaria.domain.member.controller;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.hermes.talaria.domain.member.dto.MemberDeleteRequest;
 import com.hermes.talaria.domain.member.dto.MemberDto;
 import com.hermes.talaria.domain.member.dto.MemberResponse;
 import com.hermes.talaria.domain.member.dto.SignupRequest;
@@ -33,9 +34,9 @@ public class MemberController {
 		return ResponseEntity.ok().body(response);
 	}
 
-	@PostMapping("/admin")
-	public ResponseEntity<Void> deleteMember(@RequestBody MemberDeleteRequest request) {
-		memberService.deleteMember(request.getMemberIds());
+	@DeleteMapping("/admin/{memberId}")
+	public ResponseEntity<Void> deleteMemberByMemberId(@PathVariable Long memberId) {
+		memberService.deleteMemberByMemberId(memberId);
 
 		return ResponseEntity.ok().build();
 	}
