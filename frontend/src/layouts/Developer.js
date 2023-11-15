@@ -4,90 +4,102 @@ import {
     AccordionIcon,
     AccordionItem,
     AccordionPanel,
+    AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay,
     Box,
     Breadcrumb,
     BreadcrumbItem,
     BreadcrumbLink,
+    Button,
     Flex,
-    List,
     ListItem,
     Text,
-    useColorModeValue
+    UnorderedList,
+    useColorModeValue,
+    useDisclosure
 } from "@chakra-ui/react";
 import Footer from "../components/footer/Footer";
 import MainPanel from "../components/layouts/mainPanel/MainPanel";
 import Sidebar from "../components/sidebar/Sidebar";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import { useDispatch } from "react-redux";
+import { logoutUser } from "../components/slices/UserInfoSlice";
+import { ReactComponent as LogoutIcon } from '../assets/svg/Logout.svg';
+import CustomAxios from '../components/axios/CustomAxios';
+import { useSelector } from 'react-redux';
 
 function Developer() {
 
-    let bgBoxColor = useColorModeValue('blue.500', 'navy.900');
-    let mainText = useColorModeValue("white", "gray.200");
-    
+    let bgBoxColor = useColorModeValue('blue.100', 'navy.900');
+    let mainText = useColorModeValue("black", "gray.200");
+
     const [mainCategory, setMainCategory] = useState("API Products");
     const [secondCategory, setSecondCategory] = useState("");
     const [thirdCategory, setThirdCategory] = useState("");
-    const [products,setProducts] = useState([]);
-    
+    const [products, setProducts] = useState([]);
+
     const location = useLocation();
     const navigate = useNavigate();
-
+    const dispatch = useDispatch();
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const cancelRef = useRef();
+    const access_token = useSelector(state => state.userInfo.access_token)
 
     function moveProductPage(productName) {
-        return navigate("/developer/API Products/"+productName);
+        return navigate("/developer/API Products/" + productName);
     };
 
-    const movePage = (route,e) => {
-        console.log(decodeURI(route));
+    const movePage = (route, e) => {
         e.preventDefault();
         return navigate(decodeURI(route));
     }
 
+    const logOut = () => {
+        dispatch(logoutUser());
+        onClose();
+        return navigate("/");
+    }
 
     useEffect(() => {
+        setMainCategory("API Products");
+        setSecondCategory("");
+        setThirdCategory("");
+
         console.log(location.pathname);
         const locationArray = decodeURI(location.pathname).split('/');
         console.log(locationArray);
-        for(let i = 0; i<locationArray.length; i++) {
-            if(i === 2) {
+        for (let i = 0; i < locationArray.length; i++) {
+            if (i === 2) {
                 setMainCategory(locationArray[i]);
-            } else if(i === 3) {
+            } else if (i === 3) {
                 setSecondCategory(locationArray[i]);
-            } else if(i === 4) {
+            } else if (i === 4) {
                 setThirdCategory(locationArray[i]);
             }
         }
 
-        setProducts([
-            {
-                name:"product1",
-                description:"냉무1",
-            },
-            {
-                name:"product2",
-                description:"",
-            },
-            {
-                name:"product3",
-                description:"냉무3",
-            },
-            {
-                name:"product4",
-                description:"냉무4",
-            },
-            {
-                name:"product5",
-                description:"냉무5",
-            },
-            {
-                name:"하나 더 테스트",
-                description:"냉무5",
-            },
-        ]);
+        const fetchData = async () => {
+            try {
+                CustomAxios.get(
+                    `apis/developer`,
+                    {
+                        headers: { Authorization: `Bearer ${access_token}` },
+                    }
+                )
+                    .then((res) => {
+                        console.log(res);
 
+                        setProducts(res.data);
+                    })
+            } catch (error) {
+                console.error('Error:', error);
+            }
 
-    },[location,mainCategory]);
+        }
+
+        fetchData();
+
+    }, [location, mainCategory]);
 
 
     return (
@@ -100,36 +112,76 @@ function Developer() {
                         allowMultiple
                         borderColor={"white"}
                     >
-                        <AccordionItem maxW='15vw'>
-                            <AccordionButton _hover={{ backgroundColor: "white" }} _expanded={{ bg: "blue", color: "white" }} borderRadius={10}>
+                        <AccordionItem maxW='13vw'>
+                            <AccordionButton 
+                                _hover={{ backgroundColor: "white" }} 
+                                _expanded={{ bg: "white" }} borderRadius={10}
+                                boxShadow={mainCategory === "API Products" ? "0px 5px 14px rgba(0, 0, 0, 0.05)" : ""}
+                                color={mainCategory === "API Products" ? "black" : "gray.400"}
+                            >
                                 <Box as="span" flex='1' textAlign='left' onClick={(e) => movePage("/developer", e)} w='15vw'>
-                                    <Text fontSize={"xl"} fontWeight={"bold"}>API Products</Text>
+                                    <Text fontSize={"lg"} fontWeight={"bold"}>API Products</Text>
                                 </Box>
                                 <AccordionIcon />
                             </AccordionButton>
                             <AccordionPanel pb={4} ml={4}>
-                                <List spacing={3}>
+                                <UnorderedList spacing={3}>
                                     {
-                                        products.map((product, index) => (
+                                        [...products].reverse().map((product, index) => (
                                             <ListItem key={index} onClick={() => moveProductPage(product.name)} cursor={"pointer"}
                                                 style={{ WebkitUserSelect: "none", MozUserSelect: "none", msUserSelect: "none", userSelect: "none" }}
+                                                color={secondCategory === product.name ? "black" : "gray.400"}
                                             >
                                                 {product.name}
                                             </ListItem>
                                         ))
                                     }
-                                </List>
+                                </UnorderedList>
                             </AccordionPanel>
                         </AccordionItem>
-                        {/* <AccordionItem maxW='15vw' _disabled={true}>
-                            <AccordionButton _hover={{ backgroundColor: "white" }} bgColor={"red"} onClick={(e) => movePage(encodeURI("/developer/My Subscription"), e)}>
-                                <Box as="span" flex='1' textAlign='left' w='15vw'>
-                                    <Text fontSize={"xl"} fontWeight={"bold"}>My Subscription</Text>
+                        
+                        <AccordionItem maxW='13vw'>
+                            <AccordionButton 
+                                _hover={{backgroundColor: "white"}}
+                                color="black"
+                            >
+                                <Box as="span" flex='1' textAlign='left' w='15vw' onClick={() => onOpen()}>
+                                    <Text fontSize={"lg"} fontWeight={"bold"}>LogOut</Text>
                                 </Box>
+                                <LogoutIcon/>
                             </AccordionButton>
-                        </AccordionItem> */}
+                        </AccordionItem>
+
                     </Accordion>
                 </Sidebar>
+                
+                <AlertDialog
+                    isOpen={isOpen}
+                    leastDestructiveRef={cancelRef}
+                    onClose={onClose}
+                >
+                    <AlertDialogOverlay>
+                    <AlertDialogContent>
+                        <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+                        Confirm LogOut
+                        </AlertDialogHeader>
+
+                        <AlertDialogBody>
+                        Are you sure you want to log out?
+                        </AlertDialogBody>
+
+                        <AlertDialogFooter>
+                        <Button ref={cancelRef} onClick={onClose}>
+                            Cancel
+                        </Button>
+                        <Button colorScheme='red' onClick={() => {logOut()}} ml={3}>
+                            LogOut
+                        </Button>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                    </AlertDialogOverlay>
+                </AlertDialog>
+
                 <Box ml='16vw' >
                     <Box mx='10' mt='10'>
                         <Breadcrumb>
@@ -142,7 +194,7 @@ function Developer() {
                                                 :
                                                 "/developer/" + JSON.parse(JSON.stringify(mainCategory))
                                             :
-                                            "/user"
+                                            "/developer"
                                         , e
                                     )}
                                     color={mainText}
