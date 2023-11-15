@@ -16,9 +16,11 @@ import lombok.Setter;
 @NoArgsConstructor
 public class OasResponse {
 	Map<String, Object> swaggerContent;
+	String name;
 
 	@Builder
-	public OasResponse(Map<String, Object> swaggerContent) {
+	public OasResponse(Map<String, Object> swaggerContent, String name) {
 		this.swaggerContent = swaggerContent;
+		this.name = name;
 	}
 }
