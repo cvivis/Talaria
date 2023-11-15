@@ -15,7 +15,7 @@ public class WebSocketService {
 
     private final SimpMessagingTemplate simpMessagingTemplate;
     public void sendMessageToClient(String destination, Object message) {
-        log.info("message : {}" , message);
+        // log.info("message : {}" , message);
         simpMessagingTemplate.convertAndSend(destination, message);
     }
 
@@ -25,13 +25,13 @@ public class WebSocketService {
 
     // 평균 응답 시간을 클라이언트에게 보내는 메소드
     public void sendAverageResponseTimeToClient(String destination, double time) {
-        log.info("averageResponseTime : {}" , time);
+        // log.info("averageResponseTime : {}" , time);
         simpMessagingTemplate.convertAndSend(destination, time);
     }
 
 
     public void sendCpuMemoryUsageToClient(String destination, CpuMemoryUsageDto cpuMemoryUsageDto) {
-        log.info("CpuMemoryUsage : {}", cpuMemoryUsageDto);
+        //log.info("CpuMemoryUsage : {}", cpuMemoryUsageDto);
         simpMessagingTemplate.convertAndSend(destination,cpuMemoryUsageDto);
     }
 }

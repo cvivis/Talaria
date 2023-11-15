@@ -33,7 +33,7 @@ public class ApiGroupRequestCountService {
         Map<String, JobParameter> confMap = new HashMap<>();
         confMap.put("time", new JobParameter("ApiGroupRequestCountConfig_"+System.currentTimeMillis()));
         JobParameters jobParameters = new JobParameters(confMap);
-        log.info("ApiGroupRequestCountConfig_스케줄링 중");
+        // log.info("ApiGroupRequestCountConfig_스케줄링 중");
         try {
             jobLauncher.run(apiGroupRequestCountConfig.apiGroupRequestCountJob(), jobParameters);
         } catch (JobExecutionAlreadyRunningException | JobInstanceAlreadyCompleteException

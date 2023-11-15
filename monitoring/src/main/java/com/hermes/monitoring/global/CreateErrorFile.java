@@ -29,10 +29,10 @@ public class CreateErrorFile {
         BufferedReader br = new BufferedReader(new FileReader(url));
         BufferedWriter bw = null;
         try {
-            log.info("----- log 날짜 수정 중 -----");
+            // log.info("----- log 날짜 수정 중 -----");
 //            BufferedReader br = new BufferedReader(new FileReader(url));
             File temp = new File(baseUrl+"_temp.txt"); // File객체 생성
-            log.info("new Log file : " + baseUrl+"_temp.txt");
+            // log.info("new Log file : " + baseUrl+"_temp.txt");
             if(!temp.exists()){ // 파일이 존재하지 않으면
                 temp.createNewFile(); // 신규생성
             }
@@ -87,12 +87,12 @@ public class CreateErrorFile {
         File file = new File(url);
 
         if(file.exists()){
-            log.info("{} 삭제",url);
+            // log.info("{} 삭제",url);
             Files.deleteIfExists(file.toPath());
         }
 
         Path newFile = Paths.get(baseUrl+"_temp.txt");
         Files.move(newFile,newFile.resolveSibling(url));
-        log.info("----- log 수정 완료 -----");
+        // log.info("----- log 수정 완료 -----");
     }
 }

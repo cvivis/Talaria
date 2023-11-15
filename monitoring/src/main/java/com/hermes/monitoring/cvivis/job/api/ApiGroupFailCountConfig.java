@@ -50,7 +50,7 @@ public class ApiGroupFailCountConfig {
 
     @Bean
     public Step apiGroupFailParseStep(){
-        log.info("-----apiGroupFailCountParser 시작-----");
+        // log.info("-----apiGroupFailCountParser 시작-----");
         return stepBuilderFactory.get("apiGroupFailCountParser")
                 .tasklet((contribution, chunkContext) ->{
                     map = apiGroupLogParser.apiGroupLogParse(url);
@@ -67,7 +67,7 @@ public class ApiGroupFailCountConfig {
                 .tasklet((contribution, chunkContext) ->{
                     List<String> keySet = new ArrayList<>(map.keySet());
                     for(String info:keySet){
-                        log.info("info: {}",info);
+                        // log.info("info: {}",info);
                         int count = map.get(info);
                         String[] key = info.split("_");
                         String routingUrl = key[0];

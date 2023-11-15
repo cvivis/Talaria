@@ -41,7 +41,7 @@ public class UsageRangkingParser {
                 return map.get(o1).compareTo(map.get(o2)) * (-1);
             }
         });
-        log.info("keySetLIst : {}",keySet);
+        //log.info("keySetLIst : {}",keySet);
 
         List<UsageRankingDto> result = new ArrayList<>();
         if(keySet.size() < 5){
@@ -106,7 +106,7 @@ public class UsageRangkingParser {
 * */
 
 
-        log.info(line);
+        //log.info(line);
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(line);
         String method = "초기 메소드";
@@ -125,7 +125,7 @@ public class UsageRangkingParser {
             return url+ "_"+method;
         }
         else{
-            log.info("group: ",matcher.group(0));
+            // log.info("group: ",matcher.group(0));
 //            log.info("틀림 : "+line);
             return null;
         }

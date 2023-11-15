@@ -26,67 +26,67 @@ import java.util.Map;
 @Configuration
 @RequiredArgsConstructor
 public class ApiRequestCountConfig {
-    private final JobBuilderFactory jobBuilderFactory;
-    private final StepBuilderFactory stepBuilderFactory;
-    private final ApiRequestCountParser apiRequestCountParser;
-    private final RequestCountRepository requestCountRepository;
-    @Value("${log.url.old}")
-    String url;
-
-    Map<String, Integer> map = new HashMap<>();
-
-    @Bean
-    public Job apiRequestCountJob(){
-
-        Job fileJob = jobBuilderFactory.get("apiRequestCount")
-                .incrementer(new RunIdIncrementer())
-                .start(apiRequestParseStep()) // 처리 후 전송
-                .next(apiRequestCountInsertStep())
-                .build();
-
-        return fileJob;
-    }
-
-    @Bean
-    public Step apiRequestParseStep(){
-        log.info("-----apiRequestCountParser 시작-----");
-        return stepBuilderFactory.get("apiRequestCountParser")
-                .tasklet((contribution, chunkContext) ->{
-                    map = apiRequestCountParser.parseLog(url);
-                    return RepeatStatus.FINISHED;
-                })
-                .build();
-    }
-
-    // String key = item.getPath() + "_" + year + "_" + hour + "_" + item.getHttpMethod() + "_" + item.getStatusCode();
-    @Bean
-    @Transactional
-    public Step apiRequestCountInsertStep(){
-        return stepBuilderFactory.get("apiFailCountParser")
-                .tasklet((contribution, chunkContext) ->{
-                    List<String> keySet = new ArrayList<>(map.keySet());
-                    for(String info:keySet){
-                        log.info("info: {}",info);
-                        int count = map.get(info);
-                        String[] key = info.split("_");
-                        String url = key[0];
-                        String year = key[1];
-                        Integer hour = Integer.parseInt(key[2]);
-                        String method = key[3];
-//                        log.info("{} {} {} {} {} {}",url,year,hour,method,statusCode, count);
-                        RequestCount requestCount = RequestCount.builder()
-                                .url(url)
-                                .date(year)
-                                .hourlyCount(count)
-                                .method(method)
-                                .hour(hour)
-                                .build();
-                        requestCountRepository.save(requestCount);
-                    }
-                    return RepeatStatus.FINISHED;
-                })
-                .build();
-    }
+//    private final JobBuilderFactory jobBuilderFactory;
+//    private final StepBuilderFactory stepBuilderFactory;
+//    private final ApiRequestCountParser apiRequestCountParser;
+//    private final RequestCountRepository requestCountRepository;
+//    @Value("${log.url.old}")
+//    String url;
+//
+//    Map<String, Integer> map = new HashMap<>();
+//
+//    @Bean
+//    public Job apiRequestCountJob(){
+//
+//        Job fileJob = jobBuilderFactory.get("apiRequestCount")
+//                .incrementer(new RunIdIncrementer())
+//                .start(apiRequestParseStep()) // 처리 후 전송
+//                .next(apiRequestCountInsertStep())
+//                .build();
+//
+//        return fileJob;
+//    }
+//
+//    @Bean
+//    public Step apiRequestParseStep(){
+//        // log.info("-----apiRequestCountParser 시작-----");
+//        return stepBuilderFactory.get("apiRequestCountParser")
+//                .tasklet((contribution, chunkContext) ->{
+//                    map = apiRequestCountParser.parseLog(url);
+//                    return RepeatStatus.FINISHED;
+//                })
+//                .build();
+//    }
+//
+//    // String key = item.getPath() + "_" + year + "_" + hour + "_" + item.getHttpMethod() + "_" + item.getStatusCode();
+//    @Bean
+//    @Transactional
+//    public Step apiRequestCountInsertStep(){
+//        return stepBuilderFactory.get("apiFailCountParser")
+//                .tasklet((contribution, chunkContext) ->{
+//                    List<String> keySet = new ArrayList<>(map.keySet());
+//                    for(String info:keySet){
+//                        // log.info("info: {}",info);
+//                        int count = map.get(info);
+//                        String[] key = info.split("_");
+//                        String url = key[0];
+//                        String year = key[1];
+//                        Integer hour = Integer.parseInt(key[2]);
+//                        String method = key[3];
+////                        log.info("{} {} {} {} {} {}",url,year,hour,method,statusCode, count);
+//                        RequestCount requestCount = RequestCount.builder()
+//                                .url(url)
+//                                .date(year)
+//                                .hourlyCount(count)
+//                                .method(method)
+//                                .hour(hour)
+//                                .build();
+//                        requestCountRepository.save(requestCount);
+//                    }
+//                    return RepeatStatus.FINISHED;
+//                })
+//                .build();
+//    }
 
 //    @Bean
 //    public ItemReader<LogDto> itemReader() {

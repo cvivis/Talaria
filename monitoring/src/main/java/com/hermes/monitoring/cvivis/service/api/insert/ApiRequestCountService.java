@@ -21,23 +21,23 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Slf4j
 public class ApiRequestCountService {
-    private final JobLauncher jobLauncher;
-
-    private final ApiRequestCountConfig apiRequestCountConfig;
-//    @Scheduled(cron = "0/10 * * * * *") // cron 표기법
-     // @Scheduled(cron = "0 0 0/1 * * *")
-    public void runJob() throws IOException {
-        // job parameter 설정
-//        createErrorFile.createErrorFile();
-        Map<String, JobParameter> confMap = new HashMap<>();
-        confMap.put("time", new JobParameter("ApiRequestCountConfig_"+System.currentTimeMillis()));
-        JobParameters jobParameters = new JobParameters(confMap);
-        log.info("ApiRequestCountConfig_스케줄링 중");
-        try {
-            jobLauncher.run(apiRequestCountConfig.apiRequestCountJob(), jobParameters);
-        } catch (JobExecutionAlreadyRunningException | JobInstanceAlreadyCompleteException
-                 | JobParametersInvalidException | org.springframework.batch.core.repository.JobRestartException e) {
-            e.printStackTrace();
-        }
-    }
+//    private final JobLauncher jobLauncher;
+//
+//    private final ApiRequestCountConfig apiRequestCountConfig;
+////    @Scheduled(cron = "0/10 * * * * *") // cron 표기법
+//     // @Scheduled(cron = "0 0 0/1 * * *")
+//    public void runJob() throws IOException {
+//        // job parameter 설정
+////        createErrorFile.createErrorFile();
+//        Map<String, JobParameter> confMap = new HashMap<>();
+//        confMap.put("time", new JobParameter("ApiRequestCountConfig_"+System.currentTimeMillis()));
+//        JobParameters jobParameters = new JobParameters(confMap);
+//        // log.info("ApiRequestCountConfig_스케줄링 중");
+//        try {
+//            jobLauncher.run(apiRequestCountConfig.apiRequestCountJob(), jobParameters);
+//        } catch (JobExecutionAlreadyRunningException | JobInstanceAlreadyCompleteException
+//                 | JobParametersInvalidException | org.springframework.batch.core.repository.JobRestartException e) {
+//            e.printStackTrace();
+//        }
+//    }
 }

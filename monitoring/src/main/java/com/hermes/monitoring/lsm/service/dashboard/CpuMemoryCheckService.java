@@ -23,7 +23,7 @@ public class CpuMemoryCheckService {
     private final JobLauncher jobLauncher;
     private final CpuMemoryCheckConfig cpuMemoryCheckConfig;
 
-    @Scheduled(cron = "0/1 * * * * *")
+    @Scheduled(cron = "0/5 * * * * *")
     public void checkCpuMemory() {
         Map<String, JobParameter> confMap = new HashMap<>();
         confMap.put("time", new JobParameter("CpuMemoryCheckConfig_"+System.currentTimeMillis())); // 시스템의 현재 시간을 넣음으로써 실행 시점에 충돌을 피함

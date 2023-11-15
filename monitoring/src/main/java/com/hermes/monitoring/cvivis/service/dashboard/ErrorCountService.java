@@ -31,7 +31,7 @@ public class ErrorCountService {
         Map<String, JobParameter> confMap = new HashMap<>();
         confMap.put("time", new JobParameter("ErrorCountConfig_"+System.currentTimeMillis()));
         JobParameters jobParameters = new JobParameters(confMap);
-        log.info("ErrorCountConfig_스케줄링 중");
+        // log.info("ErrorCountConfig_스케줄링 중");
         try {
             jobLauncher.run(errorCountConfig.ErrorCountJob(), jobParameters);
         } catch (JobExecutionAlreadyRunningException | JobInstanceAlreadyCompleteException

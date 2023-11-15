@@ -34,7 +34,7 @@ public class ErrorCountConfig {
 
     @Bean
     public Job ErrorCountJob(){
-        log.info("-----ErrorCountJob 시작-----");
+        // log.info("-----ErrorCountJob 시작-----");
         return jobBuilderFactory.get("errorCount")
                 .incrementer(new RunIdIncrementer())
                 .start(errorParseStep()) // 처리 후 전송
@@ -43,7 +43,7 @@ public class ErrorCountConfig {
 
     @Bean
     public Step errorParseStep(){
-        log.info("-----ErrorCount Parsing 시작-----");
+        // log.info("-----ErrorCount Parsing 시작-----");
         return stepBuilderFactory.get("errorCountParser")
                 .tasklet((contribution, chunkContext) ->{
                     List<ErrorCountTypeDto> result = new ArrayList<>();

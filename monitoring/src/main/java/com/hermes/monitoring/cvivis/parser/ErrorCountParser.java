@@ -66,7 +66,7 @@ public class ErrorCountParser {
                     .build();
             result.add(errorCountTypeDto);
         }
-        log.info("errorKeySet : {}",keySet);
+        // log.info("errorKeySet : {}",keySet);
 
 
         return result;

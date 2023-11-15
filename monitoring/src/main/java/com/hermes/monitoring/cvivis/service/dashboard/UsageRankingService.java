@@ -40,7 +40,7 @@ public class UsageRankingService {
         Map<String, JobParameter> confMap = new HashMap<>();
         confMap.put("time", new JobParameter("UsageRankingConfig_"+System.currentTimeMillis()));
         JobParameters jobParameters = new JobParameters(confMap);
-        log.info("UsageRankingConfig_스케줄링 중");
+        // log.info("UsageRankingConfig_스케줄링 중");
         try {
             jobLauncher.run(usageRankingConfig.UsageRankingJob(), jobParameters);
         } catch (JobExecutionAlreadyRunningException | JobInstanceAlreadyCompleteException
