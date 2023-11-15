@@ -35,7 +35,6 @@ function Developer() {
 
     const [mainCategory, setMainCategory] = useState("API Products");
     const [secondCategory, setSecondCategory] = useState("");
-    const [thirdCategory, setThirdCategory] = useState("");
     const [products, setProducts] = useState([]);
 
     const location = useLocation();
@@ -45,8 +44,8 @@ function Developer() {
     const cancelRef = useRef();
     const access_token = useSelector(state => state.userInfo.access_token)
 
-    function moveProductPage(productName) {
-        return navigate("/developer/API Products/" + productName);
+    function moveProductPage(product) {
+        return navigate("/developer/API Products/" + product.apis_id, { state: { product } });
     };
 
     const movePage = (route, e) => {
@@ -60,44 +59,50 @@ function Developer() {
         return navigate("/");
     }
 
+    const fetchData = async () => {
+        try {
+            CustomAxios.get(
+                `apis/developer`,
+                {
+                    headers: { Authorization: `Bearer ${access_token}` },
+                }
+            )
+                .then((res) => {
+
+                    setProducts(res.data);
+                
+                })
+        } catch (error) {
+            console.error('Error:', error);
+        }
+
+    }
+
     useEffect(() => {
         setMainCategory("API Products");
         setSecondCategory("");
-        setThirdCategory("");
 
-        console.log(location.pathname);
+        fetchData();
+
+        console.log('products', {"asdf":products})
         const locationArray = decodeURI(location.pathname).split('/');
-        console.log(locationArray);
         for (let i = 0; i < locationArray.length; i++) {
             if (i === 2) {
                 setMainCategory(locationArray[i]);
             } else if (i === 3) {
-                setSecondCategory(locationArray[i]);
-            } else if (i === 4) {
-                setThirdCategory(locationArray[i]);
+                console.log(locationArray[i])
+                const foundProduct = products.find((product) => product.apis_id == locationArray[i]);
+
+            if (foundProduct) {
+                setSecondCategory(foundProduct.name);
+            } else {
+                // 조건을 충족하는 항목이 없을 경우 원하는 처리를 추가할 수 있습니다.
+                console.log('Product not found for apis_id:', locationArray[i]);
+            }
+                
             }
         }
-
-        const fetchData = async () => {
-            try {
-                CustomAxios.get(
-                    `apis/developer`,
-                    {
-                        headers: { Authorization: `Bearer ${access_token}` },
-                    }
-                )
-                    .then((res) => {
-                        console.log(res);
-
-                        setProducts(res.data);
-                    })
-            } catch (error) {
-                console.error('Error:', error);
-            }
-
-        }
-
-        fetchData();
+        console.log('second', secondCategory)
 
     }, [location, mainCategory]);
 
@@ -128,7 +133,7 @@ function Developer() {
                                 <UnorderedList spacing={3}>
                                     {
                                         [...products].reverse().map((product, index) => (
-                                            <ListItem key={index} onClick={() => moveProductPage(product.name)} cursor={"pointer"}
+                                            <ListItem key={index} onClick={() => moveProductPage(product)} cursor={"pointer"}
                                                 style={{ WebkitUserSelect: "none", MozUserSelect: "none", msUserSelect: "none", userSelect: "none" }}
                                                 color={secondCategory === product.name ? "black" : "gray.400"}
                                             >
@@ -204,16 +209,8 @@ function Developer() {
                             </BreadcrumbItem>
                             {
                                 secondCategory !== "" ?
-                                    <BreadcrumbItem isCurrentPage={thirdCategory !== "" ? false : true} color={mainText}>
+                                    <BreadcrumbItem isCurrentPage={true} color={mainText}>
                                         <BreadcrumbLink href='#' color={mainText}>{secondCategory}</BreadcrumbLink>
-                                    </BreadcrumbItem>
-                                    :
-                                    null
-                            }
-                            {
-                                thirdCategory !== "" ?
-                                    <BreadcrumbItem isCurrentPage color={mainText}>
-                                        <BreadcrumbLink href='#' color={mainText}>{thirdCategory}</BreadcrumbLink>
                                     </BreadcrumbItem>
                                     :
                                     null
