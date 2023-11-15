@@ -32,9 +32,6 @@ function Admin() {
     }
 
     useEffect(() => {
-        console.log(location.pathname);
-        const locationArray = decodeURI(location.pathname).split('/');
-        console.log(locationArray);
         if(location.pathname.includes('apiManagement')) {
             setMainCategory("API Management")
         } else if(location.pathname.includes('apiRegistration')) {
