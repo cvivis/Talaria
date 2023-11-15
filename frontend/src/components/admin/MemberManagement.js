@@ -149,9 +149,10 @@ const MemberManagement = () => {
     <>
       <Flex marginY={10}>
         <Button
-          ml="auto"
-          marginRight="5%"
-          colorScheme="blue"
+          mr="auto"
+          marginTop="3%"
+          marginLeft="5%"
+          colorScheme="facebook"
           onClick={handleDeleteClick}
         >
           Delete
@@ -161,41 +162,41 @@ const MemberManagement = () => {
         <Table variant="simple">
           <Thead>
             <Tr>
-              <Th fontSize="2xl"></Th>
-              <Th fontSize="2xl">Email</Th>
-              <Th fontSize="2xl">PW</Th>
-              <Th fontSize="2xl">Key</Th>
-              <Th fontSize="2xl">Reissue</Th>
-              <Th fontSize="2xl">Role</Th>
-              <Th fontSize="2xl">Created</Th>
-              <Th fontSize="2xl">Expire</Th>
+              <Th fontSize="xs"></Th>
+              <Th fontSize="xs">Email</Th>
+              <Th fontSize="xs">PW</Th>
+              <Th fontSize="xs">Key</Th>
+              <Th fontSize="xs">Reissue</Th>
+              <Th fontSize="xs">Role</Th>
+              <Th fontSize="xs">Created</Th>
+              <Th fontSize="xs">Expire</Th>
             </Tr>
           </Thead>
           <Tbody>
             {users.map((item, index) => (
               <Tr key={index}>
-                <Td>
+                <Td fontSize="xs">
                   <Checkbox
                     isChecked={selectedRows.includes(index)}
                     onChange={() => handleCheckboxChange(index)}
                   />
                 </Td>
-                <Td>{item.email}</Td>
-                <Td>{item.password}</Td>
-                <Td>{item.key}</Td>
-                <Td>
-                  <Button onClick={() => handleReissueClick(index)}>
+                <Td fontSize="xs">{item.email}</Td>
+                <Td fontSize="xs">{item.password}</Td>
+                <Td fontSize="xs">{item.key}</Td>
+                <Td fontSize="xs">
+                  <Button size='xs' colorScheme='facebook' onClick={() => handleReissueClick(index)}>
                     Reissue
                   </Button>
                 </Td>
-                <Td>{item.role}</Td>
-                <Td>{item.key_created_date}</Td>
-                <Td>{item.key_expiration_date}</Td>
+                <Td fontSize="xs">{item.role}</Td>
+                <Td fontSize="xs">{item.key_created_date}</Td>
+                <Td fontSize="xs">{item.key_expiration_date}</Td>
               </Tr>
             ))}
             <Tr>
-              <Td></Td>
-              <Td colSpan={2}>
+              <Td fontSize="xs"></Td>
+              <Td fontSize="xs">
                 <Input
                   size="sm"
                   name="email"
@@ -204,7 +205,7 @@ const MemberManagement = () => {
                   isRequired
                 />
               </Td>
-              <Td colSpan={2}>
+              <Td fontSize="xs">
                 <Input
                   size="sm"
                   name="password"
@@ -213,8 +214,8 @@ const MemberManagement = () => {
                   isRequired
                 />
               </Td>
-              <Td colSpan={2}></Td>
-              <Td>
+              <Td fontSize="xs"></Td>
+              <Td fontSize="xs">
                 <Select
                   name="role"
                   value={newItem.role}
@@ -226,7 +227,7 @@ const MemberManagement = () => {
                   <option value="USER">User</option>
                 </Select>
               </Td>
-              <Td>
+              <Td fontSize="xs">
                 <Input
                   size="sm"
                   type="date"
@@ -236,7 +237,7 @@ const MemberManagement = () => {
                   isRequired
                 />
               </Td>
-              <Td>
+              <Td fontSize="xs">
                 <Button onClick={handleCreateClick}>Create</Button>
               </Td>
             </Tr>
