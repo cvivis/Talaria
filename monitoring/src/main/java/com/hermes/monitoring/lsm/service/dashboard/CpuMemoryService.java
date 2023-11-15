@@ -6,6 +6,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import com.github.dockerjava.api.DockerClient;
+import com.github.dockerjava.api.command.ListContainersCmd;
+import com.github.dockerjava.api.model.Container;
+import com.github.dockerjava.api.model.Statistics;
+import com.github.dockerjava.core.DockerClientBuilder;
+import com.github.dockerjava.core.InvocationBuilder.AsyncResultCallback;
+import java.io.IOException;
 
 import java.io.*;
 import java.util.Date;
@@ -54,9 +61,61 @@ public class CpuMemoryService {
         return new CpuMemoryUsageDto(new Date(), cpuUsage, memoryUsage);
     }
 
+    public static String getContainerIdByContainerName(DockerClient dockerClient, String containerName) {
+        ListContainersCmd listContainersCmd = dockerClient.listContainersCmd().withShowAll(true);
+        for (Container container : listContainersCmd.exec()) {
+            for (String name : container.getNames()) {
+                if (name.equals("/" + containerName)) {
+                    return container.getId();
+                }
+            }
+        }
+        return null; // Container not found
+    }
+
+    public Statistics getNextStatistics(DockerClient client, String containerId) {
+        AsyncResultCallback<Statistics> callback = new AsyncResultCallback<>();
+        client.statsCmd(containerId).exec(callback);
+        Statistics stats = new Statistics();
+        try {
+            stats = callback.awaitResult();
+            callback.close();
+        } catch (RuntimeException | IOException e) {
+            // you may want to throw an exception here
+        }
+        return stats; // this may be null or invalid if the container has terminated
+    }
+
     // Docker container의 Cpu, Memory 사용량 확인
     public CpuMemoryUsageDto getCpuMemoryUsage() throws IOException, InterruptedException {
+        String dockerApiEndpoint = "unix:///var/run/docker.sock"; // or your Docker API endpoint
+        DockerClient dockerClient = DockerClientBuilder.getInstance(dockerApiEndpoint).build();
+        String containerId = getContainerIdByContainerName(dockerClient, containerName);
+        if (containerId != null) {
+            System.out.println("Container ID for " + containerName + ": " + containerId);
+            Statistics statistics = getNextStatistics(dockerClient, containerId);
+            System.out.println(statistics);
+            long containerCPUUsage = statistics.getCpuStats().getCpuUsage().getTotalUsage();
+            System.out.println("컨테이너의 CPU 사용량: "+containerCPUUsage);
+            long totalHostCPU = statistics.getCpuStats().getSystemCpuUsage();
+            System.out.println("HOST의 전체 CPU 자원: "+totalHostCPU);
+            double cpuUsagePercentage = (double) containerCPUUsage / totalHostCPU * 100;
+            System.out.println("Cpu 사용률: "+ cpuUsagePercentage);
+            // 1. 현재 메모리 사용량
+            long currentMemoryUsage = statistics.getMemoryStats().getUsage();
+
+            // 2. 할당된 최대 메모리
+            long maxMemoryLimit = statistics.getMemoryStats().getLimit();
+
+            // 3. 백분율 계산
+            double memoryUsagePercentage = (double) currentMemoryUsage / maxMemoryLimit * 100;
+            System.out.println("메모리 사용률: "+ memoryUsagePercentage);
+            return new CpuMemoryUsageDto(new Date(), currentMemoryUsage, memoryUsagePercentage);
+        } else {
+            System.out.println("Container not found with name: " + containerName);
+        }
         return processBuilder();
     }
 
 }
+

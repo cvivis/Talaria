@@ -34,6 +34,10 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.batch:spring-batch-test'
+    // https://mvnrepository.com/artifact/com.github.docker-java/docker-java
+    implementation group: 'com.github.docker-java', name: 'docker-java', version: '3.3.4'
+    // https://mvnrepository.com/artifact/com.github.docker-java/docker-java-transport-httpclient5
+    implementation group: 'com.github.docker-java', name: 'docker-java-transport-httpclient5', version: '3.3.4'
 }
 
 tasks.named('test') {
