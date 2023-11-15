@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.hermes.talaria.domain.apis.dto.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,17 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hermes.talaria.domain.apis.constant.ApisStatus;
-import com.hermes.talaria.domain.apis.dto.ApisDto;
-import com.hermes.talaria.domain.apis.dto.ApisIdResponse;
-import com.hermes.talaria.domain.apis.dto.ApisManagementRequest;
-import com.hermes.talaria.domain.apis.dto.ApisManagementResponse;
-import com.hermes.talaria.domain.apis.dto.ApisRequest;
-import com.hermes.talaria.domain.apis.dto.ApisResponse;
-import com.hermes.talaria.domain.apis.dto.ApisSubResponse;
-import com.hermes.talaria.domain.apis.dto.OasRequest;
-import com.hermes.talaria.domain.apis.dto.OasResponse;
 import com.hermes.talaria.domain.apis.service.ApisService;
 import com.hermes.talaria.global.memberinfo.MemberInfo;
+import com.hermes.talaria.global.util.JsonParserUtil;
 import com.hermes.talaria.global.util.ModelMapperUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -125,11 +118,29 @@ public class ApisController {
 		return ResponseEntity.ok().body(response);
 	}
 
+	@GetMapping("/admin/{apisId}")
+	public ResponseEntity<ApisManagementResponse> getApisManagementByApisId(@PathVariable Long apisId) {
+
+		ApisDto apisDto = apisService.findApisByApisId(apisId);
+
+		ApisManagementResponse response = ModelMapperUtil.getModelMapper().map(apisDto, ApisManagementResponse.class);
+
+		response.setSwaggerContent(JsonParserUtil.parser(apisDto.getSwaggerContent()));
+
+		return ResponseEntity.ok().body(response);
+	}
+
 	@PatchMapping("/admin")
 	public ResponseEntity<Void> updateApis(@RequestBody ApisManagementRequest request) {
 		ApisDto apisDto = ModelMapperUtil.getModelMapper().map(request, ApisDto.class);
 		apisService.updateApisManagement(apisDto);
 
+		return ResponseEntity.ok().build();
+	}
+
+	@DeleteMapping("/admin/{apisId}")
+	public ResponseEntity<Void> deleteApis(@PathVariable Long apisId) {
+		apisService.deleteByAdmin(apisId);
 		return ResponseEntity.ok().build();
 	}
 
@@ -142,6 +153,12 @@ public class ApisController {
 			.map(subscriptionDto -> ModelMapperUtil.getModelMapper().map(subscriptionDto, ApisSubResponse.class))
 			.collect(Collectors.toList());
 
+		return ResponseEntity.ok().body(response);
+	}
+
+	@GetMapping("/user/product")
+	public ResponseEntity<ProductResponse> getProductDetail(@RequestParam String apisName) {
+		ProductResponse response = apisService.findApisByApisName(apisName);
 		return ResponseEntity.ok().body(response);
 	}
 }
