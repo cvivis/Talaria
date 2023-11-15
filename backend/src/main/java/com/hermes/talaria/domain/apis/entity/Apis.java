@@ -53,7 +53,7 @@ public class Apis implements Serializable {
 	@Column
 	private String webServerUrl;
 
-	@Column(columnDefinition = "TEXT")
+	@Column(columnDefinition = "TEXT default '{}'")
 	private String swaggerContent;
 
 	@Enumerated(EnumType.STRING)
@@ -69,7 +69,7 @@ public class Apis implements Serializable {
 	private RawType rawType;
 
 	@Type(type = "string-array")
-	@Column(columnDefinition = "text[]")
+	@Column(columnDefinition = "text[] default '{}'")
 	private String[] whiteList;
 
 	@Column
