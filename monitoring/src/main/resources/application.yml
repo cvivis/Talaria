@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://${properties.datasource.path}/monitoring
+    url:  jdbc:postgresql://${properties.datasource.path}/talaria
     username: ${properties.datasource.username}
     password: ${properties.datasource.password}
 
@@ -9,5 +9,3 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
-
-spring.batch.job.names: ${job.name:NONE}

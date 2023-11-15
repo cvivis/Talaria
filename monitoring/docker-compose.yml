@@ -1,0 +1,38 @@
+version: '3'
+
+networks:
+  monitoringNetwork:
+    driver: bridge
+services:
+  db:
+    image: postgres:latest
+    networks:
+      - monitoringNetwork
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=ssafy1357
+      - POSTGRES_ROOT_PASSWORD=ssafy1357
+      - POSTGRES_DB=talaria
+    ports:
+      - "5432:5432"
+    volumes:
+#      - "./database/postgres/data:/var/lib/postgresql/data"
+      - "./init.sql:/docker-entrypoint-initdb.d/init.sql"
+#      -  "./init/:/docker-entrypoint-initdb.d/"
+
+  monitoring:
+    networks:
+      - monitoringNetwork
+    depends_on:
+      - db
+    build:
+      context: .
+      dockerfile: Dockerfile
+#    environment:
+#      SPRING_DATASOURCE_URL:  jdbc:postgresql://db:5432/talaria
+#      SPRING_DATASOURCE_USERNAME: postgres
+#      SPRING_DATASOURCE_PASSWORD: ssafy1357
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./:/app

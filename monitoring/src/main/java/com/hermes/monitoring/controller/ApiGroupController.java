@@ -31,6 +31,11 @@ public class ApiGroupController {
     private final ApiServerFailService apiServerFailService;
 
 
+    @GetMapping("/check")
+    public ResponseEntity<String> getCheck(){
+        return ResponseEntity.ok("Check");
+    }
+
     @GetMapping("/client-fail")
     public ResponseEntity<List<ApiClientFailHourlyCountDto>> getApiGroupClientFailHourlyCountDto(@RequestParam("group-name")String routingUrl){
        List<ApiClientFailHourlyCountDto> result = apiClientFailService.getApiClientGroupHourlyCount(routingUrl);
