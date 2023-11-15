@@ -18,7 +18,8 @@ public class LogParser {
     // ip, date, http_method, /developer/groupName, /url, http_status_code, body_bytes_sent, http_referer, http_user_agent request_time, upstream_response_time
     private static final String LOGFILE_REGEX_2 = "^(\\S+) - - \\[([^\\]]+)\\] \"(\\S+) (\\/[^\\/]+\\/[^\\/]+) (\\S+)\" (\\d+) (\\d+) \"([^\"]*)\" \"([^\"]*)\" (\\d+\\.\\d+) ([\\d.\\-]+)$";
     // ip, date, http_method, /developer/groupName, http_status_code, body_bytes_sent, http_referer, http_user_agent request_time, upstream_response_time
-
+    private static final String LOGFILE_REGEX_3 = "^(\\S+) - - \\[([^\\]]+)\\] \"(\\S+) (\\S+) (\\S+)\" (\\d+) (\\d+) \"([^\"]*)\" \"([^\"]*)\" (\\d+\\.\\d+) ([\\d.\\-]+)$";
+    // ip, date, http_method, url, http_status_code, body_bytes_sent, http_referer, http_user_agent request_time, upstream_response_time
     public List<LogDto> parseLog(String filePath) throws IOException, ParseException {
         List<LogDto> logList = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
@@ -51,9 +52,11 @@ public class LogParser {
         // 이 메서드에서 로그 항목을 파싱하여 LogDTO 객체로 변환합니다.
         Pattern pattern1 = Pattern.compile(LOGFILE_REGEX_1);
         Pattern pattern2 = Pattern.compile(LOGFILE_REGEX_2);
+        Pattern pattern3 = Pattern.compile(LOGFILE_REGEX_3);
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MMM/yyyy:HH:mm:ss Z", Locale.US);
         Matcher matcher1 = pattern1.matcher(logEntry);
         Matcher matcher2 = pattern2.matcher(logEntry);
+        Matcher matcher3 = pattern3.matcher(logEntry);
         String ip = "";
         Date date = new Date();
         String httpMethod = "";
@@ -88,12 +91,26 @@ public class LogParser {
             LogDto logDto = new LogDto(ip, date, httpMethod, group, url, httpVersion, httpStatusCode, requestTime, responseTime);
             return logDto;
         }
+        if (matcher3.find()) {
+            ip = matcher3.group(1);
+            date = sdf.parse(matcher3.group(2));
+            httpMethod = matcher3.group(3);
+            url = matcher3.group(4);
+            httpVersion = matcher3.group(5);
+            httpStatusCode = matcher3.group(6);
+            requestTime = Double.parseDouble(matcher3.group(10));
+            if(!matcher3.group(11).equals("-"))responseTime = Double.parseDouble(matcher3.group(11));
+            LogDto logDto = new LogDto(ip, date, httpMethod, group, url, httpVersion, httpStatusCode, requestTime, responseTime);
+            return logDto;
+        }
         return null;
     }
 
     private LogDto parseLogEntry(String logEntry, long extractTime) throws ParseException {
         Pattern pattern1 = Pattern.compile(LOGFILE_REGEX_1);
         Pattern pattern2 = Pattern.compile(LOGFILE_REGEX_2);
+        Pattern pattern3 = Pattern.compile(LOGFILE_REGEX_3);
+        Matcher matcher3 = pattern3.matcher(logEntry);
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MMM/yyyy:HH:mm:ss Z", Locale.US);
         Matcher matcher1 = pattern1.matcher(logEntry);
         Matcher matcher2 = pattern2.matcher(logEntry);
@@ -133,6 +150,23 @@ public class LogParser {
             httpStatusCode = matcher2.group(6);
             requestTime = Double.parseDouble(matcher2.group(10));
             if(!matcher2.group(11).equals("-"))responseTime = Double.parseDouble(matcher2.group(11));
+            Date currentTime = new Date();
+            Date externalTime = new Date(currentTime.getTime() - extractTime);
+            if(date.equals(currentTime) ||
+                    date.before(currentTime) &&
+                            date.after(externalTime)){
+                return new LogDto(ip, date, httpMethod, group, url, httpVersion, httpStatusCode, requestTime, responseTime);
+            }
+        }
+        if (matcher3.find()) {
+            ip = matcher3.group(1);
+            date = sdf.parse(matcher3.group(2));
+            httpMethod = matcher3.group(3);
+            url = matcher3.group(4);
+            httpVersion = matcher3.group(5);
+            httpStatusCode = matcher3.group(6);
+            requestTime = Double.parseDouble(matcher3.group(10));
+            if(!matcher3.group(11).equals("-"))responseTime = Double.parseDouble(matcher3.group(11));
             Date currentTime = new Date();
             Date externalTime = new Date(currentTime.getTime() - extractTime);
             if(date.equals(currentTime) ||

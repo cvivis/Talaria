@@ -9,6 +9,7 @@ import org.springframework.batch.core.JobParametersInvalidException;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -23,7 +24,7 @@ public class SchedulerService {
 
     private final HttpStatusConfig httpStatusConfig;
 
-//    @Scheduled(cron = "0/5 * * * * *") // cron 표기법
+    @Scheduled(cron = "0/5 * * * * *") // cron 표기법
     public void runJob() {
         Map<String, JobParameter> confMap = new HashMap<>();
         confMap.put("time", new JobParameter("HttpStatusConfig_"+System.currentTimeMillis()));

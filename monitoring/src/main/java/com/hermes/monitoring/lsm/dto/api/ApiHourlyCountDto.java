@@ -11,7 +11,7 @@ public class ApiHourlyCountDto {
     private Long count;
 
     public ApiHourlyCountDto(String date, Integer hour, Long count) throws ParseException {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date newDate = dateFormat.parse(date + " " + hour +":00:00");
         this.date = newDate;
         this.count = count;
