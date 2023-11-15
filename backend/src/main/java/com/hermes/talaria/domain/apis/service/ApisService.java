@@ -5,6 +5,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.hermes.talaria.domain.apis.dto.ProductResponse;
+import com.hermes.talaria.global.error.exception.ApisException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -76,6 +78,15 @@ public class ApisService {
 		return apisId;
 	}
 
+	public Long deleteByAdmin(Long apisId) {
+		Apis apis = apisRepository.findApisByApisId(apisId).orElseThrow(() -> new BusinessException(
+			ErrorCode.NOT_EXIST_APIS));
+
+		apisRepository.deleteApisByApisId(apis.getApisId());
+
+		return apisId;
+	}
+
 	public Long registerOas(ApisDto apisDto) {
 		Apis apis = apisRepository.findApisByApisId(apisDto.getApisId()).orElseThrow(() -> new BusinessException(
 			ErrorCode.NOT_EXIST_APIS));
@@ -98,6 +109,15 @@ public class ApisService {
 		}
 
 		return ModelMapperUtil.getModelMapper().map(apis, ApisDto.class);
+	}
+
+	public ApisDto findApisByApisId(Long apisId) {
+		Apis apis = apisRepository.findApisByApisId(apisId).orElseThrow(() -> new BusinessException(
+			ErrorCode.NOT_EXIST_APIS));
+
+		ApisDto apisDto = ModelMapperUtil.getModelMapper().map(apis, ApisDto.class);
+
+		return apisDto;
 	}
 
 	public List<ApisDto> getApisByStatus(List<ApisStatus> status) {
@@ -166,5 +186,11 @@ public class ApisService {
 		}
 
 		return apisSubDtos;
+	}
+
+	public ProductResponse findApisByApisName(String apisName) {
+		 Apis apis = apisRepository.findApisByName(apisName)
+				 .orElseThrow(() -> new ApisException(ErrorCode.NOT_EXIST_APIS));
+		 return ModelMapperUtil.getModelMapper().map(apis, ProductResponse.class);
 	}
 }

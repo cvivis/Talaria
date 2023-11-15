@@ -74,4 +74,13 @@ public class SubscriptionService {
 		subscription.updateStatus(subscriptionDto.getStatus());
 	}
 
+	public String getStatus(Long memberId, Long apisId) {
+		SubscriptionStatus status = subscriptionRepository.findStatusByMemberIdAndApisId(memberId, apisId);
+		if(status == null) {
+			return "SUBSCRIBE";
+		} else {
+			return status.toString();
+		}
+	}
+
 }

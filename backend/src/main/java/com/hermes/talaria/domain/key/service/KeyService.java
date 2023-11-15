@@ -2,6 +2,9 @@ package com.hermes.talaria.domain.key.service;
 
 import java.time.LocalDate;
 
+import com.hermes.talaria.domain.member.entity.Member;
+import com.hermes.talaria.domain.member.repository.MemberRepository;
+import com.hermes.talaria.global.error.exception.MemberExeption;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class KeyService {
 	private final KeyRepository keyRepository;
+	private final MemberRepository memberRepository;
 
 	public KeyDto reissueKey(Long keyId) {
 		// key value, created_time, expiration_time 업데이트
@@ -39,5 +43,13 @@ public class KeyService {
 		newKey.setKey(keyValue);
 
 		return newKey;
+	}
+
+	public Key getKey(Long memberId) {
+
+		Member member = memberRepository.findByMemberId(memberId).orElseThrow(() -> new MemberExeption(ErrorCode.NOT_EXIST_MEMBER));
+		Key key = keyRepository.findByKeyId(member.getKeyId()).orElseThrow(() -> new KeyException(ErrorCode.NOT_EXIST_KEY));
+
+		return key;
 	}
 }
