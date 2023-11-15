@@ -46,7 +46,7 @@ function App() {
           </Route>
           <Route exact path='/developer' element={<PrivateRoute selectRole="DEVELOPER" component={<Developer />} />} >
             <Route exact index element={<ApiProductsDev />} />
-            <Route exact path='/developer/API Products/:productName' element={<ProductDev />} />
+            <Route exact path='/developer/API Products/:apiId' element={<ProductDev />} />
           </Route>
 					{/* 상단에 위치하는 라우트들의 규칙을 모두 확인, 일치하는 라우트가 없는경우 처리 */}
 					<Route path='/*' element={<NotFound />} />
