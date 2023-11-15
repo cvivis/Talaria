@@ -66,10 +66,10 @@ const InformationAPIs = ({ isOpen, onClose, closeModal }) => {
               <Input />
             </FormControl>
 
-            <FormControl>
+            {/* <FormControl>
               <FormLabel>API URL suffix</FormLabel>
               <Input ref={initialRef} />
-            </FormControl>
+            </FormControl> */}
           </ModalBody>
 
           <ModalFooter>
