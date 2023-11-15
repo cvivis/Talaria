@@ -1,0 +1,18 @@
+version: "3"
+services:
+  test-1:
+    image: ssafy09a107/test1
+    build:
+      context: ./TestAPI
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+  dmz:
+    image: ssafy09a107/dmz
+    build:
+      context: ./dmz/fast-server
+      dockerfile: Dockerfile
+    ports:
+      - "8001:8001"
+
+    
