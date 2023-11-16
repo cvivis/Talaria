@@ -38,11 +38,11 @@ function App() {
             <Route exact index element={<Chart/>}></Route>
             <Route exact  path='/admin/aggregate' element={<Aggregate/>}></Route>
             <Route exact path='/admin/apiApproval' element={<APIApproval/>}></Route>
-            <Route exact path='/admin/apiRegistration' element={<APIRegistration/>}></Route>
-            <Route exact path='/admin/apiManagement' element={<APIManagement/>}></Route>
-            <Route exact path='/admin/apiSubscription' element={<APISubscription/>}></Route>
-            <Route exact path='/admin/memberManagement' element={<MemberManagement/>}></Route>
-            <Route path='/admin/api/:apiId' element={<API />} />
+            <Route exact path='/admin/api/registration' element={<APIRegistration/>}></Route>
+            <Route exact path='/admin/api/management' element={<APIManagement/>}></Route>
+            <Route exact path='/admin/api/subscription' element={<APISubscription/>}></Route>
+            <Route exact path='/admin/member/management' element={<MemberManagement/>}></Route>
+            <Route path='/admin/api/management/:apiId' element={<API />} />
           </Route>
           <Route exact path='/developer' element={<PrivateRoute selectRole="DEVELOPER" component={<Developer />} />} >
             <Route exact index element={<ApiProductsDev />} />

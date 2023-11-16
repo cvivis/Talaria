@@ -18,6 +18,7 @@ const API = () => {
   const params = useParams();
   const access_token = useSelector((state) => state.userInfo.access_token);
   const [apiInfo, setApiInfo] = useState({});
+  const [apisName, setApisName] = useState('');
 
   useEffect(() => {
     try {
@@ -25,15 +26,16 @@ const API = () => {
         headers: { Authorization: `Bearer ${access_token}` },
       }).then((res) => {
         setApiInfo(res.data);
+        setApisName(res.data.name)
       });
     } catch (error) {}
   }, []);
-
+  
   return (
     <>
       <Flex mb={2}>
         <Text fontSize="2xl" color={mainText} m={0}>
-          {params.productName}
+          {apisName}
         </Text>
         <Spacer />
       </Flex>

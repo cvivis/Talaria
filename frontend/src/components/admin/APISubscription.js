@@ -15,6 +15,7 @@ import {
   PopoverCloseButton,
   PopoverHeader,
   PopoverBody,
+  Box,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import CustomAxios from "../axios/CustomAxios";
@@ -31,7 +32,7 @@ const APISubscription = () => {
       }).then((res) => {
         setResponse(res.data);
       });
-    } catch (error) {}
+    } catch (error) { }
   }, []);
 
   const handleApproved = (index, id) => {
@@ -50,7 +51,7 @@ const APISubscription = () => {
         newData.splice(index, 1);
         setResponse(newData);
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const handleDeclined = (index, id) => {
@@ -69,7 +70,7 @@ const APISubscription = () => {
         newData.splice(index, 1);
         setResponse(newData);
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const truncateText = (text, maxLength) => {
@@ -78,64 +79,66 @@ const APISubscription = () => {
 
   return (
     <>
-      <TableContainer marginLeft="5%" marginRight="5%">
-        <Table variant="simple">
-          <Thead>
-            <Tr>
-              <Th fontSize="xs">Dept Name</Th>
-              <Th fontSize="xs">Group Name</Th>
-              <Th fontSize="xs">User</Th>
-              <Th fontSize="xs">Domain</Th>
-              <Th fontSize="xs">Purpose</Th>
-              <Th fontSize="xs">Process</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {response.map((item, idx) => (
-              <Tr key={idx}>
-                <Td fontSize="xs">{item.developer_name}</Td>
-                <Td fontSize="xs">{item.api_name}</Td>
-                <Td fontSize="xs">{item.user_email}</Td>
-                <Td fontSize="xs">{item.address}</Td>
-                <Td fontSize="xs">
-                  {truncateText(item.content, 10)}
-                  {item.content.length > 10 && (
-                    <Popover>
-                      <PopoverTrigger>
-                        <Button variant="ghost" size="xs" colorScheme="gray">
-                          More
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent>
-                        <PopoverArrow />
-                        <PopoverCloseButton />
-                        <PopoverHeader>Purpose</PopoverHeader>
-                        <PopoverBody>{item.content}</PopoverBody>
-                      </PopoverContent>
-                    </Popover>
-                  )}
-                </Td>
-                <Td fontSize="xs">
-                  <ButtonGroup variant="outline" spacing="3" size="xs">
-                    <Button
-                      colorScheme="blue"
-                      onClick={() => handleApproved(idx, item.subscription_id)}
-                    >
-                      APPROVED
-                    </Button>
-                    <Button
-                      colorScheme="red"
-                      onClick={() => handleDeclined(idx, item.subscription_id)}
-                    >
-                      DECLINED
-                    </Button>
-                  </ButtonGroup>
-                </Td>
+      <Box bgColor='white' borderRadius={20} height="100%" minH="82vh">
+        <TableContainer marginLeft="3%" marginRight="3%" paddingTop="2%">
+          <Table variant="simple">
+            <Thead>
+              <Tr>
+                <Th fontSize="xs">Dept Name</Th>
+                <Th fontSize="xs">Group Name</Th>
+                <Th fontSize="xs">User</Th>
+                <Th fontSize="xs">Domain</Th>
+                <Th fontSize="xs">Purpose</Th>
+                <Th fontSize="xs">Process</Th>
               </Tr>
-            ))}
-          </Tbody>
-        </Table>
-      </TableContainer>
+            </Thead>
+            <Tbody>
+              {response.map((item, idx) => (
+                <Tr key={idx}>
+                  <Td fontSize="xs">{item.developer_name}</Td>
+                  <Td fontSize="xs">{item.api_name}</Td>
+                  <Td fontSize="xs">{item.user_email}</Td>
+                  <Td fontSize="xs">{item.address}</Td>
+                  <Td fontSize="xs">
+                    {truncateText(item.content, 10)}
+                    {item.content.length > 10 && (
+                      <Popover>
+                        <PopoverTrigger>
+                          <Button variant="ghost" size="xs" colorScheme="gray">
+                            More
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent>
+                          <PopoverArrow />
+                          <PopoverCloseButton />
+                          <PopoverHeader>Purpose</PopoverHeader>
+                          <PopoverBody>{item.content}</PopoverBody>
+                        </PopoverContent>
+                      </Popover>
+                    )}
+                  </Td>
+                  <Td fontSize="xs">
+                    <ButtonGroup variant="outline" spacing="3" size="xs">
+                      <Button
+                        colorScheme="blue"
+                        onClick={() => handleApproved(idx, item.subscription_id)}
+                      >
+                        APPROVED
+                      </Button>
+                      <Button
+                        colorScheme="red"
+                        onClick={() => handleDeclined(idx, item.subscription_id)}
+                      >
+                        DECLINED
+                      </Button>
+                    </ButtonGroup>
+                  </Td>
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
+        </TableContainer>
+      </Box>
     </>
   );
 };
