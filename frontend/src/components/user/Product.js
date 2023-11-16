@@ -55,7 +55,7 @@ const Product = () => {
                     apisId: apisId,
                 }
             });
-            if(data.data === "") {
+            if(data.data.status === null) {
                 setSubscription({status: "SUBSCRIBE"});
             } else {
                 setSubscription(data.data);
