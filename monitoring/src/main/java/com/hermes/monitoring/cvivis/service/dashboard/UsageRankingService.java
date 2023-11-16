@@ -35,7 +35,7 @@ public class UsageRankingService {
     private final CreateLogFile createLogFile;
     @Scheduled(cron = "0/5 * * * * *") // cron 표기법
     public void runJob() throws IOException {
-        createLogFile.createLogFile(url,baseUrl);
+//        createLogFile.createLogFile(url,baseUrl);
         // job parameter 설정
         Map<String, JobParameter> confMap = new HashMap<>();
         confMap.put("time", new JobParameter("UsageRankingConfig_"+System.currentTimeMillis()));
