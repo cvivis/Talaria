@@ -72,6 +72,9 @@ public class ApisController {
 		OasResponse response = ModelMapperUtil.getModelMapper()
 			.map(apisService.findApisByApisId(memberId, apisId), OasResponse.class);
 
+		ApisDto apisDto = apisService.findApisByApisId(memberId, apisId);
+		response.setSwaggerContent(JsonParserUtil.parser(apisDto.getSwaggerContent()));
+
 		return ResponseEntity.ok().body(response);
 	}
 

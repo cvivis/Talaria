@@ -1,18 +1,20 @@
 package com.hermes.talaria.domain.apis.service;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.hermes.talaria.domain.apis.dto.ProductResponse;
-import com.hermes.talaria.global.error.exception.ApisException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.hermes.talaria.domain.apis.constant.ApisStatus;
 import com.hermes.talaria.domain.apis.dto.ApisDto;
 import com.hermes.talaria.domain.apis.dto.ApisSubDto;
+import com.hermes.talaria.domain.apis.dto.ProductResponse;
 import com.hermes.talaria.domain.apis.entity.Apis;
 import com.hermes.talaria.domain.apis.repository.ApisRepository;
 import com.hermes.talaria.domain.member.entity.Member;
@@ -21,6 +23,7 @@ import com.hermes.talaria.domain.subscription.constant.SubscriptionStatus;
 import com.hermes.talaria.domain.subscription.entity.Subscription;
 import com.hermes.talaria.domain.subscription.repository.SubscriptionRepository;
 import com.hermes.talaria.global.error.ErrorCode;
+import com.hermes.talaria.global.error.exception.ApisException;
 import com.hermes.talaria.global.error.exception.AuthenticationException;
 import com.hermes.talaria.global.error.exception.BusinessException;
 import com.hermes.talaria.global.util.ModelMapperUtil;
@@ -36,7 +39,20 @@ public class ApisService {
 	private final SubscriptionRepository subscriptionRepository;
 	private final MemberRepository memberRepository;
 
+	@Value("${talaria.routing-url}")
+	private String routingServer;
+
 	public Long create(ApisDto apisDto) {
+		StringBuilder sb = new StringBuilder(routingServer);
+		Member developer = memberRepository.findByMemberId(apisDto.getDeveloperId())
+			.orElseThrow(() -> new AuthenticationException(ErrorCode.NOT_EXIST_MEMBER));
+		//URLEncoder.encode(originalString, "UTF-8")
+		sb.append("/").append(developer.getEmail());
+		try {
+			sb.append("/").append(URLEncoder.encode(apisDto.getName(), StandardCharsets.UTF_8));
+		} catch (Exception ignored) {
+		}
+		apisDto.setRoutingUrl(sb.toString());
 		Apis apis = apisRepository.save(ModelMapperUtil.getModelMapper().map(apisDto, Apis.class));
 
 		return apis.getApisId();
@@ -116,6 +132,14 @@ public class ApisService {
 			ErrorCode.NOT_EXIST_APIS));
 
 		ApisDto apisDto = ModelMapperUtil.getModelMapper().map(apis, ApisDto.class);
+		if (apisDto.getRoutingUrl().startsWith(routingServer)) {
+			apisDto.setMonitoringUrl(apisDto.getRoutingUrl().substring(routingServer.length()));
+		}
+
+		Member developer = memberRepository.findByMemberId(apisDto.getDeveloperId())
+			.orElseThrow(() -> new AuthenticationException(ErrorCode.NOT_EXIST_MEMBER));
+
+		apisDto.setDeveloperEmail(developer.getEmail());
 
 		return apisDto;
 	}
@@ -188,9 +212,10 @@ public class ApisService {
 		return apisSubDtos;
 	}
 
-	public ApisDto findApisByApisName(String apisName) {
-		 Apis apis = apisRepository.findApisByName(apisName)
-				 .orElseThrow(() -> new ApisException(ErrorCode.NOT_EXIST_APIS));
-		 return ModelMapperUtil.getModelMapper().map(apis, ApisDto.class);
+
+	public ProductResponse findApisByApisName(String apisName) {
+		Apis apis = apisRepository.findApisByName(apisName)
+			.orElseThrow(() -> new ApisException(ErrorCode.NOT_EXIST_APIS));
+		return ModelMapperUtil.getModelMapper().map(apis, ProductResponse.class);
 	}
 }
