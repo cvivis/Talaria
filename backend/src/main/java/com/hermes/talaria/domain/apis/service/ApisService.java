@@ -213,9 +213,10 @@ public class ApisService {
 	}
 
 
-	public ProductResponse findApisByApisName(String apisName) {
+	public ApisDto findApisByApisName(String apisName) {
 		Apis apis = apisRepository.findApisByName(apisName)
 			.orElseThrow(() -> new ApisException(ErrorCode.NOT_EXIST_APIS));
-		return ModelMapperUtil.getModelMapper().map(apis, ProductResponse.class);
+
+		return ModelMapperUtil.getModelMapper().map(apis, ApisDto.class);
 	}
 }
