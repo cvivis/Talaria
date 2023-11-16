@@ -3,10 +3,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import SwaggerUI from 'swagger-ui-react';
 import "swagger-ui-react/swagger-ui.css";
-import apiSpec from "../../assets/json/openapi.json";
 import instance from '../axios/CustomAxios';
-import { useSelector } from 'react-redux';
 import Footer from '../footer/Footer';
+import Loading from '../loading/Loading';
 
 const Product = () => {
 
@@ -16,8 +15,8 @@ const Product = () => {
     const [product, setProduct] = useState({});
     const [purpose, setPurpose] = useState("");
     const [toUse, setToUse] = useState("");
+    const [loading, setLoading] = useState(true);
     const toast = useToast();
-    const memberId = useSelector(state => state.userInfo.member_id);
 
     let handlePurposeChange = (e) => {
         let value = e.target.value
@@ -30,14 +29,20 @@ const Product = () => {
     }
     
     const GetProduct = async(apisName) => {
+        setLoading(true);
         try{
             const data = await instance.get('apis/user/product',{
                 params: {
                     apisName: apisName.productName,
                 }
             });
+            if(data.data.swagger_content === null) {
+                data.data.swagger_content = {a:"a",}
+            }
             setProduct(data.data);
             GetSubscription(data.data.apis_id);
+
+            setLoading(false);
         } catch(error) {
             alert(error);
         }
@@ -50,13 +55,23 @@ const Product = () => {
                     apisId: apisId,
                 }
             });
-            setSubscription(data.data);
+            if(data.data === "") {
+                setSubscription({status: "SUBSCRIBE"});
+            } else {
+                setSubscription(data.data);
+            }
         } catch(error) {
             alert(error);
         }
     };
 
-    const ApplySubscription = async() => {
+    const ResetClose = () => {
+        setPurpose("");
+        setToUse("");
+        onClose();
+    }
+
+    const ApplySubscription = async(subscription) => {
 
         if(purpose === "") {
             toast({
@@ -81,15 +96,14 @@ const Product = () => {
         }
 
         const data = {
-            member_id: memberId,
+            subscription_id: subscription.subscriptionId,
             apis_id: product.apis_id,
             content: purpose,
             address: toUse,
         };
         
         try {
-            await instance.post("subscription/user/apply",data);
-            console.log(data);
+            await instance.post("subscriptions/user/apply",data);
 
             setPurpose("");
             setToUse("");
@@ -102,10 +116,15 @@ const Product = () => {
                 variant:"subtle",
                 colorScheme:"blue",
                 isClosable:"true",
-            })
+            });
+
+            await GetSubscription(product.apis_id);
 
             onClose();
         } catch {
+            setPurpose("");
+            setToUse("");
+
             toast({
                 title:"ERROR",
                 description:"Please Retry !",
@@ -117,7 +136,6 @@ const Product = () => {
             })
             onClose();
         }
-        
     }
 
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -126,8 +144,13 @@ const Product = () => {
     const finalRef = useRef(null);
 
     useEffect(() => {
+        
         GetProduct(params);
-    },[params,subscription]);
+        setProduct({});
+
+        return() => {
+        }
+    },[params]);
 
     return (
         <>
@@ -161,26 +184,31 @@ const Product = () => {
                                 >
                                     SUBSCRIBE
                                 </Badge>,
-                        }[subscription]
+                        }[subscription.status]
                     }
                 </Box>
             </Flex>
             <Box bgColor='white' borderRadius={20} p='1px'>
-                <Box>
-                    <SwaggerUI spec={apiSpec} />
-                    {/* <SwaggerUI spec={product.swaggerContent} /> */}
-                </Box>
+                {
+                    loading ? 
+                        <Loading /> 
+                        :
+                        <Box>
+                            <SwaggerUI spec={product.swagger_content} />
+                        </Box>
+                }
             </Box>
             <Modal
                 initialFocusRef={initialRef}
                 finalFocusRef={finalRef}
                 isOpen={isOpen}
                 onClose={onClose}
+                closeOnOverlayClick={false}
             >
                 <ModalOverlay />
                 <ModalContent>
                 <ModalHeader>Apply for subscription</ModalHeader>
-                <ModalCloseButton />
+                <ModalCloseButton onClick={() => ResetClose()}/>
                 <ModalBody pb={6}>
                     <FormControl>
                     <FormLabel>Purpose of use</FormLabel>
@@ -194,10 +222,10 @@ const Product = () => {
                 </ModalBody>
 
                 <ModalFooter>
-                    <Button colorScheme='blue' mr={3} onClick={() => {ApplySubscription()}}>
+                    <Button colorScheme='blue' mr={3} onClick={() => {ApplySubscription(subscription)}}>
                     Apply
                     </Button>
-                    <Button onClick={onClose}>Cancel</Button>
+                    <Button onClick={() => {ResetClose()}}>Cancel</Button>
                 </ModalFooter>
                 </ModalContent>
             </Modal>
