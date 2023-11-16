@@ -36,7 +36,7 @@ function SignIn() {
                     toast({
                         title:"WELCOME TO TALARIA !",
                         position:"top",
-                        status:"info",
+                        status:"success",
                         variant:"subtle",
                         isClosable:"true",
                     })
