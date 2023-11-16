@@ -93,9 +93,10 @@ import {
           <Table variant="simple">
             <Thead>
               <Tr>
-                <Th fontSize="xs">Dept Name</Th>
+                <Th fontSize="xs">Developer</Th>
                 <Th fontSize="xs">Group Name</Th>
                 <Th fontSize="xs">Web Server URL</Th>
+                <Th fontSize="xs">Routing URL</Th>
                 <Th fontSize="xs">Process</Th>
               </Tr>
             </Thead>
@@ -105,8 +106,9 @@ import {
                   <Td fontSize="xs">{item.developer_email}</Td>
                   <Td fontSize="xs">{item.name}</Td>
                   <Td fontSize="xs">{item.web_server_url}</Td>
+                  <Td fontSize="xs">{item.routing_url}</Td>
                   <Td fontSize="xs">
-                    <ButtonGroup variant="outline" spacing="3" size="xs">
+                    <ButtonGroup variant="solid" spacing="3" size="xs">
                       <Button
                         colorScheme="blue"
                         onClick={() => handleApproved(idx, item.apis_id)}
@@ -117,7 +119,7 @@ import {
                         colorScheme="red"
                         onClick={() => handleDeclined(idx, item.apis_id)}
                       >
-                        DECLINED
+                        REJECTED
                       </Button>
                     </ButtonGroup>
                   </Td>
