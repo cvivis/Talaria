@@ -158,7 +158,10 @@ public class ApisController {
 
 	@GetMapping("/user/product")
 	public ResponseEntity<ProductResponse> getProductDetail(@RequestParam String apisName) {
-		ProductResponse response = apisService.findApisByApisName(apisName);
+		ApisDto apisDto = apisService.findApisByApisName(apisName);
+		ProductResponse response = ModelMapperUtil.getModelMapper().map(apisDto, ProductResponse.class);
+		response.setSwaggerContent(JsonParserUtil.parser(apisDto.getSwaggerContent()));
 		return ResponseEntity.ok().body(response);
 	}
+
 }
