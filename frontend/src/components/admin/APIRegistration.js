@@ -82,6 +82,10 @@ import {
       }
       setIsEditModalOpen(false);
     };
+
+    const handleAccept = (updatedApiInfo) => {
+      setIsEditModalOpen(false);
+    };
   
     return (
       <Box bgColor='white' borderRadius={20} height="100%" minHeight="100%">
@@ -126,6 +130,7 @@ import {
           isOpen={isEditModalOpen}
           onClose={closeEditModal}
           apiInfo={apis}
+          onAccept={handleAccept}
         />
         </Box>
     );
