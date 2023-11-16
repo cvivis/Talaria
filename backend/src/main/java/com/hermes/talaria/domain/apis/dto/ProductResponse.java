@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Map;
+
 @Getter
 @Setter
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
@@ -14,11 +16,11 @@ import lombok.Setter;
 public class ProductResponse {
     private Long apisId;
     private String name;
-    private String swaggerContent;
+    private Map<String, Object> swaggerContent;
     private String routingUrl;
 
     @Builder
-    public ProductResponse(Long apisId, String name, String swaggerContent, String routingUrl) {
+    public ProductResponse(Long apisId, String name, Map<String, Object> swaggerContent, String routingUrl) {
         this.apisId = apisId;
         this.name = name;
         this.swaggerContent = swaggerContent;

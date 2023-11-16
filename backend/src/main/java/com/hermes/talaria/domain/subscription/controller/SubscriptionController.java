@@ -31,7 +31,9 @@ public class SubscriptionController {
 	private final SubscriptionService subscriptionService;
 
 	@PostMapping("/user/apply")
-	public ResponseEntity<Void> applySubscription(@RequestBody ApplySubscriptionRequest request) {
+	public ResponseEntity<Void> applySubscription(@MemberInfo Long memberId, @MemberInfo Long keyId, @RequestBody ApplySubscriptionRequest request) {
+		request.setMemberId(memberId);
+		request.setKeyId(keyId);
 		SubscriptionDto subscriptionDto = ModelMapperUtil.getModelMapper().map(request, SubscriptionDto.class);
 		subscriptionService.applySubscription(subscriptionDto);
 
@@ -59,9 +61,9 @@ public class SubscriptionController {
 	}
 
 	@GetMapping("/user")
-	public ResponseEntity<String> getStatus(@MemberInfo Long memberId, @RequestParam Long apisId) {
-		String status = subscriptionService.getStatus(memberId, apisId);
+	public ResponseEntity<SubscriptionDto> getSubscription(@MemberInfo Long memberId, @RequestParam Long apisId) {
+		SubscriptionDto response = subscriptionService.getSubscription(memberId, apisId);
 
-		return ResponseEntity.ok().body(status);
+		return ResponseEntity.ok().body(response);
 	}
 }

@@ -31,6 +31,7 @@ public class SubscriptionService {
 	private final ApisRepository apisRepository;
 	private final MemberRepository memberRepository;
 
+	@Transactional
 	public void applySubscription(SubscriptionDto subscriptionDto) {
 
 		Subscription subscription;
@@ -40,6 +41,7 @@ public class SubscriptionService {
 				.orElseThrow(() -> new AuthenticationException(ErrorCode.NOT_EXIST_SUBSCRIPTION));
 			subscription.update(subscriptionDto);
 		} else { // 첫 요청
+			subscriptionDto.setStatus(SubscriptionStatus.PENDING);
 			subscription = ModelMapperUtil.getModelMapper().map(subscriptionDto, Subscription.class);
 			subscriptionRepository.save(subscription);
 		}
@@ -74,13 +76,13 @@ public class SubscriptionService {
 		subscription.updateStatus(subscriptionDto.getStatus());
 	}
 
-	public String getStatus(Long memberId, Long apisId) {
-		SubscriptionStatus status = subscriptionRepository.findStatusByMemberIdAndApisId(memberId, apisId);
-		if(status == null) {
-			return "SUBSCRIBE";
-		} else {
-			return status.toString();
+	public SubscriptionDto getSubscription(Long memberId, Long apisId) {
+		Subscription subscription = subscriptionRepository.findByMemberIdAndApisId(memberId, apisId);
+		if(subscription == null) {
+			return null;
 		}
+		SubscriptionDto subscriptionDto = ModelMapperUtil.getModelMapper().map(subscription,SubscriptionDto.class);
+		return subscriptionDto;
 	}
 
 }

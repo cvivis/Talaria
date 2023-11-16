@@ -58,7 +58,6 @@ public class Subscription implements Serializable {
 	private LocalDateTime subscriptionTime;
 
 	@Enumerated(EnumType.STRING)
-	@ColumnDefault("'PENDING'")
 	private SubscriptionStatus status;
 
 	@Column

@@ -39,10 +39,25 @@ public class KeyController {
 	@GetMapping("/user")
 	public ResponseEntity<KeyReissueResponse> getKey(@MemberInfo Long memberId) {
 
-		System.out.println(memberId);
 		Key key = keyService.getKey(memberId);
-		System.out.println(key.toString());
 		KeyReissueResponse keyReissueResponse = ModelMapperUtil.getModelMapper().map(key, KeyReissueResponse.class);
+
+		return ResponseEntity.ok().body(keyReissueResponse);
+	}
+
+	@PostMapping("/user")
+	public ResponseEntity<KeyReissueResponse> reissueUserKey(@RequestBody KeyReissueRequest request) {
+
+		System.out.println(request.toString());
+
+		KeyDto keyDto = keyService.reissueKey(request.getKeyId());
+
+		KeyReissueResponse keyReissueResponse = ModelMapperUtil.getModelMapper().map(keyDto, KeyReissueResponse.class);
+
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+		keyReissueResponse.setKeyCreatedDate(keyDto.getCreatedDate().format(formatter));
+		keyReissueResponse.setKeyExpirationDate(keyDto.getExpirationDate().format(formatter));
 
 		return ResponseEntity.ok().body(keyReissueResponse);
 	}

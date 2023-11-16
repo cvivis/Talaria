@@ -1,6 +1,7 @@
 package com.hermes.talaria.domain.subscription.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -18,6 +19,5 @@ public interface SubscriptionRepository extends JpaRepository<Subscription, Long
 
 	List<Subscription> findByApisIdAndStatus(Long apisId, SubscriptionStatus status);
 
-	@Query("SELECT s.status FROM Subscription s WHERE s.memberId = ?1 and s.apisId = ?2")
-	SubscriptionStatus findStatusByMemberIdAndApisId(Long memberId, Long apisId);
+	Subscription findByMemberIdAndApisId(Long memberId, Long apisId);
 }
