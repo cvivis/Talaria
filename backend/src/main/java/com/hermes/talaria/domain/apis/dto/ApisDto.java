@@ -25,10 +25,12 @@ public class ApisDto {
 	private RawType rawType;
 	private String[] whiteList;
 	private String routingUrl;
+	private String monitoringUrl;
 
 	@Builder
-	public ApisDto(Long apisId, Long developerId, String developerEmail, String name, String webServerUrl, String swaggerContent,
-		ApisStatus status, Long quota, RawType rawType, String[] whiteList, String routingUrl) {
+	public ApisDto(Long apisId, Long developerId, String developerEmail, String name, String webServerUrl,
+		String swaggerContent,
+		ApisStatus status, Long quota, RawType rawType, String[] whiteList, String routingUrl, String monitoringUrl) {
 		this.apisId = apisId;
 		this.developerId = developerId;
 		this.developerEmail = developerEmail;
@@ -40,5 +42,6 @@ public class ApisDto {
 		this.rawType = rawType;
 		this.whiteList = whiteList;
 		this.routingUrl = routingUrl;
+		this.monitoringUrl = monitoringUrl;
 	}
 }
