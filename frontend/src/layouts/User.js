@@ -56,9 +56,7 @@ function User() {
         setSecondCategory("");
         setThirdCategory("");
 
-        console.log(location.pathname);
         const locationArray = decodeURI(location.pathname).split('/');
-        console.log(locationArray);
         for(let i = 0; i<locationArray.length; i++) {
             if(i === 2) {
                 setMainCategory(locationArray[i]);
