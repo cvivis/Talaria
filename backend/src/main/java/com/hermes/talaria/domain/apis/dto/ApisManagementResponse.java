@@ -25,10 +25,12 @@ public class ApisManagementResponse {
 	String[] whiteList; // apis entity
 	String routingUrl;
 	String monitoringUrl;
+	String webServerUrl;
 
 	@Builder
 	public ApisManagementResponse(Long apisId, String developerEmail, String name, Long quota, ApisStatus status,
-		Map<String, Object> swaggerContent, String[] whiteList, String routingUrl, String monitoringUrl) {
+		Map<String, Object> swaggerContent, String[] whiteList, String routingUrl, String monitoringUrl,
+		String webServerUrl) {
 		this.apisId = apisId;
 		this.developerEmail = developerEmail;
 		this.name = name;
@@ -38,5 +40,6 @@ public class ApisManagementResponse {
 		this.whiteList = whiteList;
 		this.routingUrl = routingUrl;
 		this.monitoringUrl = monitoringUrl;
+		this.webServerUrl = webServerUrl;
 	}
 }
