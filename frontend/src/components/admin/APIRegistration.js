@@ -88,8 +88,8 @@ import {
     };
   
     return (
-      <Box bgColor='white' borderRadius={20} height="100%" minHeight="100%">
-        <TableContainer marginLeft="5%" marginRight="5%">
+      <Box bgColor='white' borderRadius={20} height="100%" minH="82vh">
+        <TableContainer marginLeft="3%" marginRight="3%" paddingTop="2%">
           <Table variant="simple">
             <Thead>
               <Tr>
