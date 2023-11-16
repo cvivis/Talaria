@@ -147,7 +147,7 @@ const APIManagement = () => {
                         as={IconButton}
                         aria-label="Options"
                         icon={<HamburgerIcon />}
-                        variant="outline"
+                        variant="link"
                       />
                       <MenuList>
                         <MenuItem

@@ -84,7 +84,7 @@ const APISubscription = () => {
           <Table variant="simple">
             <Thead>
               <Tr>
-                <Th fontSize="xs">Dept Name</Th>
+                <Th fontSize="xs">Developer</Th>
                 <Th fontSize="xs">Group Name</Th>
                 <Th fontSize="xs">User</Th>
                 <Th fontSize="xs">Domain</Th>
@@ -118,7 +118,7 @@ const APISubscription = () => {
                     )}
                   </Td>
                   <Td fontSize="xs">
-                    <ButtonGroup variant="outline" spacing="3" size="xs">
+                    <ButtonGroup variant="solid" spacing="3" size="xs">
                       <Button
                         colorScheme="blue"
                         onClick={() => handleApproved(idx, item.subscription_id)}
@@ -129,7 +129,7 @@ const APISubscription = () => {
                         colorScheme="red"
                         onClick={() => handleDeclined(idx, item.subscription_id)}
                       >
-                        DECLINED
+                        REJECTED
                       </Button>
                     </ButtonGroup>
                   </Td>
