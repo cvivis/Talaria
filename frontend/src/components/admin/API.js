@@ -39,6 +39,9 @@ const API = () => {
       </Flex>
       <Box bgColor="white" borderRadius={20} p="1px">
         <Box>
+        <APIaggregate groupName={apiInfo.monitoring_url}></APIaggregate>
+        </Box>
+        <Box>
           <SwaggerUI spec={apiInfo.swagger_content} />
         </Box>
       </Box>

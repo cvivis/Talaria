@@ -10,7 +10,8 @@ function Chart2() {
   const [memoryData, setMemoryData] = useState([]);
   const connect = () => {
     client.current = new StompJs.Client({
-      brokerURL: "ws://localhost:8080/ws/monitoring",
+      // brokerURL: "ws://localhost:8080/ws/monitoring",
+      brokerURL: "wss://api.talaria.kr/ws/monitoring",
       onConnect: () => {
         // Do something, all subscribes must be done is this callback
         console.log("연결 SUB");

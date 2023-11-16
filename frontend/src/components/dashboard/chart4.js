@@ -17,7 +17,7 @@ function Chart4() {
   const [data, setData] = useState([]);
   const connect = () => {
     client.current = new StompJs.Client({
-      brokerURL: "ws://localhost:8080/ws/monitoring",
+      brokerURL: "wss://api.talaria.kr/ws/monitoring",
       onConnect: () => {
         // Do something, all subscribes must be done is this callback
         console.log("연결 SUB");
@@ -91,7 +91,7 @@ function Chart4() {
                   <Td>
                   <div style={{ margin: "0 auto" , textAlign:"center"}}>{info.ranking}</div>
                   </Td>
-                  <Td>{info.url}</Td>
+                  <Td >{info.url.length > 10 ? info.url.slice(0,10)+" ...":info.url}</Td>
                   <Td color={"white"} fontWeight="Bold" border="none">
                   <div style={{backgroundColor:getTextColor(info.method), 
                             width:"100%",

@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { Box, Text } from "@chakra-ui/react";
 import axios from "axios";
 import ReactApexChart from "react-apexcharts";
-function Chart2() {
+function Chart2(props) {
   const [requestData, setRequestData] = useState([]);
   const [categories, setCategories] = useState([]);
   const [series, setSeries] = useState([
@@ -40,8 +40,10 @@ function Chart2() {
   });
 
   const getData = async () => {
-    const groupName = "/shinhan/banking";
-    const url = "http://localhost:8080/group-detail/client-fail?group-name=" + groupName;
+    // const groupName = "/shinhan/banking";
+    // const groupName = props.groupName;
+    // console.log("그래프2 ",props.groupName)
+    const url = "https://api.talaria.kr/group-detail/client-fail?group-name=/shinhan/banking";
     let response = await axios.get(url);
     // setRequestData(response.data);
     setRequestData((prevRequestData) => [
@@ -60,11 +62,12 @@ function Chart2() {
   };
 
   useEffect(() => {
+    // console.log(groupName)
     getData();
-  }, []);
+  }, [props.groupName]);
 
   useEffect(() => {
-    console.log(requestData);
+    console.log("chart2 Response : ",requestData);
     setSeries([
       {
         name: "usage",
@@ -75,6 +78,7 @@ function Chart2() {
 
   return (
     <>
+    {/* <Text>{props.groupName}</Text> */}
       <Box bg="white" w="40vw" h="40vh" borderRadius="20px" boxShadow="lg" pl={5}>
         <Text fontWeight="Bold" pt={4} pl={4}>
           400 시간별 호출 횟수

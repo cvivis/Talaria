@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { Box, Text } from "@chakra-ui/react";
 import axios from "axios";
 import ReactApexChart from "react-apexcharts";
-function Chart2() {
+function Chart2(props) {
   const [requestData, setRequestData] = useState([]);
   const [categories, setCategories] = useState([]);
   const [series, setSeries] = useState([
@@ -40,8 +40,9 @@ function Chart2() {
   });
 
   const getData = async () => {
-    const groupName = "/shinhan/banking";
-    const url = "http://localhost:8080/group-detail/success?group-name=" + groupName;
+    // const groupName = "/shinhan/banking";
+    const groupName = props.groupName;
+    const url = "https://api.talaria.kr/group-detail/success?group-name=" + groupName;
     let response = await axios.get(url);
     // setRequestData(response.data);
     setRequestData((prevRequestData) => [
@@ -61,7 +62,7 @@ function Chart2() {
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [props.groupName]);
 
   useEffect(() => {
     console.log(requestData);

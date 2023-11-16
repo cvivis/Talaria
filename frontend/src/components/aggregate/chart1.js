@@ -1,10 +1,11 @@
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Text, propNames } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import ReactApexChart from "react-apexcharts";
 import axios from "axios";
-function Chart1() {
+function Chart1(props) {
   const [requestData, setRequestData] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [groupName,setGroupName] = useState([props.groupName]);
   const [series, setSeries] = useState([
     { x: "Fri Nov 10 2023 00:00:00 GMT+0900 (한국 표준시)", y: 8 },
   ]);
@@ -40,8 +41,10 @@ function Chart1() {
   });
 
   const getData = async () => {
-    const groupName = "/shinhan/banking";
-    const url = "http://localhost:8080/group-detail/request-count?group-name=" + groupName;
+    // const groupName = "/shinhan/banking";
+    const groupName = props.groupName;
+    // console.log("props: ",props.groupName);
+    const url = "https://api.talaria.kr/group-detail/request-count?group-name=" + groupName;
     let response = await axios.get(url);
     // setRequestData(response.data);
     setRequestData((prevRequestData) => [
@@ -56,10 +59,10 @@ function Chart1() {
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [props.groupName]);
 
   useEffect(() => {
-    // console.log(requestData)
+    // console.log("chart1 : ",requestData)
     setSeries([
       {
         name: "usage",

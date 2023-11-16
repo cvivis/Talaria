@@ -16,7 +16,7 @@ import {
 } from "@chakra-ui/react";
 import { right } from "@popperjs/core";
 
-function Chart3() {
+function Chart3(props) {
   const [clientData, setClientData] = useState([]);
   const [countData, setCountData] = useState([]);
   const [labels, setLabels] = useState([]);
@@ -81,8 +81,9 @@ function Chart3() {
   });
 
   const getData = async () => {
-    const groupName = "/shinhan/banking";
-    const url = "http://localhost:8080/group-detail/server-fail-ranking?group-name=" + groupName;
+    const groupName = props.groupName;
+    // const groupName = "/shinhan/banking";
+    const url = "https://api.talaria.kr/group-detail/server-fail-ranking?group-name=" + groupName;
     let response = await axios.get(url);
     // setRequestData(response.data);
     console.log(response.data);
@@ -99,7 +100,7 @@ function Chart3() {
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [props.groupName]);
 
   useEffect(() => {
     console.log(countData);
