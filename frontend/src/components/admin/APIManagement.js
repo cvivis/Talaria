@@ -1,7 +1,6 @@
 import {
-  Button,
+  Box,
   Table,
-  ButtonGroup,
   Thead,
   Tbody,
   Tr,
@@ -36,7 +35,7 @@ const APIManagement = () => {
       }).then((res) => {
         setResponse(res.data);
       });
-    } catch (error) {}
+    } catch (error) { }
   }, []);
 
   const handleSwitchChange = (id, idx) => {
@@ -59,7 +58,7 @@ const APIManagement = () => {
               : "APPROVED_ON";
           setResponse(newResponse);
         });
-      } catch (error) {}
+      } catch (error) { }
     } else {
       try {
         CustomAxios.patch(
@@ -79,7 +78,7 @@ const APIManagement = () => {
               : "APPROVED_ON";
           setResponse(newResponse);
         });
-      } catch (error) {}
+      } catch (error) { }
     }
   };
 
@@ -97,7 +96,7 @@ const APIManagement = () => {
         newResponse.splice(idx, 1);
         setResponse(newResponse);
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const closeEditModal = () => {
@@ -113,69 +112,71 @@ const APIManagement = () => {
   };
 
   const goProductPage = (id) => {
-    return navigate("/admin/api/"+id);
-}
+    return navigate("/admin/api/management/" + id);
+  }
 
   return (
     <>
-      <TableContainer marginLeft="5%" marginRight="5%">
-        <Table variant="simple">
-          <Thead>
-            <Tr>
-              <Th fontSize="xs">Dept Name</Th>
-              <Th fontSize="xs">Group Name</Th>
-              <Th fontSize="xs">Quota Per Second (QPS)</Th>
-              <Th fontSize="xs">Available</Th>
-              <Th fontSize="xs"></Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {response.map((item, idx) => (
-              <Tr key={idx}>
-                <Td fontSize="xs" onClick={() => goProductPage(item.apis_id)}>{item.developer_email}</Td>
-                <Td fontSize="xs" onClick={() => goProductPage(item.apis_id)}>{item.name}</Td>
-                <Td fontSize="xs" onClick={() => goProductPage(item.apis_id)}>{item.quota}</Td>
-                <Td>
-                  <Switch
-                    onChange={() => handleSwitchChange(item.apis_id, idx)}
-                    isChecked={item.status === "APPROVED_ON"}
-                  ></Switch>
-                </Td>
-                <Td>
-                  <Menu>
-                    <MenuButton
-                      as={IconButton}
-                      aria-label="Options"
-                      icon={<HamburgerIcon />}
-                      variant="outline"
-                    />
-                    <MenuList>
-                      <MenuItem
-                        icon={<EditIcon />}
-                        onClick={() => handleEdit(idx)}
-                      >
-                        Edit
-                      </MenuItem>
-                      <MenuItem
-                        icon={<DeleteIcon />}
-                        onClick={() => handleDelete(idx, item.apis_id)}
-                      >
-                        Delete
-                      </MenuItem>
-                    </MenuList>
-                  </Menu>
-                </Td>
+      <Box bgColor='white' borderRadius={20} height="100%" minHeight="100%" minH="82vh" >
+        <TableContainer marginLeft="3%" marginRight="3%" paddingTop="2%">
+          <Table variant="simple">
+            <Thead>
+              <Tr>
+                <Th fontSize="xs">Developer</Th>
+                <Th fontSize="xs">API Name</Th>
+                <Th fontSize="xs">QPS (Quota Per Second)</Th>
+                <Th fontSize="xs">Available</Th>
+                <Th fontSize="xs"></Th>
               </Tr>
-            ))}
-          </Tbody>
-        </Table>
-      </TableContainer>
-      <APIEditModal
-        isOpen={isEditModalOpen}
-        onClose={closeEditModal}
-        apiInfo={apis}
-        onAccept={handleAccept}
-      />
+            </Thead>
+            <Tbody>
+              {response.map((item, idx) => (
+                <Tr key={idx}>
+                  <Td fontSize="xs" onClick={() => goProductPage(item.apis_id)}>{item.developer_email}</Td>
+                  <Td fontSize="xs" onClick={() => goProductPage(item.apis_id)}>{item.name}</Td>
+                  <Td fontSize="xs" onClick={() => goProductPage(item.apis_id)}>{item.quota}</Td>
+                  <Td>
+                    <Switch
+                      onChange={() => handleSwitchChange(item.apis_id, idx)}
+                      isChecked={item.status === "APPROVED_ON"}
+                    ></Switch>
+                  </Td>
+                  <Td>
+                    <Menu>
+                      <MenuButton
+                        as={IconButton}
+                        aria-label="Options"
+                        icon={<HamburgerIcon />}
+                        variant="outline"
+                      />
+                      <MenuList>
+                        <MenuItem
+                          icon={<EditIcon />}
+                          onClick={() => handleEdit(idx)}
+                        >
+                          Edit
+                        </MenuItem>
+                        <MenuItem
+                          icon={<DeleteIcon />}
+                          onClick={() => handleDelete(idx, item.apis_id)}
+                        >
+                          Delete
+                        </MenuItem>
+                      </MenuList>
+                    </Menu>
+                  </Td>
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
+        </TableContainer>
+        <APIEditModal
+          isOpen={isEditModalOpen}
+          onClose={closeEditModal}
+          apiInfo={apis}
+          onAccept={handleAccept}
+        />
+      </Box>
     </>
   );
 };

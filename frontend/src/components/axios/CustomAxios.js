@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { logoutUser, setAccessToken } from '../slices/UserInfoSlice';
 import store from '../store/store';
 
-export const SeverBaseUrl = "http://localhost:8080/";
+export const SeverBaseUrl = `https://${process.env.REACT_APP_CONTROL_PLANE_DOMAIN}/api`;
 
 const CustomAxios = () => {
     return axios.create({

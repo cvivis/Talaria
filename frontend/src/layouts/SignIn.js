@@ -29,11 +29,12 @@ function SignIn() {
                 .then((res) => {
 
                     dispatch(setUser(res.data));
+                    
                     if(res.status === 200) {
                         toast({
                             title:"WELCOME TO TALARIA !",
                             position:"top",
-                            status:"info",
+                            status:"success",
                             variant:"subtle",
                             isClosable:"true",
                         })

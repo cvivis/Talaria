@@ -10,16 +10,24 @@ import {
   ModalFooter,
   ModalBody,
 } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import APIAlert from '../alert/APIAlert';
+import CustomAxios from '../axios/CustomAxios';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
-const InformationAPIs = ({ isOpen, onClose, closeModal }) => {
+const InformationAPIs = ({ isOpen, onClose, closeModal, apisInfo }) => {
 
   const initialRef = React.useRef(null)
   const finalRef = React.useRef(null)
 
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [alertType, setAlertType] = useState('delete');
+
+  const [name, setName] = useState(apisInfo.name);
+  const [url, setUrl] = useState(apisInfo.web_server_url);
+  const access_token = useSelector(state => state.userInfo.access_token)
+  const navigate = useNavigate();
 
   const openAlert = (type) => {
     setAlertType(type);
@@ -30,17 +38,47 @@ const InformationAPIs = ({ isOpen, onClose, closeModal }) => {
     setIsAlertOpen(false);
   };
 
-  const handleCloseAlertAndModal = () => {
+  const handleCloseAlertAndModal = async () => {
     if (alertType === 'update') {
-      console.log('Sending update request...');
       // 실제로는 업데이트에 관련된 API 호출이나 로직을 추가해야 합니다.
+      try {  
+        const response = await CustomAxios.patch(
+          `apis/developer/` + apisInfo.apis_id,
+          {
+            name: name,
+            web_server_url: url,
+          },
+          {
+            headers: { Authorization: `Bearer ${access_token}` },
+          }
+        );
+    
+      } catch (error) {
+        console.error('Error:', error);
+      }
     } else {
-      console.log('Sending delete request...');
       // 실제로는 삭제에 관련된 API 호출이나 로직을 추가해야 합니다.
+      try {  
+        const response = await CustomAxios.delete(
+          `apis/developer/` + apisInfo.apis_id,
+          {
+            headers: { Authorization: `Bearer ${access_token}` },
+          }
+        );
+    
+      } catch (error) {
+        console.error('Error:', error);
+      }
     }
+
     closeAlert();
     closeModal();
+
+    return navigate("/developer");
   };
+
+  useEffect(() => {
+  }, []);
 
   return (
     <>
@@ -58,18 +96,18 @@ const InformationAPIs = ({ isOpen, onClose, closeModal }) => {
           <ModalBody pb={6}>
             <FormControl isRequired>
               <FormLabel>Name</FormLabel>
-              <Input ref={initialRef} />
+              <Input ref={initialRef} defaultValue={apisInfo.name} onChange={(e) => setName(e.target.value)}/>
             </FormControl>
 
             <FormControl mt={4} isRequired>
               <FormLabel>Web service URL</FormLabel>
-              <Input />
+              <Input defaultValue={apisInfo.web_server_url} onChange={(e) => setUrl(e.target.value)}/>
             </FormControl>
 
-            <FormControl>
+            {/* <FormControl>
               <FormLabel>API URL suffix</FormLabel>
               <Input ref={initialRef} />
-            </FormControl>
+            </FormControl> */}
           </ModalBody>
 
           <ModalFooter>
