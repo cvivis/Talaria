@@ -40,8 +40,8 @@ const Footer = () => {
                     base: "20px",
                     md: "44px",
                 }}>
-                <Link color='gray.400' href='#'>
-                    어디로
+                <Link isExternal color='gray.400' href='https://polyester-winter-cd5.notion.site/Talaria-b3a6d015748747f3b8d6dfa5264583d4'>
+                    Document
                 </Link>
                 </ListItem>
                 <ListItem
@@ -49,8 +49,8 @@ const Footer = () => {
                     base: "20px",
                     md: "44px",
                 }}>
-                <Link color='gray.400' href='#'>
-                    갈지는
+                <Link isExternal color='gray.400' href='https://lab.ssafy.com/s09-final/S09P31A107'>
+                    GitLab
                 </Link>
                 </ListItem>
                 <ListItem
@@ -59,16 +59,18 @@ const Footer = () => {
                     md: "44px",
                 }}>
                 <Link
+                    isExternal
                     color='gray.400'
-                    href='#'>
-                    아직
+                    href='https://www.canva.com/design/DAF0O39yLpo/bHiDOmBjtdM5RmNLJhOxpw/view?utm_content=DAF0O39yLpo&utm_campaign=designshare&utm_medium=link&utm_source=editor'>
+                    Presentation
                 </Link>
                 </ListItem>
                 <ListItem>
                 <Link
+                    isExternal
                     color='gray.400'
                     href='#'>
-                    안정했지롱
+                    Opensource License
                 </Link>
                 </ListItem>
             </List>

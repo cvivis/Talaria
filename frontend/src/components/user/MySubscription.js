@@ -14,7 +14,6 @@ const MySubscription = () => {
     const textColor = useColorModeValue("black", "white");
     const borderColor = useColorModeValue("gray.200", "gray.600");
     const bgProfile = useColorModeValue("hsla(0,0%,100%,.8)", "navy.800");
-    const mainColor = useColorModeValue("black", "white");
     const secondaryColor = useColorModeValue("black", "white");
     const borderProfileColor = useColorModeValue("white", "transparent");
     const [apiKey, setApiKey] = useState("No keys available");
@@ -27,7 +26,7 @@ const MySubscription = () => {
     const pendingCount = useRef(0);
     const subscribingCount = useRef(0);
     const rejectedCount = useRef(0);
-    const memberId = useSelector(state => state.userInfo.member_id);
+    const keyId = useSelector(state => state.userInfo.key_id);
     const dispatch = useDispatch();
     const toast = useToast();
     const navigate = useNavigate();
@@ -59,8 +58,10 @@ const MySubscription = () => {
 
     const ReIssueKey = async() => {
         try {
-            const data = await instance.post('keys/user');
-            setApiKey(data);
+            const data = await instance.post('keys/user',{
+                key_id: keyId,
+            });
+            setApiKey(data.data.key);
         } catch(error) {
             return alert(error);
         }
@@ -78,7 +79,7 @@ const MySubscription = () => {
                 CountApi(data.data);
             }
         } catch (error) {
-            alert(error);
+            return alert(error);
         }
     }
 
@@ -86,7 +87,6 @@ const MySubscription = () => {
         let pending = 0;
         let subscribing = 0;
         let rejected = 0;
-        console.log(data);
         data.map(function(product) {
             if(product.status === "PENDING") {
                 pending = pending + 1;

@@ -39,5 +39,11 @@ export default extendTheme(
   CardComponent, // Card component
   MainPanelComponent, // Main Panel component
   PanelContentComponent, // Panel Content component
-  PanelContainerComponent // Panel Container component
+  PanelContainerComponent, // Panel Container component
+  {
+    fonts: {
+    heading: 'SamsungSharpSans',
+    body: 'SamsungSharpSans',
+    },
+  },
 );

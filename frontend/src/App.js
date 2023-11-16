@@ -19,11 +19,12 @@ import APIRegistration from "./components/admin/APIRegistration.js"
 import APISubscription from "./components/admin/APISubscription.js"
 import MemberManagement from "./components/admin/MemberManagement.js"
 import API from "./components/admin/API.js"
+import "./App.css";
 
 function App() {
 
   return (
-    <>
+    <div className='App'>
       <BrowserRouter>
         <Routes>
           {/* Public */}
@@ -52,7 +53,7 @@ function App() {
 					<Route path='/*' element={<NotFound />} />
 				</Routes>
       </BrowserRouter>
-    </>
+    </div>
   );
 }
 

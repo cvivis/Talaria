@@ -19,8 +19,6 @@ function SignIn() {
     const [password, setPassword] = useState("");
 
     const HandleLogin = () => {
-        console.log(email);
-        console.log(password);
 
         try {
             CustomAxios.post(`auth/login`,
@@ -29,20 +27,21 @@ function SignIn() {
                     password: password
                 })
                 .then((res) => {
-                    console.log(res);
 
                     dispatch(setUser(res.data));
-
-                    toast({
-                        title:"WELCOME TO TALARIA !",
-                        position:"top",
-                        status:"success",
-                        variant:"subtle",
-                        isClosable:"true",
-                    })
+                    
+                    if(res.status === 200) {
+                        toast({
+                            title:"WELCOME TO TALARIA !",
+                            position:"top",
+                            status:"success",
+                            variant:"subtle",
+                            isClosable:"true",
+                        })
+                    }
                 })
         } catch(error) {
-            console.log('error');
+            alert(error);
         }
     }
 
