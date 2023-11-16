@@ -9,5 +9,3 @@ else
 fi
 
 $DOCKER_COMPOSE_COMMAND down -v
-
-rm -r ./nginx
