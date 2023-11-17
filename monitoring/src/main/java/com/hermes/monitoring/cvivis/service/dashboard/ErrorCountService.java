@@ -27,7 +27,7 @@ public class ErrorCountService {
     @Scheduled(cron = "0/5 * * * * *") // cron 표기법
     public void runJob() throws IOException {
         // job parameter 설정
-        createErrorFile.createErrorFile();
+//        createErrorFile.createErrorFile();
         Map<String, JobParameter> confMap = new HashMap<>();
         confMap.put("time", new JobParameter("ErrorCountConfig_"+System.currentTimeMillis()));
         JobParameters jobParameters = new JobParameters(confMap);
