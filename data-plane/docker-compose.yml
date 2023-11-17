@@ -23,7 +23,6 @@ services:
     restart: unless-stopped
     volumes:
       - ./configurator:/code:ro
-      - ./nginx/api_gateway.conf:/nginx/api_gateway.conf
       - talaria.d:/nginx/talaria.d
     working_dir: /code
     entrypoint: /code/entrypoint.sh
