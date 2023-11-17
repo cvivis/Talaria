@@ -84,7 +84,7 @@ import {
     };
 
     const handleAccept = (updatedApiInfo) => {
-      setIsEditModalOpen(false);
+      closeEditModal(true)
     };
   
     return (
