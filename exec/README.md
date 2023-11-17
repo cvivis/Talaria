@@ -15,10 +15,10 @@ This document provides guidelines for porting Talaria to a new environment.
 
 - Docker 24.0.5
 
-## Control Plane Server Setting
+## Data Plane Server Setting
 
 1. Change Directory to data-plane folder
-2. Get SSL/TLS certificates for DataPlane
+2. Get SSL/TLS certificates for Data Plane
     
     ```bash
     make setup
@@ -34,7 +34,7 @@ This document provides guidelines for porting Talaria to a new environment.
 ## Control Plane Server Setting
 
 1. Change Directory to control-plane folder
-2. Get SSL/TLS certificates for ControlPlane
+2. Get SSL/TLS certificates for Control Plane
     
     ```bash
     make setup
@@ -59,4 +59,3 @@ This document provides guidelines for porting Talaria to a new environment.
 
 ## 링크 바로가기
 - 기술 : [docs](docs/README.md)
-
