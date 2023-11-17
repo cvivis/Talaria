@@ -1,0 +1,21 @@
+version: "3.5"
+
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=hermes
+      - POSTGRES_PASSWORD=devA107
+      - POSTGRES_ROOT_PASSWORD=devA107
+      - POSTGRES_DB=talaria
+    ports:
+      - "5432:5432"
+    volumes:
+      - "./database/postgres/data:/var/lib/postgresql/data"
+  redis:
+    container_name: redis
+    image: redis:7.2-rc3
+    ports:
+      - "6379:6379"
+    command: redis-server --requirepass devA107
