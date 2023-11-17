@@ -25,7 +25,7 @@ services:
     container_name: frontend
     image: node:16.20.2-bullseye
     volumes:
-      - ./frontend/entrypoint.sh:/home/libs/entrypoint.sh
+      - ./frontend/libs/entrypoint.sh:/home/libs/entrypoint.sh
       - ./frontend/build:/home/libs/build
     command:
       - /home/libs/entrypoint.sh
