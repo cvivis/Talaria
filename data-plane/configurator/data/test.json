@@ -1,0 +1,105 @@
+{
+    "services": [
+        {
+            "info": {
+                "dept_name": "shinhan",
+                "group_name": "banking"
+            },
+            "policies": {
+                "quota": 5,
+                "whitelist": [
+                    {
+                        "ip": "0.0.0.0/0"
+                    }
+                ]
+            },
+            "keys": [
+                {
+                    "key": "234134124vsa3rac",
+                    "id": "mina"
+                },
+                {
+                    "key": "wetqerq44qrawf",
+                    "id": "jiseong"
+                }
+            ],
+            "oas": {
+                "openapi": "3.0.3",
+                "info": {
+                    "title": "Talaria Test API",
+                    "description": "This is a Test API of Talaria service.",
+                    "version": "0.0.1"
+                },
+                "servers": [
+                    {
+                        "url": "https://k9a107.p.ssafy.io"
+                    }
+                ],
+                "tags": [
+                    {
+                        "name": "api",
+                        "description": "test1 APIs"
+                    }
+                ],
+                "paths": {
+                    "/test1/api/name": {
+                        "get": {
+                            "tags": [
+                                "api"
+                            ],
+                            "summary": "get team name",
+                            "description": "get team name",
+                            "operationId": "name",
+                            "responses": {
+                                "200": {
+                                    "description": "Successful operation",
+                                    "content": {
+                                        "application/json": {
+                                            "schema": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "test-result"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "/test1/api/service": {
+                        "get": {
+                            "tags": [
+                                "api"
+                            ],
+                            "summary": "get service name",
+                            "description": "get service name",
+                            "operationId": "service",
+                            "responses": {
+                                "200": {
+                                    "description": "Successful operation",
+                                    "content": {
+                                        "application/json": {
+                                            "schema": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "service": {
+                                                        "type": "string",
+                                                        "example": "test-result"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}

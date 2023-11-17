@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  monitoring-database:
+    image: postgres:latest
+    volumes:
+      - "./init.sql:/docker-entrypoint-initdb.d/init.sql"
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=ssafy1357
+      - POSTGRES_ROOT_PASSWORD=ssafy1357
+      - POSTGRES_DB=talaria
+    ports:
+      - "5432:5432"
+
+  monitoring-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - monitoring-database
+    ports:
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "./var/log/nginx:/var/log/nginx"
