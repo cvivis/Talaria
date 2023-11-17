@@ -1,0 +1,52 @@
+version: '3.2'
+
+services:
+  elasticsearch:
+    container_name: elasticsearch
+    build:
+      context: ./elasticsearch
+      dockerfile: Dockerfile
+      args:
+        ELK_VERSION: ${ELK_VERSION}
+    volumes:
+      - type: bind
+        source: './elasticsearch/config/elasticsearch.yml'
+        target: /usr/share/elasticsearch/config/elasticsearch.yml
+        read_only: true
+      - type: bind
+        source: './elasticsearch/data'
+        target: /usr/share/elasticsearch/data
+    ports:
+      - '3200:9200'
+      - '3300:9300'
+    environment:
+      ES_JAVA_OPTS: '-Xmx256m -Xms256m'
+      ELASTIC_PASSWORD: ${ELK_PASSWORD}
+      discovery.type: single-node
+    networks:
+      - elk
+
+  kibana:
+    container_name: kibana
+    build:
+      context: ./kibana
+      dockerfile: Dockerfile
+      args:
+        ELK_VERSION: ${ELK_VERSION}
+    volumes:
+      - type: bind
+        source: './kibana/config/kibana.yml'
+        target: /usr/share/kibana/config/kibana.yml
+        read_only: true
+    ports:
+      - '3601:5601'
+    environment:
+      KIBANA_SYSTEM_PASSWORD: ${ELK_PASSWORD}
+    networks:
+      - elk
+    depends_on:
+      - elasticsearch
+
+networks:
+  elk:
+    driver: bridge

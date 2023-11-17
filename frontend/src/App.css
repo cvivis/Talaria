@@ -1,9 +1,0 @@
-.App {
-  /* text-align: center; */
-  font-family: "SamsungSharpSans" !important;
-}
-
-@font-face {
-  font-family: "SamsungSharpSans";
-  src: local("SamsungSharpSans"), url("./assets/font/samsungsharpsans.otf") format('opentype');
-}
