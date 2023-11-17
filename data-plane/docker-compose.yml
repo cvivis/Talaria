@@ -58,7 +58,7 @@ services:
     image: openjdk:11-jdk
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./monitoring:/home/libs
+      - ./monitoring/libs:/home/libs
       - log_current.d:/var/log/nginx/shared
       - log_current.d:/var/log/nginx/olds
     command:
