@@ -11,6 +11,7 @@ import SwaggerUI from "swagger-ui-react";
 import "swagger-ui-react/swagger-ui.css";
 import CustomAxios from "../axios/CustomAxios";
 import { useSelector } from "react-redux";
+import APIAggregate from "./APIAggregate.js"
 
 const API = () => {
   const mainText = useColorModeValue("white", "gray.200");
@@ -41,7 +42,7 @@ const API = () => {
       </Flex>
       <Box bgColor="white" borderRadius={20} p="1px">
         <Box>
-        <APIaggregate groupName={apiInfo.monitoring_url}></APIaggregate>
+        <APIAggregate groupName={apiInfo.monitoring_url}></APIAggregate>
         </Box>
         <Box>
           <SwaggerUI spec={apiInfo.swagger_content} />

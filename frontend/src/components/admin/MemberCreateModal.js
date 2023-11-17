@@ -64,7 +64,10 @@ const MemberCreateModal = ({ isOpen, onClose, onCreate }) => {
       ).then((res) => {
         onCreate(res.data);
       });
-    } catch (error) {}
+    } catch (error) {
+      setNewUser({})
+      onClose();
+    }
   };
 
   useEffect(() => {
