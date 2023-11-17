@@ -1,11 +1,11 @@
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url:  jdbc:postgresql://${properties.datasource.path}/talaria
-    username: ${properties.datasource.username}
-    password: ${properties.datasource.password}
+    url:  jdbc:postgresql://postgres:${POSTGRES_PORT}/${POSTGRES_DB}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
 
   jpa:
-    show-sql: true
     hibernate:
       ddl-auto: update
+    show-sql: true
