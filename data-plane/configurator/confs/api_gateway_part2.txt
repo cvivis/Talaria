@@ -15,6 +15,12 @@
     include talaria.d/api_conf.d/*conf;
 
 
+    ##
+    # Monitoring Settings
+    ##
+    include talaria.d/monitoring.conf
+
+
     # Error Responses
     error_page 404 = @400;
     proxy_intercept_errors on;
