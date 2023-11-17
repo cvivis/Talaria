@@ -2,6 +2,9 @@
 
 이 저장소는 Talaria의 기술 문서, 포팅 매뉴얼, dump data 등을 기록하는 공간입니다.
 
+---
+# Porting Manual
+
 ## Introduce
 
 This document provides guidelines for porting Talaria to a new environment.
@@ -19,14 +22,13 @@ This document provides guidelines for porting Talaria to a new environment.
 
 1. Change Directory to data-plane folder
 2. Get SSL/TLS certificates for Data Plane
-    
+   
     ```bash
     make setup
     ```
     
-
 3. Start Talaria Data Plane
-    
+   
     ```bash
     make data-plane
     ```
@@ -35,14 +37,13 @@ This document provides guidelines for porting Talaria to a new environment.
 
 1. Change Directory to control-plane folder
 2. Get SSL/TLS certificates for Control Plane
-    
+   
     ```bash
     make setup
     ```
     
-
 3. Start Talaria Control Plane
-    
+   
     ```bash
     make control-plane
     ```
@@ -57,5 +58,8 @@ This document provides guidelines for porting Talaria to a new environment.
 | --- | --- |
 | latest | 2023.11.17 |
 
+---
+
 ## 링크 바로가기
-- 기술 : [docs](docs/README.md)
+
+- [scripts](scripts/README.md)
