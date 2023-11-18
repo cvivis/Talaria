@@ -5,6 +5,7 @@ import com.hermes.monitoring.lsm.dto.dashboard.AverageResponseTimeDto;
 import com.hermes.monitoring.lsm.dto.LogDto;
 import com.hermes.monitoring.lsm.parser.LogParser;
 import com.hermes.monitoring.global.WebSocketService;
+import java.util.ArrayList;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -74,15 +75,19 @@ public class AverageTimeCheckConfig {
         System.out.println("평균 응답 시간을 계산하는 스탭");
         return stepBuilderFactory.get("calculateAverageResponse")
                 .tasklet((contribution, chunkContext) -> {
+                    List<LogDto> responseLogDto = new ArrayList<>();
                     averageResponseTime = 0;
                     double sumResponseTime = 0;
                     // 각 logDto를 보면서 평균 시간 계산
                     for(LogDto logDto: logDtoList){
-                        sumResponseTime += logDto.getResponseTime();
+                        if(logDto.getResponseTime() != -1){
+                            responseLogDto.add(logDto);
+                            sumResponseTime += logDto.getResponseTime();
+                        }
                     }
-                    if(!logDtoList.isEmpty()){
+                    if(!responseLogDto.isEmpty()){
                         System.out.println("okay!");
-                        averageResponseTime = sumResponseTime/ (double) logDtoList.size();
+                        averageResponseTime = sumResponseTime/ (double) responseLogDto.size();
                     }
                     return RepeatStatus.FINISHED;
                 })
@@ -95,6 +100,7 @@ public class AverageTimeCheckConfig {
         System.out.println("평균 응답 시간을 전송하는 스탭");
         return stepBuilderFactory.get("sendAverageResponseTime")
                 .tasklet((contribution, chunkContext) -> {
+                    System.out.println("평균 응답 시간: " + averageResponseTime);
                     webSocketService.sendMessageToClient("/sub/average-time-check",new AverageResponseTimeDto(new Date(),averageResponseTime));
                     return RepeatStatus.FINISHED;
                 })
