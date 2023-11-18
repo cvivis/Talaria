@@ -11,7 +11,7 @@ services:
     container_name: backend
     image: openjdk:11-jdk
     volumes:
-      - ./backend/libs:/home/libs
+      - ./backend:/home/libs
     command:
       - /home/libs/entrypoint.sh
     restart: unless-stopped
