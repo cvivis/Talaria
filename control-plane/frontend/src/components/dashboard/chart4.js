@@ -31,6 +31,14 @@ function Chart4() {
     client.current.deactivate(); // 활성화된 연결 끊기
   };
 
+  const usageCheck = (usage) => {
+    if (usage === null) {
+      return false;
+    } else {
+      return true;
+    }
+  };
+
   const subscribe = () => {
     client.current.subscribe("/sub/usage-ranking", (res) => {
       // server에게 메세지 받으면
@@ -48,14 +56,12 @@ function Chart4() {
       return "#DD6B20";
     } else if (type === "DELETE") {
       return "#E53E3E";
-    } else if(type === "PATCH"){
+    } else if (type === "PATCH") {
       return "#805AD5";
-    } else{
-      return "#3182CE"
+    } else {
+      return "#3182CE";
     }
   };
-
-
 
   useEffect(() => {
     connect();
@@ -71,39 +77,75 @@ function Chart4() {
 
   return (
     <>
-      <Box bg="white" w="40vw" h="55vh" borderRadius="20px" boxShadow="lg">
+      <Box bg="white" w="45vw" h="55vh" borderRadius="20px" boxShadow="lg" overflow="hidden">
         <Text fontWeight="Bold" p={4}>
           API TOP5
         </Text>
-        <TableContainer>
+        <TableContainer overflow="auto">
           <Table variant="simple" w="100%" h="100%" minH="50px" maxW="100%">
             <Thead>
               <Tr>
-                <Th>Ranking</Th>
+                <Th style={{ margin: "0 auto", textAlign: "center" }}>Ranking</Th>
                 <Th>URL</Th>
-                <Th>METHOD</Th>
-                <Th isNumeric>USAGE</Th>
+                <Th style={{ margin: "0 auto", textAlign: "center" }}>METHOD</Th>
+                <Th style={{ margin: "0 auto", textAlign: "center" }} isNumeric>
+                  USAGE
+                </Th>
               </Tr>
             </Thead>
             <Tbody>
               {data.map((info, rank) => (
-                <Tr key={rank}>
+                // <Tr style={{ display: usageCheck(info.usage) ? "inline" : "none" }} key={rank}>
+                //   <Td>
+                //     <div style={{ margin: "0 auto", textAlign: "center" }}>{info.ranking}</div>
+                //   </Td>
+                //   <Td>{info.url.length > 10 ? info.url.slice(0, 10) + " ..." : info.url}</Td>
+                //   <Td color={"white"} fontWeight="Bold" border="none">
+                //     <div
+                //       style={{
+                //         backgroundColor: getTextColor(info.method),
+                //         width: "100%",
+                //         height: "100%",
+                //         display: "flex",
+                //         justifyContent: "center",
+                //         borderRadius: "7px",
+                //         alignItems: "center",
+                //       }}
+                //     >
+                //       {/* {" "} */}
+                //       {info.method}
+                //     </div>
+                //   </Td>
+                //   <Td isNumeric>
+                //     <div style={{ margin: "0 auto", textAlign: "center" }}>{info.usage}</div>
+                //   </Td>
+                //   <div></div>
+                // </Tr>
+                <Tr style={{ display: info.usage === 0 ? "none" : "talbe-row" }} key={rank}>
                   <Td>
-                  <div style={{ margin: "0 auto" , textAlign:"center"}}>{info.ranking}</div>
+                    <div style={{ margin: "0 auto", textAlign: "center" }}>{info.ranking}</div>
                   </Td>
-                  <Td >{info.url.length > 10 ? info.url.slice(0,10)+" ...":info.url}</Td>
+                  <Td>{info.url.length > 10 ? info.url.slice(0, 10) + " ..." : info.url}</Td>
                   <Td color={"white"} fontWeight="Bold" border="none">
-                  <div style={{backgroundColor:getTextColor(info.method), 
-                            width:"100%",
-                            height:"100%",
-                            display: "flex",
-                            justifyContent: "center",
-                            borderRadius:"7px",
-                            alignItems: "center",}} > {info.method}</div>
-                    </Td>
+                    <div
+                      style={{
+                        backgroundColor: getTextColor(info.method),
+                        width: "100%",
+                        height: "100%",
+                        display: "flex",
+                        justifyContent: "center",
+                        borderRadius: "7px",
+                        alignItems: "center",
+                      }}
+                    >
+                      {/* {" "} */}
+                      {info.method}
+                    </div>
+                  </Td>
                   <Td isNumeric>
-                  <div style={{ margin: "0 auto" , textAlign:"center"}}>{info.usage}</div>
-                    </Td>
+                    <div style={{ margin: "0 auto", textAlign: "center" }}>{info.usage}</div>
+                  </Td>
+                  <div></div>
                 </Tr>
               ))}
             </Tbody>

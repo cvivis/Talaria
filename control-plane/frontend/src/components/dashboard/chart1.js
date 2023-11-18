@@ -7,7 +7,7 @@ import * as StompJs from "@stomp/stompjs";
 function Chart1() {
   /*stomp 관련 */
   const client = useRef({});
-  const [cpuData , setCpuData] = useState([]);
+  const [cpuData, setCpuData] = useState([]);
   const connect = () => {
     client.current = new StompJs.Client({
       // brokerURL: "ws://localhost:8080/ws/monitoring",
@@ -83,20 +83,23 @@ function Chart1() {
       range: XAXISRANGE, //최대, 최소 값을 동적으로 받기위한 용도 ?
     },
     yaxis: {
-      max: 100,
       min: 0,
+      decimalsInFloat: 4,
+      labels: {
+        offsetX: -10,
+      },
     },
     legend: {
       show: false, //??
     },
     plotOption: {
-        boxPlot: {
-            colors: {
-                upper: "red",
-                lower: "blue",
-            }
-        }
-    }
+      boxPlot: {
+        colors: {
+          upper: "red",
+          lower: "blue",
+        },
+      },
+    },
   });
 
   const [series, setSeries] = useState([
@@ -124,17 +127,9 @@ function Chart1() {
 
   return (
     <>
-      <Box
-        id="chart-cpu"
-        bg="white"
-        w="36vw"
-        h="40vh"
-        borderRadius="20px"
-        boxShadow="lg"
-        py="10px"
-      >
+      <Box id="chart-cpu" bg="white" w="36vw" h="40vh" borderRadius="20px" boxShadow="lg" py="10px">
         <Text p={2}>CPU</Text>
-        <ReactApexChart options={options} series={series} type="line" width="100%" height="90%"/>
+        <ReactApexChart options={options} series={series} type="line" width="100%" height="90%" />
       </Box>
     </>
   );
