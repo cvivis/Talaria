@@ -32,7 +32,7 @@ public class ServerFailTimeCheckConfig {
 
     private List<LogDto> logDtoList;
 
-    @Value("${serverFail.log.url}")
+    @Value("${log.access.shared.serverfail}")
     String logUrl;
 
     private int serverFailTime;
