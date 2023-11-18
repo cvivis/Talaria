@@ -132,7 +132,9 @@ function Chart3() {
         boxShadow="lg"
         py="10px"
       >
-        <Text p={2}>Average Response Time</Text>
+        <Text fontWeight="Bold" p={2}>
+          Average Response Time
+        </Text>
         <ReactApexChart options={options} series={series} type="line" width="100%" height="90%" />
       </Box>
     </>

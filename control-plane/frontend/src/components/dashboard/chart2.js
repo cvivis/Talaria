@@ -131,7 +131,9 @@ function Chart2() {
         boxShadow="lg"
         py="10px"
       >
-        <Text p={2}>MEMORY</Text>
+        <Text fontWeight="Bold" p={2}>
+          MEMORY
+        </Text>
         <ReactApexChart options={options} series={series} type="line" width="100%" height="90%" />
       </Box>
     </>
