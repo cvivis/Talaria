@@ -21,7 +21,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/group-detail")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "${talaria.control-plane}")
 @RequiredArgsConstructor
 public class ApiGroupController {
 

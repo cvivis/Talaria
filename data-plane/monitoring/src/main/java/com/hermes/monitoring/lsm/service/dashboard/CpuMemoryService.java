@@ -109,8 +109,7 @@ public class CpuMemoryService {
 
             // 3. 백분율 계산
             double memoryUsagePercentage = (double) currentMemoryUsage / maxMemoryLimit * 100;
-            System.out.println("메모리 사용률: "+ memoryUsagePercentage);
-            return new CpuMemoryUsageDto(new Date(), currentMemoryUsage, memoryUsagePercentage);
+            return new CpuMemoryUsageDto(new Date(), cpuUsagePercentage, memoryUsagePercentage);
         } else {
             System.out.println("Container not found with name: " + containerName);
         }
