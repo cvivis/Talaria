@@ -5,7 +5,7 @@ import ApexCharts from "apexcharts";
 import * as StompJs from "@stomp/stompjs";
 
 function Chart2() {
-    /*stomp 관련 */
+  /*stomp 관련 */
   const client = useRef({});
   const [memoryData, setMemoryData] = useState([]);
   const connect = () => {
@@ -78,20 +78,23 @@ function Chart2() {
       range: XAXISRANGE, //최대, 최소 값을 동적으로 받기위한 용도 ?
     },
     yaxis: {
-      max: 10,
       min: 0,
+      decimalsInFloat: 2,
+      labels: {
+        offsetX: -10,
+      },
     },
     legend: {
       show: false, //??
     },
     plotOption: {
-        boxPlot: {
-            colors: {
-                upper: "red",
-                lower: "blue",
-            }
-        }
-    }
+      boxPlot: {
+        colors: {
+          upper: "red",
+          lower: "blue",
+        },
+      },
+    },
   });
 
   const [series, setSeries] = useState([
@@ -106,7 +109,7 @@ function Chart2() {
       setSeries();
       ApexCharts.exec("realtime-memory", "updateSeries", [
         {
-          data: memoryData
+          data: memoryData,
         },
       ]);
     }, 1000);
@@ -129,7 +132,7 @@ function Chart2() {
         py="10px"
       >
         <Text p={2}>MEMORY</Text>
-        <ReactApexChart options={options} series={series} type="line" width="100%" height="90%"/>
+        <ReactApexChart options={options} series={series} type="line" width="100%" height="90%" />
       </Box>
     </>
   );
