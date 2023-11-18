@@ -50,5 +50,5 @@ cors:
   allowed-headers: '*'
   max-age: 3600
 
-talaria:
-  routing-url: ${DATA_PLANE_DOMAIN}
+data-plane:
+  domain: ${DATA_PLANE_DOMAIN}

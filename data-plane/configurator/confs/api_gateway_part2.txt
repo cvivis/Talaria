@@ -18,7 +18,7 @@
     ##
     # Monitoring Settings
     ##
-    include talaria.d/monitoring.conf;
+    include talaria.d/monitoring.conf
 
 
     # Error Responses
