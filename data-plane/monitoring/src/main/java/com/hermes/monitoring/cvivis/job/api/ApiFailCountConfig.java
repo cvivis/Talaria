@@ -28,7 +28,7 @@ public class ApiFailCountConfig {
 //    private final ApiFailCountParser apiFailCountParser;
 //    private final ClientFailRepository clientFailRepository;
 //
-//    @Value("${fail.log.url}")
+//    @Value("${log.access.shared.fail}")
 //    String url;
 //
 //    Map<String, Integer> map = new HashMap<>();

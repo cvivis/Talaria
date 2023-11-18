@@ -31,7 +31,7 @@ public class ApiGroupFailCountConfig {
     private final ApiGroupLogParser apiGroupLogParser;
     private final ClientFailGroupCountRepository clientFailGroupCountRepository;
 
-    @Value("${fail.log.url.old}")
+    @Value("${log.access.old.fail}")
     String url;
 
     Map<String, Integer> map = new HashMap<>();

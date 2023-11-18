@@ -39,8 +39,6 @@ class Generator:
         api_limits_conf = APILimitsConf('api_limits.conf', parser.quotas()).generate()
         write_file(self.green_path, api_limits_conf['name'], api_limits_conf['content'])
 
-        # monitoring_conf =
-
         for index, service in enumerate(services):
             service_name = parser.service_name(index)
             api_conf = APIConf(f'{service_name}_api.conf', parser.api_information(index)).generate()
@@ -49,3 +47,4 @@ class Generator:
     def _copy_constant_configs(self):
         copy_file(self.static_config_path, self.green_path, 'api_json_errors.conf')
         copy_file(self.static_config_path, self.green_path, 'api_logs.conf')
+        copy_file(self.static_config_path, self.green_path, 'monitoring.conf')

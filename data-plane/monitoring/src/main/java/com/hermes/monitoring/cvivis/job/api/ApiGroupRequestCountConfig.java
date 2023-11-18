@@ -31,7 +31,7 @@ public class ApiGroupRequestCountConfig {
 
     private final ApiGroupLogParser apiGroupLogParser;
     private final RequestGroupCountRepository requestGroupCountRepository;
-    @Value("${log.url}")
+    @Value("${log.access.shared.current}")
     String url;
 
     Map<String, Integer> map = new HashMap<>();

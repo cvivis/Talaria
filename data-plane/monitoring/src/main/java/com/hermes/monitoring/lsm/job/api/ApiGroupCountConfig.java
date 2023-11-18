@@ -30,7 +30,7 @@ public class ApiGroupCountConfig {
     private Map<String, ApiCountDto> statusCount;
 
 
-    @Value("${log.folder.url}")
+    @Value("${log.access.old.root}")
     String logFolderPath;
 
     @Bean
