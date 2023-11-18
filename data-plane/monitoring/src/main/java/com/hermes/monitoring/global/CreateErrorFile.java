@@ -19,10 +19,10 @@ import java.util.regex.Pattern;
 @Slf4j
 public class CreateErrorFile {
 
-    @Value("${error.url}")
+    @Value("${log.error.shared.current}")
     String url;
 
-    @Value("${error.baseUrl}")
+    @Value("${log.error.base}")
     String baseUrl;
     public void createErrorFile() throws IOException {
         String result = "";

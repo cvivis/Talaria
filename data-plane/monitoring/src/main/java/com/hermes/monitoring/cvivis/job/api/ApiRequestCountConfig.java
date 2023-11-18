@@ -30,7 +30,7 @@ public class ApiRequestCountConfig {
 //    private final StepBuilderFactory stepBuilderFactory;
 //    private final ApiRequestCountParser apiRequestCountParser;
 //    private final RequestCountRepository requestCountRepository;
-//    @Value("${log.url.old}")
+//    @Value("${log.access.old.current}")
 //    String url;
 //
 //    Map<String, Integer> map = new HashMap<>();

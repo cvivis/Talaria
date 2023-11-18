@@ -32,7 +32,7 @@ public class HttpStatusConfig {
     private List<LogDto> logDataList;
     private MonitorDto monitorDto;
 
-    @Value("${log.url}")
+    @Value("${log.access.shared.current}")
     String logUrl;
 
 

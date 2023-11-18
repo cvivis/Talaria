@@ -37,7 +37,7 @@ public class AverageTimeCheckConfig {
     private static final long EXTRACT_TIME = 5000;
 
     // 읽어드릴 로그 파일
-    @Value("${log.url}")
+    @Value("${log.access.shared.current}")
     String logUrl;
 
     // 응답 평균 시간을 확인
