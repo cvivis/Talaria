@@ -5,138 +5,139 @@ import ApexCharts from "apexcharts";
 import * as StompJs from "@stomp/stompjs";
 
 function Chart3() {
-    /*stomp 관련 */
-    const client = useRef({});
-    const [averageTimeData, setMemoryData] = useState([]);
-    const connect = () => {
-      client.current = new StompJs.Client({
-        // brokerURL: "ws://localhost:8080/ws/monitoring",
-        brokerURL: "wss://api.talaria.kr/ws/monitoring",
-        onConnect: () => {
-          // Do something, all subscribes must be done is this callback
-          console.log("연결 SUB");
-          subscribe();
-        },
-      });
-      client.current.activate();
-    };
-  
-    const disconnect = () => {
-      client.current.deactivate(); // 활성화된 연결 끊기
-    };
-  
-    const subscribe = () => {
-      client.current.subscribe("/sub/average-time-check", (res) => {
-        // server에게 메세지 받으면
-        const json_body = JSON.parse(res.body);
-        console.log(res.body);
-        // setMemoryData((prevItems) => [...prevItems, {x: new Date(json_body.date),
-        // y: json_body.memoryUsage,}])
-        averageTimeData.push({
-          x: new Date(json_body.date),
-          y: json_body.time,
-        });
-        console.log(averageTimeData);
-      });
-    };
-  
-    // var lastDate = 0;
-    // var TICKINTERVAL = 86400000
-    const [XAXISRANGE, SetXAXISRANGE] = useState(60000);
-    const [options, setOptions] = useState({
-      chart: {
-        id: "realtime-average-time", // ApexCharts의 메서드 호출 시 필요 (brush chart, syncronized chart, calling exec)
-        height: 350, // 그래프 높이
-        type: "line", // 차트 타입 (line , donut,treemap ... )
-        animations: {
-          enabled: true,
-          easing: "linear", // 애니메이션 속도 변화률 linear = 등속
-          dynamicAnimation: {
-            enabled: true, // 데이터 바뀔 때 re-rendering
-            speed: 1000, // 데이터 바뀔 때 run 속도
-          },
-        },
-        toolbar: {
-          //다운로드같은 메뉴바
-          show: false,
-        },
-        zoom: {
-          enabled: false, // 확대 이동 가능 <- realchart에서는 false
-        },
+  /*stomp 관련 */
+  const client = useRef({});
+  const [averageTimeData, setMemoryData] = useState([]);
+  const connect = () => {
+    client.current = new StompJs.Client({
+      // brokerURL: "ws://localhost:8080/ws/monitoring",
+      brokerURL: "wss://api.talaria.kr/ws/monitoring",
+      onConnect: () => {
+        // Do something, all subscribes must be done is this callback
+        console.log("연결 SUB");
+        subscribe();
       },
-      dataLabels: {
-        enabled: false, //데이터에 라벨링 <- realchart에서는 false
-      },
-      stroke: {
-        curve: "smooth", // 데이터 꺾는 정도
-      },
-      markers: {
-        size: 0, // 수정 X
-      },
-      xaxis: {
-        type: "datetime", // category, datetime, numeric
-        range: XAXISRANGE, //최대, 최소 값을 동적으로 받기위한 용도 ?
-      },
-      yaxis: {
-        max: 0.01,
-        min: 0,
-        labels: {
-            formatter: function(val, index) {
-              return val.toFixed(4);
-            }
-          }
-      },
-      legend: {
-        show: false, //??
-      },
-      plotOption: {
-          boxPlot: {
-              colors: {
-                  upper: "red",
-                  lower: "blue",
-              }
-          }
-      }
     });
-  
-    const [series, setSeries] = useState([
-      {
-        data: averageTimeData.slice(), // 배열 복사
+    client.current.activate();
+  };
+
+  const disconnect = () => {
+    client.current.deactivate(); // 활성화된 연결 끊기
+  };
+
+  const subscribe = () => {
+    client.current.subscribe("/sub/average-time-check", (res) => {
+      // server에게 메세지 받으면
+      const json_body = JSON.parse(res.body);
+      console.log(res.body);
+      // setMemoryData((prevItems) => [...prevItems, {x: new Date(json_body.date),
+      // y: json_body.memoryUsage,}])
+      averageTimeData.push({
+        x: new Date(json_body.date),
+        y: json_body.time,
+      });
+      console.log(averageTimeData);
+    });
+  };
+
+  // var lastDate = 0;
+  // var TICKINTERVAL = 86400000
+  const [XAXISRANGE, SetXAXISRANGE] = useState(60000);
+  const [options, setOptions] = useState({
+    chart: {
+      id: "realtime-average-time", // ApexCharts의 메서드 호출 시 필요 (brush chart, syncronized chart, calling exec)
+      height: 350, // 그래프 높이
+      type: "line", // 차트 타입 (line , donut,treemap ... )
+      animations: {
+        enabled: true,
+        easing: "linear", // 애니메이션 속도 변화률 linear = 등속
+        dynamicAnimation: {
+          enabled: true, // 데이터 바뀔 때 re-rendering
+          speed: 1000, // 데이터 바뀔 때 run 속도
+        },
       },
-    ]);
-  
-    useEffect(() => {
-      connect();
-      const interval = setInterval(() => {
-        setSeries();
-        ApexCharts.exec("realtime-average-time", "updateSeries", [
-          {
-            data: averageTimeData
-          },
-        ]);
-      }, 1000);
-  
-      return () => {
-        clearInterval(interval);
-        disconnect();
-      };
-    }, []);
-  
-    return (
-      <>
-        <Box
-          id="chart-average-time"
-          bg="white"
-          w="36vw"
-          h="40vh"
-          borderRadius="20px"
-          boxShadow="lg"
-          py="10px"
-        >
-          <Text p={2}>Average Response Time</Text>
-          <ReactApexChart options={options} series={series} type="line" width="100%" height="90%"/>
-        </Box>
-      </>
-    );
+      toolbar: {
+        //다운로드같은 메뉴바
+        show: false,
+      },
+      zoom: {
+        enabled: false, // 확대 이동 가능 <- realchart에서는 false
+      },
+    },
+    dataLabels: {
+      enabled: false, //데이터에 라벨링 <- realchart에서는 false
+    },
+    stroke: {
+      curve: "smooth", // 데이터 꺾는 정도
+    },
+    markers: {
+      size: 0, // 수정 X
+    },
+    xaxis: {
+      type: "datetime", // category, datetime, numeric
+      range: XAXISRANGE, //최대, 최소 값을 동적으로 받기위한 용도 ?
+    },
+    yaxis: {
+      max: 0.01,
+      min: 0,
+      decimalsInFloat: 4,
+      labels: {
+        offsetX: -10,
+      },
+    },
+    legend: {
+      show: false, //??
+    },
+    plotOption: {
+      boxPlot: {
+        colors: {
+          upper: "red",
+          lower: "blue",
+        },
+      },
+    },
+  });
+
+  const [series, setSeries] = useState([
+    {
+      data: averageTimeData.slice(), // 배열 복사
+    },
+  ]);
+
+  useEffect(() => {
+    connect();
+    const interval = setInterval(() => {
+      setSeries();
+      ApexCharts.exec("realtime-average-time", "updateSeries", [
+        {
+          data: averageTimeData,
+        },
+      ]);
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+      disconnect();
+    };
+  }, []);
+
+  return (
+    <>
+      <Box
+        id="chart-average-time"
+        bg="white"
+        w="36vw"
+        h="40vh"
+        borderRadius="20px"
+        boxShadow="lg"
+        py="10px"
+      >
+        <Text fontWeight="Bold" p={2}>
+          Average Response Time
+        </Text>
+        <ReactApexChart options={options} series={series} type="line" width="100%" height="90%" />
+      </Box>
+    </>
+  );
 }
 export default Chart3;
