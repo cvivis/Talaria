@@ -9,6 +9,7 @@ function Chart6() {
   const [successCount, setSuccessCount] = useState([]);
   const [failCount, setFailCount] = useState([]);
   const [serverFailCount, setServerFailCount] = useState([]);
+  const [maxY, setMaxY] = useState(0);
   // let XAXISRANGE = 1800000;
   const [XAXISRANGE, SetXAXISRANGE] = useState(60000);
   const [options, setOptions] = useState({
@@ -36,6 +37,13 @@ function Chart6() {
     dataLabels: {
       enabled: false, //데이터에 라벨링 <- realchart에서는 false
     },
+    legend: {
+      position: "top",
+      horizontalAlign: "right",
+      floating: true,
+      offsetY: -25,
+      offsetX: -5,
+    },
     stroke: {
       curve: "smooth", // 데이터 꺾는 정도
     },
@@ -48,18 +56,32 @@ function Chart6() {
       range: XAXISRANGE, //최대, 최소 값을 동적으로 받기위한 용도 ?
     },
     yaxis: {
-      max: 100,
+      // max: 40,
       min: 0,
+      // decimalsInFloat: 4,
+      labels: {
+        offsetX: -10,
+      },
+      // min: 0,
+      // forceNiceScale: true,
+      // tickAmount: 5,
     },
     legend: {
-      show: false, //??
+      position: "top", // 상단에 표시
+      horizontalAlign: "right", // 오른쪽 정렬
+      // show: false, //??
     },
+    // labels: {
+    //   show: true,
+    //   align: "right",
+    // },
   });
 
   const client = useRef({});
   const connect = () => {
     client.current = new StompJs.Client({
-      brokerURL: "wss://api.talaria.kr/ws/monitoring",
+      brokerURL: "ws://localhost:8080/ws/monitoring",
+      // brokerURL: "wss://api.talaria.kr/ws/monitoring",
       onConnect: () => {
         // Do something, all subscribes must be done is this callback
         console.log("연결 SUB");
@@ -90,7 +112,36 @@ function Chart6() {
         data: serverFailCount.slice(),
       },
     ]);
+
+    let max = maxY;
+    for (let i = 0; i < successCount.length; i++) {
+      if (successCount[i] > max) {
+        max = successCount[i];
+      }
+    }
+    for (let i = 0; i < failCount.length; i++) {
+      if (failCount[i] > max) {
+        max = failCount[i];
+      }
+    }
+    for (let i = 0; i < serverFailCount.length; i++) {
+      if (serverFailCount[i] > max) {
+        max = serverFailCount[i];
+      }
+    }
+    setMaxY(max);
+    console.log("serires : ", series);
   }, [successCount, failCount, serverFailCount]);
+
+  useEffect(() => {
+    setOptions((prevOptions) => ({
+      ...prevOptions,
+      yaxis: {
+        ...prevOptions.yaxis,
+        max: maxY + 10,
+      },
+    }));
+  }, [maxY]);
 
   const subscribeToTopic = (topic, callback) => {
     const subscription = client.current.subscribe(topic, (res) => {
@@ -141,15 +192,6 @@ function Chart6() {
     //웹소켓
 
     connect(); // 마운트시 실행
-    // const interval = setInterval(() => {
-    //   // getNewSeries();
-
-    //   ApexCharts.exec("realtime", "updateSeries", [
-    //     {
-    //       data: successCount,
-    //     },
-    //   ]);
-    // }, 1000);
 
     return () => {
       // clearInterval(interval);
@@ -161,7 +203,7 @@ function Chart6() {
     <>
       <Box bg="white" w="40vw" h="55vh" borderRadius="20px" boxShadow="lg">
         <Text fontWeight="Bold" p={5}>
-          200 400 500 발생 횟수
+          Occurrence Counts Of Status Codes
         </Text>
         <ReactApexChart options={options} series={series} type="line" height="80%" width="100%" />
       </Box>

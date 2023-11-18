@@ -82,16 +82,22 @@ function Chart5() {
               {data.map((info, index) => (
                 <Tr key={index}>
                   <Td color={"white"} fontWeight="Bold" border="none">
-                    <div style={{backgroundColor:getTextColor(info.errorType), 
-                            width:"100%",
-                            height:"80%",
-                            display: "flex",
-                            justifyContent: "center",
-                            borderRadius:"7px",
-                            alignItems: "center",}} >{info.errorType}</div>
+                    <div
+                      style={{
+                        backgroundColor: getTextColor(info.errorType),
+                        width: "100%",
+                        height: "80%",
+                        display: "flex",
+                        justifyContent: "center",
+                        borderRadius: "7px",
+                        alignItems: "center",
+                      }}
+                    >
+                      {info.errorType}
+                    </div>
                   </Td>
-                  <Td isNumeric  border="none">
-                    <div style={{ margin: "20% auto",  textAlign:"center" }}>{info.count}</div>
+                  <Td isNumeric border="none">
+                    <div style={{ margin: "20% auto", textAlign: "center" }}>{info.count}</div>
                   </Td>
                 </Tr>
               ))}
