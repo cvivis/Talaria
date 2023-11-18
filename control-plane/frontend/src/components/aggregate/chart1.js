@@ -44,7 +44,7 @@ function Chart1(props) {
     // const groupName = "/shinhan/banking";
     const groupName = props.groupName;
     // console.log("props: ",props.groupName);
-    const url = "https://api.talaria.kr/group-detail/request-count?group-name=" + groupName;
+    const url = `https://${process.env.REACT_APP_DATA_PLANE_DOMAIN}/group-detail/request-count?group-name=` + groupName;
     let response = await axios.get(url);
     // setRequestData(response.data);
     setRequestData((prevRequestData) => [

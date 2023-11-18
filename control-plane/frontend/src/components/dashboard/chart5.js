@@ -17,7 +17,7 @@ function Chart5() {
   const [data, setData] = useState([]);
   const connect = () => {
     client.current = new StompJs.Client({
-      brokerURL: "wss://api.talaria.kr/ws/monitoring",
+      brokerURL: `wss://${process.env.REACT_APP_DATA_PLANE_DOMAIN}/ws/monitoring`,
       onConnect: () => {
         // Do something, all subscribes must be done is this callback
         console.log("연결 SUB");
