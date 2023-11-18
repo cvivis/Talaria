@@ -17,6 +17,7 @@ class Generator:
         self.api_conf_path = join(self.green_path, 'api_conf.d')
         self.static_config_path = constant.STATIC_CONFIG_PATH
         self.data_plane_domain = constant.DATA_PLANE_DOMAIN
+        self.monitoring_port = constant.MONITORING_PORT
 
     def setup_green(self):
         clear_directory(self.green_path)
@@ -30,7 +31,7 @@ class Generator:
         api_gateway_conf = APIGatewayConf('api_gateway.conf', parser.quotas()).generate()
         write_file(self.config_path, api_gateway_conf['name'], api_gateway_conf['content'])
 
-        api_backends_conf = APIBackendsConf('api_backends.conf', parser.servers()).generate()
+        api_backends_conf = APIBackendsConf('api_backends.conf', parser.servers(), self.monitoring_port).generate()
         write_file(self.green_path, api_backends_conf['name'], api_backends_conf['content'])
 
         api_keys_conf = APIKeysConf('api_keys.conf', parser.keys()).generate()
@@ -38,8 +39,6 @@ class Generator:
 
         api_limits_conf = APILimitsConf('api_limits.conf', parser.quotas()).generate()
         write_file(self.green_path, api_limits_conf['name'], api_limits_conf['content'])
-
-        # monitoring_conf =
 
         for index, service in enumerate(services):
             service_name = parser.service_name(index)
@@ -49,3 +48,4 @@ class Generator:
     def _copy_constant_configs(self):
         copy_file(self.static_config_path, self.green_path, 'api_json_errors.conf')
         copy_file(self.static_config_path, self.green_path, 'api_logs.conf')
+        copy_file(self.static_config_path, self.green_path, 'monitoring.conf')
