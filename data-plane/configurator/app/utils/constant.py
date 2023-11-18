@@ -53,5 +53,9 @@ class Constant:
     def LOGGING_PATH(self):
         return '/var/log'
 
+    @property
+    def MONITORING_PORT(self):
+        return os.environ.get('MONITORING_PORT')
+
 
 constant = Constant()
