@@ -13,13 +13,13 @@ endif
 .PHONY: setup control-plane down stop help
 
 setup: ## Generate Let's Encrypt SSL/TLS certificates Automatically
-	. ./setup/setup-certs.sh
+	. ./setup/cert/setup-certs.sh
 
 control-plane:	## Start control-plane.
 	. ./setup/control-plane.sh
 
 down: ## Down control-plane and all its extra components.
-	. ./setup/down.sh
+	$(DOCKER_COMPOSE_COMMAND) down -v
 
 stop: ## Stop control-plane and all its extra components.
 	$(DOCKER_COMPOSE_COMMAND) ${COMPOSE} stop
