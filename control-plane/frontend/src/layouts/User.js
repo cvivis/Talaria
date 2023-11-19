@@ -15,6 +15,7 @@ function User() {
 
     const [mainCategory, setMainCategory] = useState("API Products");
     const [secondCategory, setSecondCategory] = useState("");
+    const [secondCategoryId, setSecondCategoryId] = useState(0);
     const [thirdCategory, setThirdCategory] = useState("");
     const [products,setProducts] = useState([]);
     const location = useLocation();
@@ -23,8 +24,8 @@ function User() {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const cancelRef = useRef();
 
-    function moveProductPage(productName) {
-        return navigate("/user/API Products/"+productName);
+    function moveProductPage(productId) {
+        return navigate("/user/API Products/"+productId);
     };
 
     const movePage = (route,e) => {
@@ -55,21 +56,29 @@ function User() {
         setMainCategory("API Products");
         setSecondCategory("");
         setThirdCategory("");
+        setSecondCategoryId(0);
+
+        GetProducts();
 
         const locationArray = decodeURI(location.pathname).split('/');
         for(let i = 0; i<locationArray.length; i++) {
             if(i === 2) {
                 setMainCategory(locationArray[i]);
             } else if(i === 3) {
-                setSecondCategory(locationArray[i]);
+                const foundProduct = products.find((product) => product.apis_id == locationArray[i]);
+            if (foundProduct) {
+                setSecondCategory(foundProduct.name);
+                setSecondCategoryId(foundProduct.apis_id)
+            } else {
+                // 조건을 충족하는 항목이 없을 경우 원하는 처리를 추가할 수 있습니다.
+                // console.log('Product not found for apis_id:', locationArray[i]);
+            }
             } else if(i === 4) {
                 setThirdCategory(locationArray[i]);
             }
         }
 
-        GetProducts();
-
-    },[location,mainCategory]);
+    },[location,mainCategory,secondCategoryId]);
 
     return (
         <>
@@ -97,9 +106,9 @@ function User() {
                                 <UnorderedList spacing={3}>
                                     {
                                         products.map((product,index) => (
-                                            <ListItem key={index} onClick={() => moveProductPage(product.name)} cursor={"pointer"}
+                                            <ListItem key={index} onClick={() => moveProductPage(product.apis_id)} cursor={"pointer"}
                                                 style={{WebkitUserSelect:"none",MozUserSelect:"none",msUserSelect:"none",userSelect:"none"}}
-                                                color={secondCategory === product.name ? "black" : "gray.400"}
+                                                color={secondCategoryId === product.apis_id ? "black" : "gray.400"}
                                             >
                                                     {product.name}
                                             </ListItem>

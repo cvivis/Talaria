@@ -89,7 +89,7 @@ const MemberCreateModal = ({ isOpen, onClose, onCreate }) => {
           {/* <ModalCloseButton /> */}
           <ModalBody mt={4}>
             <FormControl isRequired>
-              <FormLabel>Member Email</FormLabel>
+              <FormLabel>Member ID</FormLabel>
               <Input
                 name="email"
                 value={newUser.email}
