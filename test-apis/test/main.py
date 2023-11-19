@@ -1,19 +1,22 @@
-from fastapi import APIRouter
+from fastapi import FastAPI
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 
-router = APIRouter(
-    prefix='/test1/api'
-)
+app = FastAPI()
 
 
-@router.get('/name')
+@app.get('/test1/api')
+def read_root():
+    return {'message': 'Hello Test1'}
+
+
+@app.get('/test1/api/name')
 def name():
     content = jsonable_encoder({'name': 'hermes'})
     return JSONResponse(content=content)
 
 
-@router.get('/service')
+@app.get('/test1/api/service')
 def service():
     content = jsonable_encoder({'service': 'talaria'})
     return JSONResponse(content=content)
