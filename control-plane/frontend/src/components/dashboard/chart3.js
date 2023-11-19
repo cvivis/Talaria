@@ -78,7 +78,6 @@ function Chart3() {
       range: XAXISRANGE, //최대, 최소 값을 동적으로 받기위한 용도 ?
     },
     yaxis: {
-      max: 0.01,
       min: 0,
       decimalsInFloat: 4,
       labels: {

@@ -59,9 +59,9 @@ function Chart6() {
       // max: 40,
       min: 0,
       // decimalsInFloat: 4,
-      labels: {
-        offsetX: -10,
-      },
+      // labels: {
+      //   offsetX: -10,
+      // },
       // min: 0,
       // forceNiceScale: true,
       // tickAmount: 5,
@@ -113,35 +113,35 @@ function Chart6() {
       },
     ]);
 
-    let max = maxY;
-    for (let i = 0; i < successCount.length; i++) {
-      if (successCount[i] > max) {
-        max = successCount[i];
-      }
-    }
-    for (let i = 0; i < failCount.length; i++) {
-      if (failCount[i] > max) {
-        max = failCount[i];
-      }
-    }
-    for (let i = 0; i < serverFailCount.length; i++) {
-      if (serverFailCount[i] > max) {
-        max = serverFailCount[i];
-      }
-    }
-    setMaxY(max);
-    console.log("serires : ", series);
+    // let max = maxY;
+    // for (let i = 0; i < successCount.length; i++) {
+    //   if (successCount[i] > max) {
+    //     max = successCount[i];
+    //   }
+    // }
+    // for (let i = 0; i < failCount.length; i++) {
+    //   if (failCount[i] > max) {
+    //     max = failCount[i];
+    //   }
+    // }
+    // for (let i = 0; i < serverFailCount.length; i++) {
+    //   if (serverFailCount[i] > max) {
+    //     max = serverFailCount[i];
+    //   }
+    // }
+    // setMaxY(max);
+    // console.log("serires : ", series);
   }, [successCount, failCount, serverFailCount]);
 
-  useEffect(() => {
-    setOptions((prevOptions) => ({
-      ...prevOptions,
-      yaxis: {
-        ...prevOptions.yaxis,
-        max: maxY + 10,
-      },
-    }));
-  }, [maxY]);
+  // useEffect(() => {
+  //   setOptions((prevOptions) => ({
+  //     ...prevOptions,
+  //     yaxis: {
+  //       ...prevOptions.yaxis,
+  //       max: maxY + 10,
+  //     },
+  //   }));
+  // }, [maxY]);
 
   const subscribeToTopic = (topic, callback) => {
     const subscription = client.current.subscribe(topic, (res) => {
@@ -192,6 +192,14 @@ function Chart6() {
     //웹소켓
 
     connect(); // 마운트시 실행
+    // const interval = setInterval(() => {
+    //   setSeries();
+    //   ApexCharts.exec("realtime", "updateSeries", [
+    //     {
+    //       data: averageTimeData,
+    //     },
+    //   ]);
+    // }, 1000);
 
     return () => {
       // clearInterval(interval);
