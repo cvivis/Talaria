@@ -13,7 +13,7 @@ class Requests:
     def services(self):
         if self.mode == 'test':
             return self.get_sample_data()
-        else:
+        elif self.mode == 'prod':
             return self.request_to_control_plane()
 
     @staticmethod

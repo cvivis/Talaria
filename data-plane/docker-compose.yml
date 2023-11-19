@@ -16,7 +16,7 @@ services:
     container_name: configurator
     image: python:${PYTHON_VERSION}
     environment:
-      MODE: test
+      MODE: ${MODE}
       CONTROL_PLANE_DOMAIN: ${CONTROL_PLANE_DOMAIN}
       DESCRIBING_SERVICE_URI: ${DESCRIBING_SERVICE_URI}
       DATA_PLANE_DOMAIN: ${DATA_PLANE_DOMAIN}
