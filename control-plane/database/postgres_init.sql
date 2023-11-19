@@ -43,9 +43,6 @@ create table subscription (
     primary key (subscription_id)
 );
 
-alter table if exists apis 
-    add constraint UK_d1exv5alsicd9snphn5p3resr unique (name);
-
 alter table if exists key 
     add constraint UK_88ikfa3pgc58i36u3sey2g8cs unique (key_value);
 
