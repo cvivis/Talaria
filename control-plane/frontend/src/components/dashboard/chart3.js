@@ -11,7 +11,7 @@ function Chart3() {
   const connect = () => {
     client.current = new StompJs.Client({
       // brokerURL: "ws://localhost:8080/ws/monitoring",
-      brokerURL: "wss://api.talaria.kr/ws/monitoring",
+      brokerURL: `wss://${process.env.REACT_APP_DATA_PLANE_DOMAIN}/ws/monitoring`,
       onConnect: () => {
         // Do something, all subscribes must be done is this callback
         console.log("연결 SUB");

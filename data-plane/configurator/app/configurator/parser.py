@@ -8,6 +8,9 @@ class Parser:
     def servers(self) -> dict:
         server_dict = dict()
 
+        if len(self.services) == 0:
+            return server_dict
+
         for index, service in enumerate(self.services):
             oas, servers = service['oas'], set()
             for server in oas['servers']:
@@ -17,6 +20,9 @@ class Parser:
         return server_dict
 
     def quotas(self) -> list:
+        if len(self.services) == 0:
+            return []
+
         quota_set = set()
 
         for service in self.services:
@@ -30,6 +36,9 @@ class Parser:
         return service['policies']['quota']
 
     def keys(self) -> dict:
+        if len(self.services) == 0:
+            return {}
+
         general_keys, service_keys = dict(), dict()
 
         for index, service in enumerate(self.services):

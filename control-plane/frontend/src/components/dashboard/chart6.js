@@ -80,7 +80,7 @@ function Chart6() {
   const client = useRef({});
   const connect = () => {
     client.current = new StompJs.Client({
-      brokerURL: "ws://localhost:8080/ws/monitoring",
+      brokerURL: `wss://${process.env.REACT_APP_DATA_PLANE_DOMAIN}/ws/monitoring`,
       // brokerURL: "wss://api.talaria.kr/ws/monitoring",
       onConnect: () => {
         // Do something, all subscribes must be done is this callback

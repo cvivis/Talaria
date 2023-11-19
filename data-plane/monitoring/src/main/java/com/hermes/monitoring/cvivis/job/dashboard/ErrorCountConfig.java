@@ -28,7 +28,7 @@ public class ErrorCountConfig {
     private final WebSocketService webSocketService;
     private final ErrorCountParser errorCountParser;
 
-    @Value("${error.url}")
+    @Value("${log.error.shared.current}")
     String errorUrl;
 
 

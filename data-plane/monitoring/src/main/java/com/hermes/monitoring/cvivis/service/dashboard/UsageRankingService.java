@@ -24,10 +24,10 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class UsageRankingService {
 
-    @Value("${log.url}")
+    @Value("${log.access.shared.current}")
     String url;
 
-    @Value("${log.baseUrl}")
+    @Value("${log.access.base}")
     String baseUrl;
     private final JobLauncher jobLauncher;
 

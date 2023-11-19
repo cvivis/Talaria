@@ -16,13 +16,14 @@ services:
     container_name: configurator
     image: python:${PYTHON_VERSION}
     environment:
-      MODE: test
+      MODE: ${MODE}
       CONTROL_PLANE_DOMAIN: ${CONTROL_PLANE_DOMAIN}
       DESCRIBING_SERVICE_URI: ${DESCRIBING_SERVICE_URI}
       DATA_PLANE_DOMAIN: ${DATA_PLANE_DOMAIN}
     restart: unless-stopped
     volumes:
       - ./configurator:/code:ro
+      - ./nginx/api_gateway.conf:/nginx/api_gateway.conf
       - talaria.d:/nginx/talaria.d
     working_dir: /code
     entrypoint: /code/entrypoint.sh
@@ -30,7 +31,7 @@ services:
       - nginx
     pid: "container:nginx"
     ports:
-      - "${CONFIGURATOR_PORT}:${CONFIGURATOR_PORT}"
+      - ${CONFIGURATOR_PORT}:${CONFIGURATOR_PORT}
 
   nginx:
     container_name: nginx
@@ -60,7 +61,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./monitoring/libs:/home/libs
       - log_current.d:/var/log/nginx/shared
-      - log_current.d:/var/log/nginx/olds
+      - log_old.d:/var/log/nginx/olds
     command:
       - /home/libs/entrypoint.sh
     restart: unless-stopped

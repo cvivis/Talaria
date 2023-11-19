@@ -22,7 +22,7 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class CpuMemoryService {
 
-    @Value("${nginx.container.name}")
+    @Value("${talaria.nginx-container}")
     String containerName;
 
     public CpuMemoryUsageDto processBuilder() throws IOException, InterruptedException {

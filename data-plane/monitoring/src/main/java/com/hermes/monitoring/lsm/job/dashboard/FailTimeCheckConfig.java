@@ -33,7 +33,7 @@ public class FailTimeCheckConfig {
     private List<LogDto> logDtoList;
     private int failTime;
 
-    @Value("${fail.log.url}")
+    @Value("${log.access.shared.fail}")
     String logUrl;
 
     // 4xx 응답 평균 시간을 확인

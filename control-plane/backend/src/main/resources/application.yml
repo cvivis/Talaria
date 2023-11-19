@@ -1,0 +1,48 @@
+server:
+  port: ${BACKEND_PORT}
+
+spring:
+  config:
+    import: optional:file:.env[.properties]
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://postgres:${POSTGRES_PORT}/${POSTGRES_DB}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    defer-datasource-initialization: true
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: false
+
+  data:
+    redis:
+      host: redis
+      port: ${REDIS_PORT}
+      password: ${REDIS_PASSWORD}
+
+  web:
+    data:
+      redis:
+        host: redis
+        port: ${REDIS_PORT}
+        password: ${REDIS_PASSWORD}
+
+jwt:
+  secret: ${JWT_SECRET}
+  access-expiry-time: ${JWT_ACCESS_EXPIRY_TIME}
+  refresh-expiry-time: ${JWT_REFRESH_EXPIRY_TIME}
+
+cors:
+  allowed-origins: https://${CONTROL_PLANE_DOMAIN}
+  allowed-methods: GET,POST,PUT,DELETE,OPTIONS,PATCH
+  allowed-headers: '*'
+  max-age: 3600
+
+talaria:
+  routing-url: ${DATA_PLANE_DOMAIN}
