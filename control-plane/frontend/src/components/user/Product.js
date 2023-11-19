@@ -33,7 +33,7 @@ const Product = () => {
         try{
             const data = await instance.get('apis/user/product',{
                 params: {
-                    apisName: apisName.productName,
+                    apisId: apisName.productId,
                 }
             });
             if(data.data.swagger_content === null) {
@@ -155,7 +155,7 @@ const Product = () => {
     return (
         <>
             <Flex mb={2}>
-                <Text fontSize="2xl" color={mainText} m={0}>{params.productName}</Text>
+                <Text fontSize="2xl" color={mainText} m={0}>{product.name}</Text>
                 <Spacer />
                 <Box mr={3}>
                     {

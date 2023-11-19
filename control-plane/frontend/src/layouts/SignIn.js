@@ -124,13 +124,13 @@ function SignIn() {
                         </Text>
                         <FormControl>
                             <FormLabel fontSize="sm" fontWeight="normal">
-                                E-Mail
+                                ID
                             </FormLabel>
                             <Input
                                 variant="auth"
                                 fontSize="sm"
                                 type="text"
-                                placeholder="Your E-Mail"
+                                placeholder="Your ID"
                                 mb="24px"
                                 size="lg"
                                 w="100%"

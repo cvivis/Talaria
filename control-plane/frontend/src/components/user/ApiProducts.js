@@ -16,8 +16,8 @@ const ApiProducts = () => {
     );
     const navigate = useNavigate();
 
-    const goProductPage = (productName) => {
-        return navigate("/user/API Products/"+productName);
+    const goProductPage = (productId) => {
+        return navigate("/user/API Products/"+productId);
     }
 
     const GetProducts = async() => {
@@ -47,7 +47,7 @@ const ApiProducts = () => {
                 {
                     products.map((product,index) => (
                                 <Card maxH='300px' maxW='sm' borderRadius={20} boxShadow={boxShadow} key={index}
-                                    onClick={() => goProductPage(product.name)}
+                                    onClick={() => goProductPage(product.apis_id)}
                                     style={{WebkitUserSelect:"none",MozUserSelect:"none",msUserSelect:"none",userSelect:"none"}}
                                     cursor={"pointer"}
                                 >
