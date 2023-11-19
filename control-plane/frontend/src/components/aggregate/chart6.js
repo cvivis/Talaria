@@ -43,7 +43,7 @@ function Chart2(props) {
     // const groupName = "/shinhan/banking";
     // console.log(props.groupName)
     const groupName = props.groupName;
-    const url = "https://api.talaria.kr/group-detail/server-fail?group-name=" + groupName;
+    const url = `https://${process.env.REACT_APP_DATA_PLANE_DOMAIN}/group-detail/server-fail?group-name=` + groupName;
     let response = await axios.get(url);
     // setRequestData(response.data);
     setRequestData((prevRequestData) => [
