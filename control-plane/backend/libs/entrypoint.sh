@@ -4,5 +4,6 @@ cd /home/libs
 
 set -eux
 
-export $(cat .env | xargs)
+export $(grep -v '^#' .env | xargs)
+
 java -jar talaria-0.0.1-SNAPSHOT.jar
