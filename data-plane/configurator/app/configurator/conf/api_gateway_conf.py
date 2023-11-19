@@ -6,9 +6,8 @@ from os.path import join
 
 
 class APIGatewayConf(BaseConf):
-    def __init__(self, name: str, quotas: list):
+    def __init__(self, name: str):
         super().__init__(name)
-        self.quotas = quotas
 
     def generate(self) -> dict:
         part1_path = join(constant.STATIC_CONFIG_PATH, 'api_gateway_part1.txt')

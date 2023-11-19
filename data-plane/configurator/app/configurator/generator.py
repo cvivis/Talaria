@@ -27,7 +27,7 @@ class Generator:
         parser = Parser(services)
         self._copy_constant_configs()
 
-        api_gateway_conf = APIGatewayConf('api_gateway.conf', parser.quotas()).generate()
+        api_gateway_conf = APIGatewayConf('api_gateway.conf').generate()
         write_file(self.config_path, api_gateway_conf['name'], api_gateway_conf['content'])
 
         api_backends_conf = APIBackendsConf('api_backends.conf', parser.servers()).generate()

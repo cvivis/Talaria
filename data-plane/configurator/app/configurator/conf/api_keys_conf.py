@@ -7,9 +7,10 @@ class APIKeysConf(BaseConf):
         self.keys = keys
 
     def generate(self) -> dict:
-        block = ''
+        if len(self.keys) == 0:
+            return {'name': self.name, 'content': ''}
 
-        block += self._get_key_user_map()
+        block = self._get_key_user_map()
         for service_name, service_users in self.keys['service'].items():
             block += self._get_service_key_map(service_name, service_users)
         block += '# vim: syntax=nginx\n'
