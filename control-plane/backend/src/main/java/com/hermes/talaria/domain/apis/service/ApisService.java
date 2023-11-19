@@ -46,7 +46,13 @@ public class ApisService {
 		StringBuilder sb = new StringBuilder(routingServer);
 		Member developer = memberRepository.findByMemberId(apisDto.getDeveloperId())
 			.orElseThrow(() -> new AuthenticationException(ErrorCode.NOT_EXIST_MEMBER));
+
 		//URLEncoder.encode(originalString, "UTF-8")
+
+		if(apisRepository.findApisByDeveloperIdAndName(developer.getMemberId(), apisDto.getName()).isPresent()) {
+			throw new ApisException(ErrorCode.DUPLICATED_APIS_NAME);
+		}
+
 		sb.append("/").append(developer.getEmail());
 		try {
 			sb.append("/").append(URLEncoder.encode(apisDto.getName(), StandardCharsets.UTF_8));
