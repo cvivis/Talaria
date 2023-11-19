@@ -49,15 +49,15 @@ public class UsageRangkingParser {
                 keySet.add("UseAPI_Nothing");
             }
         }
-        int rangking = 0;
+        int ranking = 0;
         int beforeUsage = -1;
         int sameCount = 1;
-        for(int i = 0; i < 5;i++){
+        for(int i = 0; i < keySet.size();i++){
             String[] urlMethodArr = keySet.get(i).split("_");
             if(urlMethodArr[1].equals("Nothing")){
                 UsageRankingDto usageRankingDto = UsageRankingDto.builder()
-                        .url((urlMethodArr[0]))
-                        .method(urlMethodArr[1])
+                        .url("")
+                        .method("")
                         .usage(0)
                         .ranking(0)
                         .build();
@@ -70,21 +70,27 @@ public class UsageRangkingParser {
                 }
                 else{
                     if(sameCount != 0){
-                        rangking += sameCount;
+                        ranking += sameCount;
                         sameCount = 1;
                     }
                     else{
-                        rangking++;
+                        ranking++;
                     }
                 }
-                UsageRankingDto usageRankingDto = UsageRankingDto.builder()
-                        .url((urlMethodArr[0]))
-                        .method(urlMethodArr[1])
-                        .usage(nowUsage)
-                        .ranking(rangking)
-                        .build();
-                result.add(usageRankingDto);
-                beforeUsage = nowUsage;
+                if(ranking < 6){
+                    UsageRankingDto usageRankingDto = UsageRankingDto.builder()
+                            .url((urlMethodArr[0]))
+                            .method(urlMethodArr[1])
+                            .usage(nowUsage)
+                            .ranking(ranking)
+                            .build();
+                    result.add(usageRankingDto);
+                    beforeUsage = nowUsage;
+                }
+                else{
+                    break;
+                }
+
             }
         }
         br.close();

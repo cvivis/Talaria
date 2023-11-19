@@ -24,7 +24,7 @@ public class ErrorCountService {
     private final JobLauncher jobLauncher;
     private final ErrorCountConfig errorCountConfig;
     private final CreateErrorFile createErrorFile;
-    @Scheduled(cron = "0/5 * * * * *") // cron 표기법
+    @Scheduled(cron = "0/2 * * * * *") // cron 표기법
     public void runJob() throws IOException {
         // job parameter 설정
 //        createErrorFile.createErrorFile();
