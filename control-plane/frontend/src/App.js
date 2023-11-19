@@ -32,7 +32,7 @@ function App() {
           {/* Private */}
           <Route exact path='/user' element={<PrivateRoute selectRole="USER" component={<User />} />}>
             <Route exact index element={<ApiProducts />} />
-            <Route exact path='/user/API Products/:productName' element={<Product />} />
+            <Route exact path='/user/API Products/:productId' element={<Product />} />
             <Route exact path='/user/My Subscription' element={<MySubscription />} />
           </Route>
           <Route exact path='/admin' element={<PrivateRoute selectRole="ADMIN" component={<Admin />} />} >

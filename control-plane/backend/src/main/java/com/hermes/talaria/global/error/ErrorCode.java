@@ -27,6 +27,7 @@ public enum ErrorCode {
 
 	// APIS
 	NOT_EXIST_APIS(HttpStatus.BAD_REQUEST, "404021", "존재하지 않는 API 그룹입니다."),
+	DUPLICATED_APIS_NAME(HttpStatus.BAD_REQUEST, "404022", "중복되는 API 그룹입니다. 다른 이름을 입력하세요."),
 
 	// Subscription
 	NOT_EXIST_SUBSCRIPTION(HttpStatus.BAD_REQUEST, "404031", "존재하지 않는 구독 요청입니다."),
