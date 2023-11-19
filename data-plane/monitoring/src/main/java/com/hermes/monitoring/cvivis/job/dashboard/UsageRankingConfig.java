@@ -29,7 +29,7 @@ public class UsageRankingConfig {
     private final WebSocketService webSocketService;
     private final UsageRangkingParser usaUsageRangkingParser;
 
-    @Value("${log.url}")
+    @Value("${log.access.shared.current}")
     String logUrl;
 
 

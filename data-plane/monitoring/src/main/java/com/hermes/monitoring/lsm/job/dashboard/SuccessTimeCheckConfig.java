@@ -33,7 +33,7 @@ public class SuccessTimeCheckConfig {
     private List<LogDto> logDtoList;
     private int successTime;
 
-    @Value("${success.log.url}")
+    @Value("${log.access.shared.success}")
     String logUrl;
 
     // 200 응답 평균 시간을 확인
