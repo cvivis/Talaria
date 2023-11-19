@@ -16,7 +16,7 @@ services:
     image: python:3.11
     restart: unless-stopped
     volumes:
-      - ./users/code:ro
+            - ./users:/code:ro
     working_dir: /code
     entrypoint: /code/entrypoint.sh
     ports:

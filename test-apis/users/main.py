@@ -5,7 +5,7 @@ from fastapi.responses import JSONResponse
 app = FastAPI()
 
 
-@app.get('/getUsers')
+@app.get('/users/getUsers')
 def get_users():
     gen = 9
     group = 'trainee'
