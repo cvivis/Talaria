@@ -7,12 +7,12 @@ class APIKeysConf(BaseConf):
         self.keys = keys
 
     def generate(self) -> dict:
-        if len(self.keys) == 0:
-            return {'name': self.name, 'content': ''}
-
         block = self._get_key_user_map()
-        for service_name, service_users in self.keys['service'].items():
-            block += self._get_service_key_map(service_name, service_users)
+        
+        if (len(self.keys) > 0):
+            for service_name, service_users in self.keys['service'].items():
+                block += self._get_service_key_map(service_name, service_users)
+        
         block += '# vim: syntax=nginx\n'
 
         return {'name': self.name, 'content': block}
@@ -21,8 +21,9 @@ class APIKeysConf(BaseConf):
         key_user_map = 'map $http_apikey $api_client_name {\n'
         key_user_map += '\tdefault "";\n\n'
 
-        for user_name, user_key in self.keys['general'].items():
-            key_user_map += f'\t"{user_key}" "{user_name}";\n'
+        if (len(self.keys) > 0):
+            for user_name, user_key in self.keys['general'].items():
+                key_user_map += f'\t"{user_key}" "{user_name}";\n'
 
         key_user_map += '}\n\n'
         return key_user_map
