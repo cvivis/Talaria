@@ -10,14 +10,3 @@ services:
     entrypoint: /code/entrypoint.sh
     ports:
       - 8000:8000
-      
-  users:
-    container_name: users
-    image: python:3.11
-    restart: unless-stopped
-    volumes:
-      - ./users/code:ro
-    working_dir: /code
-    entrypoint: /code/entrypoint.sh
-    ports:
-      8001:8001
