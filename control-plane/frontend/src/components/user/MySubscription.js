@@ -43,8 +43,8 @@ const MySubscription = () => {
         })
     };
 
-    const goProductPage = (productName) => {
-        return navigate("/user/API Products/"+productName);
+    const goProductPage = (productId) => {
+        return navigate("/user/API Products/"+productId);
     }
     
     const GetKey = async() => {
@@ -264,7 +264,7 @@ const MySubscription = () => {
                         <Tbody pb="0px">
                             {
                                 mySubscription.map((product,index) => (
-                                <Tr border="none" key={index} onClick={(e) => {goProductPage(product.name)}} cursor={"pointer"}>
+                                <Tr border="none" key={index} onClick={(e) => {goProductPage(product.apis_id)}} cursor={"pointer"}>
                                     <Td
                                         borderColor={borderColor}
                                         minW={{ sm: "220px", xl: "180px", "2xl": "220px" }}
