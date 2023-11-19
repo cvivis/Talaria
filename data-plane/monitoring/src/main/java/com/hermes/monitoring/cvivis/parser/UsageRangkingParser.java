@@ -118,23 +118,20 @@ public class UsageRangkingParser {
         String method = "초기 메소드";
         String url = "초기 url";
         Long date = new Date().getTime();
-//        System.out.println("그룹을 찾아ㅏ라라라ㅏㅏㄹ "+matcher.group(0));
         if (matcher.find()) {
             method = matcher.group(3);
             url = matcher.group(4);
-//            log.info("url: {}",url);
             date = getTime.getTimeZone(matcher.group(2));
-        }
-        Date currentTime = new Date();
-//        log.info("date {} , now : {}",date , currentTime.getTimeZone());
-        if(date <= currentTime.getTime() && date >= currentTime.getTime() - 5000){
-            return url+ "_"+method;
+            Date currentTime = new Date();
+            if(date <= currentTime.getTime() && date >= currentTime.getTime() - 5000){
+                return url+ "_"+method;
+            }
+            else{
+                return null;
+            }
         }
         else{
-            // log.info("group: ",matcher.group(0));
-//            log.info("틀림 : "+line);
             return null;
         }
-//        return url+ "_"+method;
     }
 }
