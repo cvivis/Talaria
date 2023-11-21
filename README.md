@@ -26,27 +26,29 @@
 ### 사용자
 > API 구독
 
+<img src="https://github.com/Lee-Jiseung/codingtest/assets/64067641/994ce1fa-c919-4b51-be3c-552965a831b6">
+
 ### 개발자
 > API 등록
 
-<img src="https://github.com/Lee-Jiseung/codingtest/assets/64067641/36b07922-a300-4cb6-a281-41fdd7b972e7">
+<img src="https://github.com/Lee-Jiseung/codingtest/assets/64067641/41b3f616-ab42-4b02-bd49-9a83b38926de">
 
 ### 관리자
 > API 승인
 
-<img src="https://github.com/Lee-Jiseung/codingtest/assets/64067641/94ff0a72-0876-49ee-b64f-ede80b1815ab">
+<img src="https://github.com/Lee-Jiseung/codingtest/assets/64067641/65d544b8-c63c-43fa-9877-ac6c8848c9d2">
 
 > API 관리
 
-<img src="https://github.com/Lee-Jiseung/codingtest/assets/64067641/660e3251-e94b-422b-8d5f-b0e5c2143f20">
+<img src="https://github.com/Lee-Jiseung/codingtest/assets/64067641/396f71ee-947f-4c1c-a18e-828153d48507">
 
 > 회원 관리
 
-<img src="https://github.com/Lee-Jiseung/codingtest/assets/64067641/f05a85de-c5d6-4871-9c12-cc9b4a6b7a50">
+<img src="https://github.com/Lee-Jiseung/codingtest/assets/64067641/9fe18004-9d3a-42ba-9399-74ca3774d164">
 
 > 구독 관리
 
-<img src="https://github.com/Lee-Jiseung/codingtest/assets/64067641/2df55e87-8f33-459f-bace-428bec4baee8">
+<img src="https://github.com/Lee-Jiseung/codingtest/assets/64067641/e10e6d6b-75ae-4ea1-ad06-ef39b0627f3c">
 
 <br />
 
