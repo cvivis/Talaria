@@ -34,6 +34,10 @@
 <img src="https://github.com/Lee-Jiseung/codingtest/assets/64067641/41b3f616-ab42-4b02-bd49-9a83b38926de">
 
 ### 관리자
+> API GateWay 모니터링
+
+<img src="https://github.com/cvivis/Talaria/assets/42718588/7b96913b-0f46-49e3-9c48-9f13b3944c13" alt="Monitoring Image" width="1000" height="500">
+
 > API 승인
 
 <img src="https://github.com/Lee-Jiseung/codingtest/assets/64067641/65d544b8-c63c-43fa-9877-ac6c8848c9d2">
@@ -41,6 +45,12 @@
 > API 관리
 
 <img src="https://github.com/Lee-Jiseung/codingtest/assets/64067641/396f71ee-947f-4c1c-a18e-828153d48507">
+
+> API 그룹별 통계 
+
+<img width="1396" alt="api1" src="https://github.com/cvivis/Talaria/assets/42718588/8607bfe2-4ecd-42f7-9a94-eb8ade104bef">
+<img width="1396" alt="api2" src="https://github.com/cvivis/Talaria/assets/42718588/b198780a-4562-451c-805e-7c48e72d8749">
+
 
 > 회원 관리
 
